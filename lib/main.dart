@@ -30,13 +30,16 @@ class _MyAppState extends State<MyApp> {
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
 
-          primary: Colors.purpleAccent,
+          primary: Color.fromARGB(255, 101, 90, 124),
           onPrimary: Colors.black,
 
-          secondary: Colors.purpleAccent,
+          secondary: Color.fromARGB(255, 171, 146, 191),
           onSecondary: Colors.black,
 
-          background: Colors.white,
+          tertiary: Color.fromARGB(255, 175, 193, 214),
+          onTertiary: Colors.black,
+
+          background: Color.fromARGB(255, 206, 249, 242),
           onBackground: Colors.black,
 
           surface: Colors.white,
@@ -45,23 +48,31 @@ class _MyAppState extends State<MyApp> {
           error: Colors.red,
           onError: Colors.black,
         ),
+        // textTheme: const TextTheme(
+        //   bodyMedium: TextStyle(
+        //     color: Color.fromARGB(255, 214, 202, 152),
+        //   )
+        // ),
       ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Title!!!!!:3'),
+          foregroundColor: Colors.white,
         ),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+              UserAccountsDrawerHeader(
+                accountName: const Text('Mouse'),
+                accountEmail: const Text('Mouse@Mouse.Mouse'),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  child: const Text('M'),
                 ),
-                child: Text('Drawer Header'),
               ),
               ListTile(
-                leading: Icon(Icons.home),
+                leading: const Icon(Icons.home),
                 title: const Text('Home'),
                 onTap: () {
                   setState(() {
@@ -71,7 +82,7 @@ class _MyAppState extends State<MyApp> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.calendar_today),
+                leading: const Icon(Icons.calendar_today),
                 title: const Text('Calendar'),
                 onTap: () {
                   setState(() {
@@ -81,7 +92,7 @@ class _MyAppState extends State<MyApp> {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.person),
+                leading: const Icon(Icons.person),
                 title: const Text('User'),
                 onTap: () {
                   setState(() {

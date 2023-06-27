@@ -10,15 +10,15 @@ class HomePage extends StatelessWidget {
         children: [
           Container(
             height: 200,
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.primary,
           ),
           Container(
             height: 200,
-            color: Colors.green,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           Container(
             height: 200,
-            color: Colors.red,
+            color: Theme.of(context).colorScheme.tertiary,
           ),
         ],
       ),
