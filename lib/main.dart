@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
 import 'package:mouse_irl_website/screens/user.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 void main() {
-  runApp(const MyApp());
+  final pb = PocketBase('http://127.0.0.1:8090');
+  runApp(Provider(
+    create: (_) => PocketBase('http://127.0.0.1:8090'),
+    child: const MyApp()
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -22,6 +27,12 @@ class _MyAppState extends State<MyApp> {
     CalendarPage(),
     UserPage(),
   ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,50 +70,51 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Title!!!!!:3'),
           foregroundColor: Colors.white,
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              UserAccountsDrawerHeader(
-                accountName: const Text('Mouse'),
-                accountEmail: const Text('Mouse@Mouse.Mouse'),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Theme.of(context).colorScheme.background,
-                  child: const Text('M'),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-                onTap: () {
-                  setState(() {
-                    _selectedIndex = 0;
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.calendar_today),
-                title: const Text('Calendar'),
-                onTap: () {
-                  setState(() {
-                    _selectedIndex = 1;
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('User'),
-                onTap: () {
-                  setState(() {
-                    _selectedIndex = 2;
-                  });
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          )
+        drawer: Builder(
+          builder: (context) {
+            return Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  UserAccountsDrawerHeader(
+                    accountName: const Text('Mouse'),
+                    accountEmail: const Text('Mouse@Mouse.Mouse'),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.background,
+                      child: const Text('M'),
+                    ),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text('Home'),
+                    selected: _selectedIndex == 0,
+                    onTap: () {
+                      _onItemTapped(0);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.calendar_today),
+                    title: const Text('Calendar'),
+                    selected: _selectedIndex == 1,
+                    onTap: () {
+                      _onItemTapped(1);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text('User'),
+                    selected: _selectedIndex == 2,
+                    onTap: () {
+                      _onItemTapped(2);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              )
+            );
+          }
         ),
         body: _pages.elementAt(_selectedIndex),
         // bottomNavigationBar: bottomNavBar(),
