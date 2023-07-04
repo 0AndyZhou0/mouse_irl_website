@@ -20,28 +20,28 @@ class _UserPageState extends State<UserPage> {
       body: ListView(
         padding: EdgeInsets.all(40.0),
         children: [
-          Container(
+          SizedBox(
             height: 200,
             width: 200,
             child: Image.asset('assets/images/catbot.png'),
           ),
-          SizedBox(height: 30,),
-          TextField(
+          const SizedBox(height: 30,),
+          const TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Email',
               hintText: 'suck a dick',
             ),
           ),
-          SizedBox(height: 10,),
-          TextField(
+          const SizedBox(height: 10,),
+          const TextField(
             obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Password',
             ),
           ),
-          SizedBox(height: 30,),
+          const SizedBox(height: 30,),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(50),
@@ -53,7 +53,7 @@ class _UserPageState extends State<UserPage> {
             onPressed: () {
               print('login');
             },
-            child: Text('Login'),
+            child: const Text('Login'),
           ),
         ],
       )
