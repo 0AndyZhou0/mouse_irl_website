@@ -28,11 +28,11 @@ class _MyAppState extends State<MyApp> {
     UserPage(),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +66,11 @@ class _MyAppState extends State<MyApp> {
         // ),
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Title!!!!!:3'),
-          foregroundColor: Colors.white,
-        ),
+        // appBar: AppBar(
+        //   title: const Text('Title!!!!!:3'),
+        //   foregroundColor: Colors.white,
+        // ),
+        
         // drawer: Builder(
         //   builder: (context) {
         //     return Drawer(

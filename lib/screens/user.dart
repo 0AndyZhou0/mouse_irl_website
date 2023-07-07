@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mouse_irl_website/screens/home.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -17,6 +18,10 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('User Page'),
+        foregroundColor: Colors.white,
+      ),
       body: ListView(
         padding: EdgeInsets.all(40.0),
         children: [
@@ -51,7 +56,7 @@ class _UserPageState extends State<UserPage> {
               foregroundColor: Colors.white,
             ),
             onPressed: () {
-              print('login');
+              Navigator.pop(context);
             },
             child: const Text('Login'),
           ),
