@@ -70,54 +70,58 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Title!!!!!:3'),
           foregroundColor: Colors.white,
         ),
-        drawer: Builder(
-          builder: (context) {
-            return Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  UserAccountsDrawerHeader(
-                    accountName: const Text('Mouse'),
-                    accountEmail: const Text('Mouse@Mouse.Mouse'),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.background,
-                      child: const Text('M'),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.home),
-                    title: const Text('Home'),
-                    selected: _selectedIndex == 0,
-                    onTap: () {
-                      _onItemTapped(0);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.calendar_today),
-                    title: const Text('Calendar'),
-                    selected: _selectedIndex == 1,
-                    onTap: () {
-                      _onItemTapped(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text('User'),
-                    selected: _selectedIndex == 2,
-                    onTap: () {
-                      _onItemTapped(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              )
-            );
-          }
-        ),
+        // drawer: Builder(
+        //   builder: (context) {
+        //     return Drawer(
+        //       child: ListView(
+        //         padding: EdgeInsets.zero,
+        //         children: [
+        //           UserAccountsDrawerHeader(
+        //             accountName: const Text('Mouse'),
+        //             accountEmail: const Text('Mouse@Mouse.Mouse'),
+        //             currentAccountPicture: CircleAvatar(
+        //               backgroundColor: Theme.of(context).colorScheme.background,
+        //               child: const Text('M'),
+        //             ),
+        //             // onDetailsPressed: () {
+        //             //   _onItemTapped(2);
+        //             //   Navigator.pop(context);
+        //             // },
+        //           ),
+        //           ListTile(
+        //             leading: const Icon(Icons.home),
+        //             title: const Text('Home'),
+        //             selected: _selectedIndex == 0,
+        //             onTap: () {
+        //               _onItemTapped(0);
+        //               Navigator.pop(context);
+        //             },
+        //           ),
+        //           ListTile(
+        //             leading: const Icon(Icons.calendar_today),
+        //             title: const Text('Calendar'),
+        //             selected: _selectedIndex == 1,
+        //             onTap: () {
+        //               _onItemTapped(1);
+        //               Navigator.pop(context);
+        //             },
+        //           ),
+        //           ListTile(
+        //             leading: const Icon(Icons.person),
+        //             title: const Text('User'),
+        //             selected: _selectedIndex == 2,
+        //             onTap: () {
+        //               _onItemTapped(2);
+        //               Navigator.pop(context);
+        //             },
+        //           ),
+        //         ],
+        //       )
+        //     );
+        //   }
+        // ),
         body: _pages.elementAt(_selectedIndex),
-        // bottomNavigationBar: bottomNavBar(),
+        bottomNavigationBar: bottomNavBar(),
       )
     );
   }
