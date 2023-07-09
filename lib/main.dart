@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
-import 'package:mouse_irl_website/screens/user.dart';
+import 'package:mouse_irl_website/screens/user_widget_tree.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mouse_irl_website/auth.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +24,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final User? user = Auth().currentUser;
+
   int _selectedIndex = 0;
   static const List<Widget> _pages = <Widget>[
     HomePage(),
     CalendarPage(),
-    UserPage(),
+    UserWidgetTree(),
   ];
 
   // void _onItemTapped(int index) {
@@ -38,6 +42,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'mouse_irl',
       theme: ThemeData(
         colorScheme: const ColorScheme(
           brightness: Brightness.light,

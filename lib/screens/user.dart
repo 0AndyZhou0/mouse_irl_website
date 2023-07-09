@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mouse_irl_website/screens/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mouse_irl_website/auth.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -9,59 +10,55 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  final User? user = Auth().currentUser;
+
+  Widget _title() {
+    return const Text(
+      'mouse_irl login',
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _userEmail() {
+    return Text(user?.email ?? '');
+  }
+
+  Widget _userSignOutButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        foregroundColor: Colors.white,
+      ),
+      onPressed: () {
+        Auth().signOut();
+      },
+      child: const Text('Sign Out'),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Page'),
-        foregroundColor: Colors.white,
+        title: _title(),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(40.0),
-        children: [
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Image.asset('assets/images/catbot.png'),
-          ),
-          const SizedBox(height: 30,),
-          const TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Email',
-              hintText: 'suck a dick',
-            ),
-          ),
-          const SizedBox(height: 10,),
-          const TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Password',
-            ),
-          ),
-          const SizedBox(height: 30,),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
-            child: const Text('Login'),
-          ),
-        ],
-      )
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _userEmail(),
+            const SizedBox(height: 20),
+            _userSignOutButton(),
+          ],
+        ),
+      ),
     );
   }
 }
