@@ -3,14 +3,9 @@ import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
 import 'package:mouse_irl_website/screens/user.dart';
 import 'package:provider/provider.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 void main() {
-  final pb = PocketBase('http://127.0.0.1:8090');
-  runApp(Provider(
-    create: (_) => PocketBase('http://127.0.0.1:8090'),
-    child: const MyApp()
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {

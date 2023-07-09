@@ -56,7 +56,7 @@ class _UserPageState extends State<UserPage> {
               foregroundColor: Colors.white,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
             },
             child: const Text('Login'),
           ),
