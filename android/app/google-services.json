@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "694809189982",
+    "project_id": "mouseirlwebsitefirebase",
+    "storage_bucket": "mouseirlwebsitefirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694809189982:android:c1026f97f9ff4b99101ecf",
+        "android_client_info": {
+          "package_name": "com.example.mouse_irl_website"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694809189982-nugn2pk1fl0d2dnobaslvdfo2qkvbknk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD66SeccJ2ZBYlFDYrkpmvLMwBVO1KrTw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694809189982-nugn2pk1fl0d2dnobaslvdfo2qkvbknk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "694809189982-f4kb9s4p0eaq2337b3au54m26gbr454t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mouseIrlWebsite.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
