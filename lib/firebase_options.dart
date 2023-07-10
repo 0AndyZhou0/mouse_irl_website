@@ -44,39 +44,39 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA4eTq-vIaECHUyBq2aAz2HfpQxbLvyx8g',
-    appId: '1:694809189982:web:ea656e92f352a5ca101ecf',
-    messagingSenderId: '694809189982',
-    projectId: 'mouseirlwebsitefirebase',
-    authDomain: 'mouseirlwebsitefirebase.firebaseapp.com',
-    storageBucket: 'mouseirlwebsitefirebase.appspot.com',
+    apiKey: 'AIzaSyDVyY4Wb1oe84bqJaxEGJ6lFrcI4Imy4Fs',
+    appId: '1:889428493541:web:dbb913e169d2ef5440800c',
+    messagingSenderId: '889428493541',
+    projectId: 'mouseirl',
+    authDomain: 'mouseirl.firebaseapp.com',
+    storageBucket: 'mouseirl.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBD66SeccJ2ZBYlFDYrkpmvLMwBVO1KrTw',
-    appId: '1:694809189982:android:c1026f97f9ff4b99101ecf',
-    messagingSenderId: '694809189982',
-    projectId: 'mouseirlwebsitefirebase',
-    storageBucket: 'mouseirlwebsitefirebase.appspot.com',
+    apiKey: 'AIzaSyAsQif9VHw9DMatUm_LsUfkm7WriACskag',
+    appId: '1:889428493541:android:6fd56f271cc884e940800c',
+    messagingSenderId: '889428493541',
+    projectId: 'mouseirl',
+    storageBucket: 'mouseirl.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBF8e1o-RG2HhMF28hylKfcHHLNrg1QMyE',
-    appId: '1:694809189982:ios:acc933b827d3bbb6101ecf',
-    messagingSenderId: '694809189982',
-    projectId: 'mouseirlwebsitefirebase',
-    storageBucket: 'mouseirlwebsitefirebase.appspot.com',
-    iosClientId: '694809189982-qer16idkoq0i3a4303jvvuv98g394jrj.apps.googleusercontent.com',
-    iosBundleId: 'com.example.mouseIrlWebsite',
+    apiKey: 'AIzaSyAXDU1tE_uuH0WhMLak063UCKszaSywz3g',
+    appId: '1:889428493541:ios:2f24c7609b54df1940800c',
+    messagingSenderId: '889428493541',
+    projectId: 'mouseirl',
+    storageBucket: 'mouseirl.appspot.com',
+    iosClientId: '889428493541-ksdkan3n0ovc1oh5petati71q8u9pmtk.apps.googleusercontent.com',
+    iosBundleId: 'com.example.myApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBF8e1o-RG2HhMF28hylKfcHHLNrg1QMyE',
-    appId: '1:694809189982:ios:cc78d570fb57d0cb101ecf',
-    messagingSenderId: '694809189982',
-    projectId: 'mouseirlwebsitefirebase',
-    storageBucket: 'mouseirlwebsitefirebase.appspot.com',
-    iosClientId: '694809189982-f4kb9s4p0eaq2337b3au54m26gbr454t.apps.googleusercontent.com',
-    iosBundleId: 'com.example.mouseIrlWebsite.RunnerTests',
+    apiKey: 'AIzaSyAXDU1tE_uuH0WhMLak063UCKszaSywz3g',
+    appId: '1:889428493541:ios:06aaf1a38e85088340800c',
+    messagingSenderId: '889428493541',
+    projectId: 'mouseirl',
+    storageBucket: 'mouseirl.appspot.com',
+    iosClientId: '889428493541-inuj4gigum39n8ro8nf8iv7oa3mq3jgm.apps.googleusercontent.com',
+    iosBundleId: 'com.example.myApp.RunnerTests',
   );
 }
