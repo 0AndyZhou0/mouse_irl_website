@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             height: 200,
-            color: Colors.purple[((index%9)+1)*100]
+            color: Colors.purple[(((index%16)-7).abs()+1)*100]
           );
         },
       )
