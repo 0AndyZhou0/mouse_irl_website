@@ -10,22 +10,30 @@ class HomePage extends StatelessWidget {
         title: const Text('Home Page'),
         foregroundColor: Colors.white,
       ),
-      body: ListView(
-        children: [
-          Container(
+      // body: ListView(
+      //   children: [
+      //     Container(
+      //       height: 200,
+      //       color: Theme.of(context).colorScheme.primary,
+      //     ),
+      //     Container(
+      //       height: 200,
+      //       color: Theme.of(context).colorScheme.secondary,
+      //     ),
+      //     Container(
+      //       height: 200,
+      //       color: Theme.of(context).colorScheme.tertiary,
+      //     ),
+      //   ],
+      // ),
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return Container(
             height: 200,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          Container(
-            height: 200,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          Container(
-            height: 200,
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-        ],
-      ),
+            color: Colors.purple[((index%9)+1)*100]
+          );
+        },
+      )
     );
   }
 }
