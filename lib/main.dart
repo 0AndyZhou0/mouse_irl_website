@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
 import 'package:mouse_irl_website/screens/user_widget_tree.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
