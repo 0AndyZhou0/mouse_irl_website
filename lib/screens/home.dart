@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
-import 'package:firebase_database/firebase_database.dart';  
+import 'package:firebase_database/firebase_database.dart';
+import 'package:mouse_irl_website/database.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,49 +11,90 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _events = [];
-  Map<String, int> _votes = {};
-
-  DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
-  DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
   String uid = Auth().currentUser?.uid ?? '';
-  // FirebaseDatabase database = FirebaseDatabase.instance;
+  List<String> _events = [];
+  Map<String, int> _votes = new Map<String, int>();
 
   void vote(String uid, String event) async {
-    // DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
-    DatabaseReference eventRef = currentVotesRef.child(event);
-    eventRef.update({
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
+    await eventRef.update({
       uid: true,
     });
 
     //TODO: make it increment total
   }
 
+  void initEvents() async {
+    DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
+    final eventsData = (await currentEventsRef.get()).value;
+    List<String> events = [];
+    (eventsData as Map).forEach((key, _) {
+      events.add(key);
+    });
+    setState(() {
+      _events = events;
+    });
+
+    DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
+    final votesData = (await currentVotesRef.get()).value;
+    Map<String, int> votes = {};
+    (votesData as Map).forEach((event, voteslist) {
+      votes[event] = (voteslist as Map).length-1;
+    });
+    setState(() {
+      _votes = votes;
+    });
+  }
+  
   @override
   void initState() {
     super.initState();
+
+    // initEvents();
+
+    DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
     currentEventsRef.onValue.listen((DatabaseEvent event) {
-      final data = event.snapshot.value ?? {};
+      var data = event.snapshot.value ?? {};
       List<String> events = [];
       (data as Map).forEach((key, _) {
         events.add(key);
       });
-      setState(() {
-        _events = events;
-      });
+      if (mounted){
+        setState(() {
+          _events = events;
+        });
+      }
     });
 
+    DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
     currentVotesRef.onValue.listen((DatabaseEvent event) {
-      final data = event.snapshot.value;
+      var data = event.snapshot.value;
       Map<String, int> votes = {};
       (data as Map).forEach((event, voteslist) {
-        votes[event] = (voteslist as Map)['total'];
+        votes[event] = (voteslist as Map).length-1;
       });
-      setState(() {
-        _votes = votes;
-      });
+      if (mounted){
+        setState(() {
+          _votes = votes;
+        });
+      }
     });
+
+    //TODO: make it update based on children added and removed
+
+    // currentVotesRef.onChildAdded.listen((vote) {
+    //   if (vote.snapshot.exists) {
+    //     String event = vote.snapshot.key!;
+    //     int totalVotes = (vote.snapshot.value as Map).length - 1;
+    //     _votes[event] = totalVotes;
+    //   }
+    // });
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
   String convertToTime(DateTime time) {
     String weekday = 'Unknown';
@@ -140,14 +182,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget voteButton(String event) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
-      ),
-      onPressed: () {
-        vote(uid, event);
-      },
-      child: Text('Vote for $event'),
+    return Column(
+      children: [
+        Text('$event: ${_votes[event]}'),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+          ),
+          onPressed: () {
+            vote(uid, event);
+          },
+          child: Text('Vote for $event'),
+        ),
+      ],
     );
   }
 
