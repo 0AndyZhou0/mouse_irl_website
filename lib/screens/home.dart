@@ -24,17 +24,20 @@ class _HomePageState extends State<HomePage> {
       uid: true,
     });
 
-    //TODO: make it actually do anything practical
+    //TODO: make it increment total
   }
 
   @override
   void initState() {
     super.initState();
     currentEventsRef.onValue.listen((DatabaseEvent event) {
-      final data = event.snapshot.value;
-      print('update $data');
+      final data = event.snapshot.value ?? {};
+      List<String> keys = [];
+      (data as Map).forEach((key, _) {
+        keys.add(key);
+      });
       setState(() {
-        _events.add(data.toString());
+        _events = keys;
       });
     });
 
@@ -71,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   color: Theme.of(context).colorScheme.tertiary,
                   child: TextButton(
                     onPressed: () {
-                      vote(uid, 'event1');
+                      vote(uid, 'Bocchi');
                     },
                     child: const Text('Vote'),
                   ),
