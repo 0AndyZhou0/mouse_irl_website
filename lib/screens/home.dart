@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> _events = [];
-  Object? _votes;
+  Map<String, int> _votes = {};
 
   DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
   DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
@@ -32,20 +32,29 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     currentEventsRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value ?? {};
-      List<String> keys = [];
+      List<String> events = [];
       (data as Map).forEach((key, _) {
-        keys.add(key);
+        events.add(key);
       });
       setState(() {
-        _events = keys;
+        _events = events;
       });
     });
 
     currentVotesRef.onValue.listen((DatabaseEvent event) {
       final data = event.snapshot.value;
-      print('update $data');
+      Map<String, int> votes = {};
+      (data as Map).forEach((event, voteslist) {
+        (voteslist as Map).forEach((vote, value) {
+          if (vote == 'total') {
+            String name = event;
+            int total = value;
+            votes[name] = total;
+          }
+        });
+      });
       setState(() {
-        _votes = data;
+        _votes = votes;
       });
     });
   }
