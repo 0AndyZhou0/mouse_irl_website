@@ -1,40 +1,77 @@
 {
   "project_info": {
-    "project_number": "694809189982",
-    "project_id": "mouseirlwebsitefirebase",
-    "storage_bucket": "mouseirlwebsitefirebase.appspot.com"
+    "project_number": "889428493541",
+    "firebase_url": "https://mouseirl-default-rtdb.firebaseio.com",
+    "project_id": "mouseirl",
+    "storage_bucket": "mouseirl.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:694809189982:android:c1026f97f9ff4b99101ecf",
+        "mobilesdk_app_id": "1:889428493541:android:b45023b0e97fcdcf40800c",
         "android_client_info": {
           "package_name": "com.example.mouse_irl_website"
         }
       },
       "oauth_client": [
         {
-          "client_id": "694809189982-nugn2pk1fl0d2dnobaslvdfo2qkvbknk.apps.googleusercontent.com",
+          "client_id": "889428493541-lcfp3knnv9hac4mh0lse4h3p3fbi9m0e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBD66SeccJ2ZBYlFDYrkpmvLMwBVO1KrTw"
+          "current_key": "AIzaSyAsQif9VHw9DMatUm_LsUfkm7WriACskag"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "694809189982-nugn2pk1fl0d2dnobaslvdfo2qkvbknk.apps.googleusercontent.com",
+              "client_id": "889428493541-lcfp3knnv9hac4mh0lse4h3p3fbi9m0e.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "694809189982-f4kb9s4p0eaq2337b3au54m26gbr454t.apps.googleusercontent.com",
+              "client_id": "889428493541-inuj4gigum39n8ro8nf8iv7oa3mq3jgm.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.mouseIrlWebsite.RunnerTests"
+                "bundle_id": "com.example.myApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889428493541:android:6fd56f271cc884e940800c",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889428493541-lcfp3knnv9hac4mh0lse4h3p3fbi9m0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsQif9VHw9DMatUm_LsUfkm7WriACskag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "889428493541-lcfp3knnv9hac4mh0lse4h3p3fbi9m0e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "889428493541-inuj4gigum39n8ro8nf8iv7oa3mq3jgm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myApp.RunnerTests"
               }
             }
           ]

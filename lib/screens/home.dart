@@ -19,7 +19,8 @@ class _HomePageState extends State<HomePage> {
   // FirebaseDatabase database = FirebaseDatabase.instance;
 
   void vote(String uid, String event) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
+    // DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
+    DatabaseReference eventRef = currentVotesRef.child(event);
     eventRef.update({
       uid: true,
     });
@@ -45,13 +46,7 @@ class _HomePageState extends State<HomePage> {
       final data = event.snapshot.value;
       Map<String, int> votes = {};
       (data as Map).forEach((event, voteslist) {
-        (voteslist as Map).forEach((vote, value) {
-          if (vote == 'total') {
-            String name = event;
-            int total = value;
-            votes[name] = total;
-          }
-        });
+        votes[event] = (voteslist as Map)['total'];
       });
       setState(() {
         _votes = votes;
@@ -131,19 +126,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget eventView(String event, DateTime time) {
-    return Center(
-      child: Container(
-        height: 300,
-        width: double.infinity,
-        color: Theme.of(context).colorScheme.primary,
-        child: Text(
-          '$event\n${convertToTime(time)}',
-          style: const TextStyle(
-            fontSize: 50,
-            color: Colors.white,
-          ),
+    return Container(
+      width: double.infinity,
+      color: Theme.of(context).colorScheme.primary,
+      child: Text(
+        '$event\n${convertToTime(time)}',
+        style: const TextStyle(
+          fontSize: 50,
+          color: Colors.white,
         ),
       ),
+    );
+  }
+
+  Widget voteButton(String event) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+      ),
+      onPressed: () {
+        vote(uid, event);
+      },
+      child: Text('Vote for $event'),
     );
   }
 
@@ -160,25 +164,28 @@ class _HomePageState extends State<HomePage> {
             return Column(
               children: [
                 eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)),
+                Container(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: double.infinity,
+                  child: const Text(
+                    style: TextStyle(
+                      fontSize: 50,
+                      color: Colors.black,
+                    ),
+                    'The time above is made up',
+                  ),
+                ),
                 // Container(
                 //   height: 200,
                 //   width: double.infinity,
                 //   color: Theme.of(context).colorScheme.primary,
                 //   child: Text('Test ${_events.toString()} $_votes'),
                 // ),
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  color: Theme.of(context).colorScheme.tertiary,
-                  child: TextButton(
-                    onPressed: () {
-                      vote(uid, 'Bocchi');
-                    },
-                    child: const Text('Vote'),
-                  ),
-                ),
               ],
             );
+          }
+          if (index <= _events.length && uid != '') {
+            return voteButton(_events[index-1]);
           }
           return Container(
             height: 200,
