@@ -156,16 +156,16 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          if (index == 0) {
+          if (index == 0 && uid != '') {
             return Column(
               children: [
                 eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)),
-                Container(
-                  height: 200,
-                  width: double.infinity,
-                  color: Theme.of(context).colorScheme.primary,
-                  child: Text('Test ${_events.toString()} $_votes'),
-                ),
+                // Container(
+                //   height: 200,
+                //   width: double.infinity,
+                //   color: Theme.of(context).colorScheme.primary,
+                //   child: Text('Test ${_events.toString()} $_votes'),
+                // ),
                 Container(
                   height: 200,
                   width: double.infinity,
