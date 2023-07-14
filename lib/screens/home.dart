@@ -59,6 +59,94 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  String convertToTime(DateTime time) {
+    String weekday = 'Unknown';
+    switch (time.weekday) {
+      case 1:
+        weekday = 'Monday';
+        break;
+      case 2:
+        weekday = 'Tuesday';
+        break;
+      case 3:
+        weekday = 'Wednesday';
+        break;
+      case 4:
+        weekday = 'Thursday';
+        break;
+      case 5:
+        weekday = 'Friday';
+        break;
+      case 6:
+        weekday = 'Saturday';
+        break;
+      case 7:
+        weekday = 'Sunday';
+        break;
+      default:
+        break;
+    }
+    String month = 'Unknown';
+    switch (time.month) {
+      case 1:
+        month = 'January';
+        break;
+      case 2:
+        month = 'Febuary';
+        break;
+      case 3:
+        month = 'March';
+        break;
+      case 4:
+        month = 'April';
+        break;
+      case 5:
+        month = 'May';
+        break;
+      case 6:
+        month = 'June';
+        break;
+      case 7:
+        month = 'July';
+        break;
+      case 8:
+        month = 'August';
+        break;
+      case 9:
+        month = 'September';
+        break;
+      case 10:
+        month = 'October';
+        break;
+      case 11:
+        month = 'November';
+        break;
+      case 12:
+        month = 'December';
+        break;
+      default:
+        break;
+    }
+    return '$weekday, $month ${time.day}\n${time.hour}:${time.minute} ${time.timeZoneName}';
+  }
+
+  Widget eventView(String event, DateTime time) {
+    return Center(
+      child: Container(
+        height: 300,
+        width: double.infinity,
+        color: Theme.of(context).colorScheme.primary,
+        child: Text(
+          '$event\n${convertToTime(time)}',
+          style: const TextStyle(
+            fontSize: 50,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +159,7 @@ class _HomePageState extends State<HomePage> {
           if (index == 0) {
             return Column(
               children: [
+                eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)),
                 Container(
                   height: 200,
                   width: double.infinity,
