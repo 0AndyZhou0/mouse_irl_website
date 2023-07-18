@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -8,9 +9,15 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-Future<List<String>> getEvents(DateTime day) async {
-  
-  return await <String>['hi'];
+void getEvents(ValueNotifier<List<String>> events, DateTime datetime) async {
+  final ref = FirebaseDatabase.instance.ref('Events/${datetime.toString().substring(0, 10)}/event');
+  // print(datetime.toString().substring(0, 10));
+  final event = await ref.once(DatabaseEventType.value);
+  List<String> newEvents = [];
+  if (event.snapshot.value != null){
+    newEvents.add(event.snapshot.value.toString());
+  }
+  events.value = newEvents;
 }
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -38,10 +45,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 if (!isSameDay(_selectedDay, selectedDay)){
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
-                  _selectedEvents.value = <String>["test1", "test2", "test3"];
-                  if (selectedDay.month != DateTime.july) {
-                    _selectedEvents.value = <String>["test1"];
-                  }
+                  getEvents(_selectedEvents, _selectedDay!);
                 }
               });
             },
@@ -63,7 +67,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: EdgeInsets.all(8.0),
+                      margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(8.0),
