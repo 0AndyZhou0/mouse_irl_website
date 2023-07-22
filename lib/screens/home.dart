@@ -154,11 +154,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget eventView(String event, DateTime time) {
+    // TODO: make parse datetime in the future
+    String mostVotedTime = '';
+    _timesVotes.forEach((key, value) {
+      if (mostVotedTime == '') {
+        mostVotedTime = key;
+      } else if (value > _timesVotes[mostVotedTime]!) {
+        mostVotedTime = key;
+      }
+    });
+
+    var localTime = DateTime.utc(2023, 7, 21, int.parse(mostVotedTime), 0).toLocal();
+    var localTimeStr = DateFormat('hh:mm a').format(localTime);
+
+    String mostVotedDay = '';
+    _eventVotes.forEach((key, value) {
+      if (mostVotedDay == '') {
+        mostVotedDay = key;
+      } else if (value > _eventVotes[mostVotedDay]!) {
+        mostVotedDay = key;
+      }
+    });
+
     return Container(
       width: double.infinity,
       color: Theme.of(context).colorScheme.primary,
       child: Text(
-        '$event\n${convertToTime(time)}',
+        '$event\n$mostVotedDay, $localTimeStr',
         style: const TextStyle(
           fontSize: 50,
           color: Colors.white,
@@ -169,13 +191,6 @@ class _HomePageState extends State<HomePage> {
 
   void voteEvent(String uid, String event) async {
     DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
-    await eventRef.update({
-      uid: true,
-    });
-  }
-
-  void voteTime(String uid, String time) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
     await eventRef.update({
       uid: true,
     });
@@ -200,9 +215,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void voteTime(String uid, String time) async {
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
+    await eventRef.update({
+      uid: true,
+    });
+  }
+
   Widget voteTimesButton(String time) {
-    var utcTime = DateTime.utc(2023, 7, 21, int.parse(time), 0);
-    var localTime = utcTime.toLocal();
+    // TODO: make parse datetime in the future
+    var localTime = DateTime.utc(2023, 7, 21, int.parse(time), 0).toLocal();
     var localTimeStr = DateFormat('hh:mm a').format(localTime);
     var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
     return Row(
@@ -236,17 +258,7 @@ class _HomePageState extends State<HomePage> {
             return Column(
               children: [
                 eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)),
-                Container(
-                  color: Theme.of(context).colorScheme.secondary,
-                  width: double.infinity,
-                  child: const Text(
-                    style: TextStyle(
-                      fontSize: 50,
-                      color: Colors.black,
-                    ),
-                    'The time above is in the past',
-                  ),
-                ),
+                const SizedBox(height: 10,),
               ],
             );
           }
