@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
+  DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Events');
   
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
@@ -33,6 +33,35 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
+  }
+
+  void insertDatetime(DateTime datetime) {
+    DatabaseReference datetimeRef = FirebaseDatabase.instance.ref('Events');
+    String date = datetime.toString().substring(0, 10);
+    String time = datetime.toString().substring(11, 16);
+    datetimeRef.update({
+      date: {
+        'time': time,
+        'event': 'Bocchi',
+      },
+    });
+}
+
+  Widget datetimeButton() {
+    return Column(
+      children: [
+        const Text('insert time'),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+          ),
+          onPressed: () {
+            insertDatetime(DateTime.now());
+          },
+          child: const Text('insert time'),
+        ),
+      ],
+    );
   }
 
   String convertToTime(DateTime time) {
@@ -121,7 +150,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void vote(String uid, String event) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
       uid: true,
     });
