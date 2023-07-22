@@ -20,6 +20,8 @@ dependencies:
   firebase_auth: ^4.6.3
   firebase_database: ^10.2.3
 
+  intl: ^0.18.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

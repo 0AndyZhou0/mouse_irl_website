@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,17 +11,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Events');
+  DatabaseReference currentEventsVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Events');
+  DatabaseReference currentTimesVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Times');
   
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
-  Map<String, int> _votes = {};
+  List<String> _times = [];
+  Map<String, int> _eventVotes = {};
+  Map<String, int> _timesVotes = {};
 
   @override
   void initState() {
     super.initState();
 
-    currentVotesRef.onValue.listen((DatabaseEvent event) {
+    currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
       if (mounted){
         var data = event.snapshot.value;
         Map<String, int> votes = {};
@@ -29,7 +33,21 @@ class _HomePageState extends State<HomePage> {
         });
         setState(() {
           _events = votes.keys.toList();
-          _votes = votes;
+          _eventVotes = votes;
+        });
+      }
+    });
+    
+    currentTimesVotesRef.onValue.listen((DatabaseEvent event) {
+      if (mounted){
+        var data = event.snapshot.value;
+        Map<String, int> times = {};
+        (data as Map).forEach((time, voteslist) {
+          times[time] = (voteslist as Map).length-1;
+        });
+        setState(() {
+          _times = times.keys.toList();
+          _timesVotes = times;
         });
       }
     });
@@ -149,25 +167,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void vote(String uid, String event) async {
+  void voteEvent(String uid, String event) async {
     DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
       uid: true,
     });
   }
 
-  Widget voteButton(String event) {
-    return Column(
+  void voteTime(String uid, String time) async {
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
+    await eventRef.update({
+      uid: true,
+    });
+  }
+
+  Widget voteEventsButton(String event) {
+    return Row(
       children: [
-        Text('$event: ${_votes[event]}'),
+        const SizedBox(width: 10,),
+        Text('$event: ${_eventVotes[event]}'),
+        const SizedBox(width: 10,),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.tertiary,
           ),
           onPressed: () {
-            vote(uid, event);
+            voteEvent(uid, event);
           },
           child: Text('Vote for $event'),
+        ),
+      ],
+    );
+  }
+
+  Widget voteTimesButton(String time) {
+    var utcTime = DateTime.utc(2023, 7, 21, int.parse(time), 0);
+    var localTime = utcTime.toLocal();
+    var localTimeStr = DateFormat('hh:mm a').format(localTime);
+    var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
+    return Row(
+      children: [
+        const SizedBox(width: 10,),
+        Text('$localTimeStr - $localendTimeStr: ${_timesVotes[time]}'),
+        const SizedBox(width: 10,),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
+          ),
+          onPressed: () {
+            voteTime(uid, time);
+          },
+          child: Text('Vote for $localTimeStr - $localendTimeStr'),
         ),
       ],
     );
@@ -201,7 +251,20 @@ class _HomePageState extends State<HomePage> {
             );
           }
           if (index <= _events.length && uid != '') {
-            return voteButton(_events[index-1]);
+            return Column(
+              children: [
+                voteEventsButton(_events[index-1]),
+                const SizedBox(height: 10,),
+              ],
+            );
+          }
+          if (index < _times.length + _events.length && uid != '') {
+            return Column(
+              children: [
+                voteTimesButton(_times[index-_events.length-1]),
+                const SizedBox(height: 10,),
+              ],
+            );
           }
           return Container(
             height: 200,
