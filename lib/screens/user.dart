@@ -1,7 +1,7 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
+import 'package:mouse_irl_website/database.dart';
 import 'package:mouse_irl_website/screens/admin.dart';
 
 class UserPage extends StatefulWidget {
@@ -43,14 +43,8 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Future<bool> isAdmin(String uid) async {
-    final ref = FirebaseDatabase.instance.ref('admins');
-    final event = await ref.once(DatabaseEventType.value);
-    return (event.snapshot.value as List).contains(uid);
-  }
-
   Future<Widget> get _adminPageButton async {
-    if (await isAdmin(user!.uid)) {
+    if (await Database().isAdmin(user!.uid)) {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: const Size.fromHeight(50),

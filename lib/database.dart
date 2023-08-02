@@ -4,6 +4,12 @@ class Database {
   final DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
   final DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
 
+  Future<bool> isAdmin(String uid) async {
+    final ref = FirebaseDatabase.instance.ref('admins');
+    final event = await ref.once(DatabaseEventType.value);
+    return (event.snapshot.value as List).contains(uid);
+  }
+
   void voteEvent(String uid, String event) async {
     // DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
     DatabaseReference eventRef = currentVotesRef.child(event);
