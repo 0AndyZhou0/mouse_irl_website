@@ -1,11 +1,10 @@
-import 'package:mouse_irl_website/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class Database {
   final DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
   final DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
 
-  void vote(String uid, String event) async {
+  void voteEvent(String uid, String event) async {
     // DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/$event');
     DatabaseReference eventRef = currentVotesRef.child(event);
     await eventRef.update({
@@ -13,6 +12,14 @@ class Database {
     });
 
     //TODO: make it increment total
+  }
+
+  void voteTime(String uid, String time) async {
+    //TODO: make it store in UTC datetime
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
+    await eventRef.update({
+      uid: true,
+    });
   }
 
   Future<Map<String, int>> getVotes() async {
