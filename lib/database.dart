@@ -1,7 +1,7 @@
 import 'package:mouse_irl_website/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class RealtimeDatabaseService {
+class Database {
   final DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
   final DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
 
@@ -22,5 +22,15 @@ class RealtimeDatabaseService {
       votes[event] = (voteslist as Map).length-1;
     });
     return votes;
+  }
+
+  void addEvent(String event) async {
+    print(event);
+    DatabaseReference eventRef = currentVotesRef.child('Events');
+    await eventRef.update({
+      event: {
+        'exists': true
+      }
+    });
   }
 }

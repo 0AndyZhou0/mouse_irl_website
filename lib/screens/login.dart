@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: title,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
         title: _title(),
       ),
       body: ListView(
-        padding: EdgeInsets.all(40.0),
+        padding: const EdgeInsets.all(40.0),
         children: [
           SizedBox(
             height: 200,
