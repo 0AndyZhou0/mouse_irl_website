@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
         var data = event.snapshot.value;
         Map<String, int> votes = {};
         (data as Map).forEach((event, voteslist) {
+          if (voteslist == null) {return;}
           votes[event] = (voteslist as Map).length-1;
         });
         setState(() {
@@ -43,6 +44,7 @@ class _HomePageState extends State<HomePage> {
         var data = event.snapshot.value;
         Map<String, int> times = {};
         (data as Map).forEach((time, voteslist) {
+          if (voteslist == null) {return;}
           times[time] = (voteslist as Map).length-1;
         });
         setState(() {
