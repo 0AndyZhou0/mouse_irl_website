@@ -45,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDVyY4Wb1oe84bqJaxEGJ6lFrcI4Imy4Fs',
-    appId: '1:889428493541:web:dbb913e169d2ef5440800c',
+    appId: '1:889428493541:web:5a952eb19fe539ba40800c',
     messagingSenderId: '889428493541',
     projectId: 'mouseirl',
     authDomain: 'mouseirl.firebaseapp.com',
@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAsQif9VHw9DMatUm_LsUfkm7WriACskag',
-    appId: '1:889428493541:android:b45023b0e97fcdcf40800c',
+    appId: '1:889428493541:android:0b68245c1680cc8540800c',
     messagingSenderId: '889428493541',
     projectId: 'mouseirl',
     databaseURL: 'https://mouseirl-default-rtdb.firebaseio.com',
@@ -64,22 +64,24 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAXDU1tE_uuH0WhMLak063UCKszaSywz3g',
-    appId: '1:889428493541:ios:23e8f00347d601cf40800c',
+    appId: '1:889428493541:ios:42d5693e1cdacf0e40800c',
     messagingSenderId: '889428493541',
     projectId: 'mouseirl',
     databaseURL: 'https://mouseirl-default-rtdb.firebaseio.com',
     storageBucket: 'mouseirl.appspot.com',
+    androidClientId: '889428493541-n5nbn1kurnjrrvjaku4sc819sjudvg0f.apps.googleusercontent.com',
     iosClientId: '889428493541-u1klj81gn9ak6u6j17b4rdbo4mjccgcl.apps.googleusercontent.com',
     iosBundleId: 'com.example.mouseIrlWebsite',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAXDU1tE_uuH0WhMLak063UCKszaSywz3g',
-    appId: '1:889428493541:ios:fca6c5ea219ebfee40800c',
+    appId: '1:889428493541:ios:8499711c43a117e840800c',
     messagingSenderId: '889428493541',
     projectId: 'mouseirl',
     databaseURL: 'https://mouseirl-default-rtdb.firebaseio.com',
     storageBucket: 'mouseirl.appspot.com',
+    androidClientId: '889428493541-n5nbn1kurnjrrvjaku4sc819sjudvg0f.apps.googleusercontent.com',
     iosClientId: '889428493541-fv26l3lj19igtnon0imh3d6a5aoioetf.apps.googleusercontent.com',
     iosBundleId: 'com.example.mouseIrlWebsite.RunnerTests',
   );
