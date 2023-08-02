@@ -16,7 +16,6 @@ class _AdminPageState extends State<AdminPage> {
   
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
-  List<String> _times = [];
 
   @override
   void initState() {
@@ -27,6 +26,7 @@ class _AdminPageState extends State<AdminPage> {
         var data = event.snapshot.value;
         Map<String, int> votes = {};
         (data as Map).forEach((event, voteslist) {
+          if (voteslist == null) {return;}
           votes[event] = (voteslist as Map).length-1;
         });
         setState(() {
@@ -34,27 +34,45 @@ class _AdminPageState extends State<AdminPage> {
         });
       }
     });
-    
-    currentTimesVotesRef.onValue.listen((DatabaseEvent event) {
-      if (mounted){
-        var data = event.snapshot.value;
-        Map<String, int> times = {};
-        (data as Map).forEach((time, voteslist) {
-          times[time] = (voteslist as Map).length-1;
-        });
-        setState(() {
-          _times = times.keys.toList();
-        });
-      }
-    });
   }
 
-  Widget checkLists() {
-    return Column(
-      children: [
-        Text('Events: $_events'),
-        Text('Times: $_times'),
-      ],
+  Widget removeEvent(String event) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Text(event),
+          const Expanded(
+            child: SizedBox()
+          ),
+          SizedBox(
+            width: 90,
+            child: ElevatedButton(
+              onPressed: () {
+                currentEventsVotesRef.child(event).remove();
+              },
+              child: const Text('delete'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listOfEvents() {
+    if (_events.isEmpty) {
+      return const Center(
+        child: Text('No events',),
+      );
+    }
+    return ListView.builder(
+      itemCount: _events.length,
+      itemBuilder: (BuildContext context, int index) {
+        if(_events.isEmpty) {
+          return const Text('No events');
+        }
+        return removeEvent(_events[index]);
+      },
     );
   }
 
@@ -64,13 +82,7 @@ class _AdminPageState extends State<AdminPage> {
       appBar: AppBar(
         title: const Text('Edit Events'),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            checkLists(),
-          ],
-        ),
-      ),
+      body: listOfEvents(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
