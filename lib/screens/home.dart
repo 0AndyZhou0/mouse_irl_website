@@ -155,21 +155,25 @@ class _HomePageState extends State<HomePage> {
 
   Widget eventView(String event, DateTime time) {
     // TODO: make parse datetime in the future
-    String mostVotedTime = '';
+    String? mostVotedTime;
     _timesVotes.forEach((key, value) {
-      if (mostVotedTime == '') {
+      if (mostVotedTime == null) {
         mostVotedTime = key;
       } else if (value > _timesVotes[mostVotedTime]!) {
         mostVotedTime = key;
       }
     });
 
-    var localTime = DateTime.utc(2023, 7, 21, int.parse(mostVotedTime), 0).toLocal();
+    if (mostVotedTime == null) {
+      return Container();
+    }
+
+    var localTime = DateTime.utc(2023, 7, 21, int.parse(mostVotedTime!), 0).toLocal();
     var localTimeStr = DateFormat('hh:mm a').format(localTime);
 
-    String mostVotedDay = '';
+    String? mostVotedDay;
     _eventVotes.forEach((key, value) {
-      if (mostVotedDay == '') {
+      if (mostVotedDay == null) {
         mostVotedDay = key;
       } else if (value > _eventVotes[mostVotedDay]!) {
         mostVotedDay = key;
@@ -270,7 +274,7 @@ class _HomePageState extends State<HomePage> {
               ],
             );
           }
-          if (index < _times.length + _events.length && uid != '') {
+          if (index <= _times.length + _events.length && uid != '') {
             return Column(
               children: [
                 voteTimesButton(_times[index-_events.length-1]),
