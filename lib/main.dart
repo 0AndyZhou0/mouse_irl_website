@@ -136,15 +136,18 @@ class _MyAppState extends State<MyApp> {
     return BottomNavigationBar(
         items: const <BottomNavigationBarItem> [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.mouse),
+            icon: Icon(Icons.mouse_outlined),
+            activeIcon: Icon(Icons.mouse),
             label: 'Mouse',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
             label: 'User',
           ),
         ],
