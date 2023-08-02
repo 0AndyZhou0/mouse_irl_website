@@ -37,6 +37,7 @@ class Database {
   }
 
   void addEvent(String event) async {
+    if (event == '') {return;}
     DatabaseReference eventRef = currentVotesRef.child('Events');
     await eventRef.update({
       event: {

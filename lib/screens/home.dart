@@ -28,11 +28,13 @@ class _HomePageState extends State<HomePage> {
       if (mounted){
         var data = event.snapshot.value;
         Map<String, int> eventVotes = {};
-        if (data == null) {return;}
-        (data as Map).forEach((event, voteslist) {
-          if (voteslist == null) {return;}
-          eventVotes[event] = (voteslist as Map).length-1;
-        });
+        if (data != null) {
+          (data as Map).forEach((event, voteslist) {
+            if (voteslist != null) {
+              eventVotes[event] = (voteslist as Map).length-1;  
+            }
+          });
+        }
         setState(() {
           _events = eventVotes.keys.toList();
           _eventVotes = eventVotes;
@@ -44,12 +46,13 @@ class _HomePageState extends State<HomePage> {
       if (mounted){
         var data = time.snapshot.value;
         Map<String, int> timeVotes = {};
-        if (data == null) {return;}
-        (data as Map).forEach((time, voteslist) {
-          if (voteslist == null) {return;}
-          if (DateTime.tryParse(time) == null) {return;}
-          timeVotes[time] = (voteslist as Map).length-1;
-        });
+        if (data != null) {
+          (data as Map).forEach((time, voteslist) {
+            if (voteslist != null && DateTime.tryParse(time) != null) {
+              timeVotes[time] = (voteslist as Map).length-1;
+            }
+          });
+        }
         setState(() {
           _times = timeVotes.keys.toList();
           _timesVotes = timeVotes;

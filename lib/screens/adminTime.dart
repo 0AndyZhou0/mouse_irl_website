@@ -24,12 +24,13 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       if (mounted){
         var data = time.snapshot.value;
         List<String> times = [];
-        if (data == null) {return;}
-        (data as Map).forEach((time, voteslist) {
-          if (voteslist == null) {return;}
-          if (DateTime.tryParse(time) == null) {return;}
-          times.add(time);
-        });
+        if (data != null) {
+          (data as Map).forEach((time, voteslist) {
+            if (voteslist != null && DateTime.tryParse(time) != null) {
+              times.add(time);
+            }
+          });
+        }
         setState(() {
           _times = times;
         });

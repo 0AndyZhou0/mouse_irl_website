@@ -23,14 +23,16 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
     currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
       if (mounted){
         var data = event.snapshot.value;
-        Map<String, int> votes = {};
-        if (data == null) {return;}
-        (data as Map).forEach((event, voteslist) {
-          if (voteslist == null) {return;}
-          votes[event] = (voteslist as Map).length-1;
-        });
+        List<String> eventVotes = [];
+        if (data != null) {
+          (data as Map).forEach((event, voteslist) {
+            if (voteslist != null) {
+              eventVotes.add(event);
+            }
+          });
+        }
         setState(() {
-          _events = votes.keys.toList();
+          _events = eventVotes;
         });
       }
     });
