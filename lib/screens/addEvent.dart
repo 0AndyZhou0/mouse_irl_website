@@ -36,6 +36,7 @@ class _AddEventState extends State<AddEvent> {
     return Column(
       children: [
         _entryField("Event Name", _eventNameController),
+        const SizedBox(height: 20,),
         addEventButton(),
       ],
     );

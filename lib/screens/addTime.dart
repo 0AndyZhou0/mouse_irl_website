@@ -127,6 +127,7 @@ class _AddTimeState extends State<AddTime> {
     return Column(
       children: [
         basicDateTimeField(),
+        const SizedBox(height: 20,),
         addDateButton(),
       ],
     );
