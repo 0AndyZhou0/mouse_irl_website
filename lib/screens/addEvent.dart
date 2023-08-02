@@ -10,7 +10,8 @@ class AddEvent extends StatefulWidget {
 
 TextEditingController _eventNameController = TextEditingController();
 
-Widget _entryField(String title, TextEditingController controller) {
+class _AddEventState extends State<AddEvent> {
+  Widget _entryField(String title, TextEditingController controller) {
     return TextField(
       obscureText: title == 'Password' ? true : false,
       controller: controller,
@@ -21,18 +22,21 @@ Widget _entryField(String title, TextEditingController controller) {
     );
   }
 
-class _AddEventState extends State<AddEvent> {
   Widget addEventButton() {
+    return ElevatedButton(
+        child: const Text('Add Event'),
+        onPressed: () {
+          Database().addEvent(_eventNameController.text);
+          Navigator.pop(context);
+        }
+      );
+  }
+
+  Widget addEventForm() {
     return Column(
       children: [
         _entryField("Event Name", _eventNameController),
-        ElevatedButton(
-          child: const Text('Add Event'),
-          onPressed: () {
-            Database().addEvent(_eventNameController.text);
-            Navigator.pop(context);
-          }
-        ),
+        addEventButton(),
       ],
     );
   }
@@ -45,7 +49,7 @@ class _AddEventState extends State<AddEvent> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: addEventButton(),
+        child: addEventForm(),
       ),
     );
   }

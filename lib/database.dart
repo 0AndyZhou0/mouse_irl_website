@@ -1,7 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class Database {
-  final DatabaseReference currentEventsRef = FirebaseDatabase.instance.ref('CurrentEvents');
   final DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
 
   Future<bool> isAdmin(String uid) async {
@@ -38,10 +37,19 @@ class Database {
   }
 
   void addEvent(String event) async {
-    print(event);
     DatabaseReference eventRef = currentVotesRef.child('Events');
     await eventRef.update({
       event: {
+        'exists': true
+      }
+    });
+  }
+
+  void addTime(DateTime dateTime) async {
+    String dateTimeUTCWithoutSeconds = '${dateTime.toUtc().toString().substring(0, 16)}Z';
+    DatabaseReference eventRef = currentVotesRef.child('Times');
+    await eventRef.update({
+      dateTimeUTCWithoutSeconds: {
         'exists': true
       }
     });

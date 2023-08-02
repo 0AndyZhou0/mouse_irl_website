@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:mouse_irl_website/screens/addEvent.dart';
 
-class AdminPage extends StatefulWidget {
-  const AdminPage({super.key});
+class EventsAdminPage extends StatefulWidget {
+  const EventsAdminPage({super.key});
 
   @override
-  State<AdminPage> createState() => _AdminPageState();
+  State<EventsAdminPage> createState() => _EventsAdminPageState();
 }
 
-class _AdminPageState extends State<AdminPage> {
+class _EventsAdminPageState extends State<EventsAdminPage> {
   DatabaseReference currentEventsVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Events');
-  DatabaseReference currentTimesVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Times');
   
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
@@ -25,6 +24,7 @@ class _AdminPageState extends State<AdminPage> {
       if (mounted){
         var data = event.snapshot.value;
         Map<String, int> votes = {};
+        if (data == null) {return;}
         (data as Map).forEach((event, voteslist) {
           if (voteslist == null) {return;}
           votes[event] = (voteslist as Map).length-1;
@@ -68,9 +68,6 @@ class _AdminPageState extends State<AdminPage> {
     return ListView.builder(
       itemCount: _events.length,
       itemBuilder: (BuildContext context, int index) {
-        if(_events.isEmpty) {
-          return const Text('No events');
-        }
         return removeEvent(_events[index]);
       },
     );

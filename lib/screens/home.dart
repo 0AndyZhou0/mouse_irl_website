@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   List<String> _events = [];
   List<String> _times = [];
   Map<String, int> _eventVotes = {};
-  Map<String, int> _timesVotes = {};
+  Map<String, int> _timesVotes = {}; //in UTC time
 
   @override
   void initState() {
@@ -27,61 +27,35 @@ class _HomePageState extends State<HomePage> {
     currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
       if (mounted){
         var data = event.snapshot.value;
-        Map<String, int> votes = {};
+        Map<String, int> eventVotes = {};
+        if (data == null) {return;}
         (data as Map).forEach((event, voteslist) {
           if (voteslist == null) {return;}
-          votes[event] = (voteslist as Map).length-1;
+          eventVotes[event] = (voteslist as Map).length-1;
         });
         setState(() {
-          _events = votes.keys.toList();
-          _eventVotes = votes;
+          _events = eventVotes.keys.toList();
+          _eventVotes = eventVotes;
         });
       }
     });
     
-    currentTimesVotesRef.onValue.listen((DatabaseEvent event) {
+    currentTimesVotesRef.onValue.listen((DatabaseEvent time) {
       if (mounted){
-        var data = event.snapshot.value;
-        Map<String, int> times = {};
+        var data = time.snapshot.value;
+        Map<String, int> timeVotes = {};
+        if (data == null) {return;}
         (data as Map).forEach((time, voteslist) {
           if (voteslist == null) {return;}
-          times[time] = (voteslist as Map).length-1;
+          if (DateTime.tryParse(time) == null) {return;}
+          timeVotes[time] = (voteslist as Map).length-1;
         });
         setState(() {
-          _times = times.keys.toList();
-          _timesVotes = times;
+          _times = timeVotes.keys.toList();
+          _timesVotes = timeVotes;
         });
       }
     });
-  }
-
-  void insertDatetime(DateTime datetime) {
-    DatabaseReference datetimeRef = FirebaseDatabase.instance.ref('Events');
-    String date = datetime.toString().substring(0, 10);
-    String time = datetime.toString().substring(11, 16);
-    datetimeRef.update({
-      date: {
-        'time': time,
-        'event': 'Bocchi',
-      },
-    });
-}
-
-  Widget datetimeButton() {
-    return Column(
-      children: [
-        const Text('insert time'),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
-          ),
-          onPressed: () {
-            insertDatetime(DateTime.now());
-          },
-          child: const Text('insert time'),
-        ),
-      ],
-    );
   }
 
   String convertToTime(DateTime time) {
@@ -160,9 +134,9 @@ class _HomePageState extends State<HomePage> {
     String? mostVotedTime;
     _timesVotes.forEach((key, value) {
       if (mostVotedTime == null) {
-        mostVotedTime = key;
+        mostVotedTime = key.toString();
       } else if (value > _timesVotes[mostVotedTime]!) {
-        mostVotedTime = key;
+        mostVotedTime = key.toString();
       }
     });
 
@@ -170,23 +144,26 @@ class _HomePageState extends State<HomePage> {
       return Container();
     }
 
-    var localTime = DateTime.utc(2023, 7, 21, int.parse(mostVotedTime!), 0).toLocal();
-    var localTimeStr = DateFormat('hh:mm a').format(localTime);
+    var localTime = DateTime.parse(mostVotedTime!).toLocal();
 
-    String? mostVotedDay;
+    String? mostVotedEvent;
     _eventVotes.forEach((key, value) {
-      if (mostVotedDay == null) {
-        mostVotedDay = key;
-      } else if (value > _eventVotes[mostVotedDay]!) {
-        mostVotedDay = key;
+      if (mostVotedEvent == null) {
+        mostVotedEvent = key;
+      } else if (value > _eventVotes[mostVotedEvent]!) {
+        mostVotedEvent = key;
       }
     });
+
+    if (mostVotedEvent == null) {
+      return Container();
+    }
 
     return Container(
       width: double.infinity,
       color: Theme.of(context).colorScheme.primary,
       child: Text(
-        '$event\n$mostVotedDay, $localTimeStr',
+        '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
         style: const TextStyle(
           fontSize: 50,
           color: Colors.white,
@@ -203,51 +180,56 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget voteEventsButton(String event) {
-    return Row(
-      children: [
-        const SizedBox(width: 10,),
-        Text('$event: ${_eventVotes[event]}'),
-        const SizedBox(width: 10,),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Text('$event: ${_eventVotes[event]}'),
+          const Expanded(child: SizedBox()),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+            ),
+            onPressed: () {
+              voteEvent(uid, event);
+            },
+            child: Text('Vote for $event'),
           ),
-          onPressed: () {
-            voteEvent(uid, event);
-          },
-          child: Text('Vote for $event'),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  void voteTime(String uid, String time) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
+  void voteTime(String uid, String dateTime) async {
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
       uid: true,
     });
   }
 
-  Widget voteTimesButton(String time) {
+  Widget voteTimesButton(String dateTime) {
     // TODO: make parse datetime in the future
-    var localTime = DateTime.utc(2023, 7, 21, int.parse(time), 0).toLocal();
-    var localTimeStr = DateFormat('hh:mm a').format(localTime);
-    var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
-    return Row(
-      children: [
-        const SizedBox(width: 10,),
-        Text('$localTimeStr - $localendTimeStr: ${_timesVotes[time]}'),
-        const SizedBox(width: 10,),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
+    var localTime = DateTime.parse(dateTime).toLocal();
+    var localTimeStr = DateFormat('E, MMMM d, hh:mm a').format(localTime);
+    // var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
+          Text('$localTimeStr: ${_timesVotes[dateTime]}'),
+          const Expanded(child: SizedBox()),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+            ),
+            onPressed: () {
+              voteTime(uid, dateTime);
+            },
+            child: const Text('Vote for Time'),
           ),
-          onPressed: () {
-            voteTime(uid, time);
-          },
-          child: Text('Vote for $localTimeStr - $localendTimeStr'),
-        ),
-      ],
+        ],
+      ),
     );
   }
   

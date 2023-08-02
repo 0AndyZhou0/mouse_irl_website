@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:mouse_irl_website/database.dart';
-import 'package:mouse_irl_website/screens/admin.dart';
+import 'package:mouse_irl_website/screens/adminEvent.dart';
+import 'package:mouse_irl_website/screens/adminTime.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});
@@ -43,7 +44,7 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Future<Widget> get _adminPageButton async {
+  Future<Widget> get _adminEventsPageButton async {
     if (await Database().isAdmin(user!.uid)) {
       return ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -56,10 +57,32 @@ class _UserPageState extends State<UserPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const AdminPage()),
+            MaterialPageRoute(builder: (context) => const EventsAdminPage()),
           );
         },
         child: const Text('Edit Events'),
+      );
+    }
+    return Container();
+  }
+
+  Future<Widget> get _adminTimesPageButton async {
+    if (await Database().isAdmin(user!.uid)) {
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size.fromHeight(50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          foregroundColor: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TimesAdminPage()),
+          );
+        },
+        child: const Text('Edit Times'),
       );
     }
     return Container();
@@ -80,7 +103,18 @@ class _UserPageState extends State<UserPage> {
             _userEmail(),
             const SizedBox(height: 20),
             FutureBuilder(
-              future: _adminPageButton,
+              future: _adminEventsPageButton,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data as Widget;
+                } else {
+                  return const SizedBox(height: 0);
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            FutureBuilder(
+              future: _adminTimesPageButton,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data as Widget;
