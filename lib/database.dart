@@ -5,8 +5,12 @@ class Database {
 
   Future<bool> isAdmin(String uid) async {
     final ref = FirebaseDatabase.instance.ref('admins');
-    final event = await ref.once(DatabaseEventType.value);
-    return (event.snapshot.value as Map).containsKey(uid);
+    try {
+      final event = await ref.once(DatabaseEventType.value);
+      return (event.snapshot.value as Map).containsKey(uid);
+    } catch (e) {
+      return false;
+    }
   }
 
   void voteEvent(String uid, String event) async {
