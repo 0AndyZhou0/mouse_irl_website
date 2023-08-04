@@ -3,6 +3,12 @@ import 'package:firebase_database/firebase_database.dart';
 class Database {
   final DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
 
+  Map<String, int> _eventVotes = {};
+  Map<String, int> _timesVotes = {}; //in UTC time
+
+  Map<String, int> get eventVotes => _eventVotes;
+  Map<String, int> get timesVotes => _timesVotes;
+
   Future<bool> isAdmin(String uid) async {
     final ref = FirebaseDatabase.instance.ref('admins');
     try {
