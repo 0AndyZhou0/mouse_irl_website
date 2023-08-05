@@ -32,12 +32,6 @@ class _MyAppState extends State<MyApp> {
     UserWidgetTree(),
   ];
 
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,68 +58,8 @@ class _MyAppState extends State<MyApp> {
           error: Colors.red,
           onError: Colors.black,
         ),
-        // textTheme: const TextTheme(
-        //   bodyMedium: TextStyle(
-        //     color: Color.fromARGB(255, 214, 202, 152),
-        //   )
-        // ),
       ),
       home: Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('Title!!!!!:3'),
-        //   foregroundColor: Colors.white,
-        // ),
-        
-        // drawer: Builder(
-        //   builder: (context) {
-        //     return Drawer(
-        //       child: ListView(
-        //         padding: EdgeInsets.zero,
-        //         children: [
-        //           UserAccountsDrawerHeader(
-        //             accountName: const Text('Mouse'),
-        //             accountEmail: const Text('Mouse@Mouse.Mouse'),
-        //             currentAccountPicture: CircleAvatar(
-        //               backgroundColor: Theme.of(context).colorScheme.background,
-        //               child: const Text('M'),
-        //             ),
-        //             // onDetailsPressed: () {
-        //             //   _onItemTapped(2);
-        //             //   Navigator.pop(context);
-        //             // },
-        //           ),
-        //           ListTile(
-        //             leading: const Icon(Icons.home),
-        //             title: const Text('Home'),
-        //             selected: _selectedIndex == 0,
-        //             onTap: () {
-        //               _onItemTapped(0);
-        //               Navigator.pop(context);
-        //             },
-        //           ),
-        //           ListTile(
-        //             leading: const Icon(Icons.calendar_today),
-        //             title: const Text('Calendar'),
-        //             selected: _selectedIndex == 1,
-        //             onTap: () {
-        //               _onItemTapped(1);
-        //               Navigator.pop(context);
-        //             },
-        //           ),
-        //           ListTile(
-        //             leading: const Icon(Icons.person),
-        //             title: const Text('User'),
-        //             selected: _selectedIndex == 2,
-        //             onTap: () {
-        //               _onItemTapped(2);
-        //               Navigator.pop(context);
-        //             },
-        //           ),
-        //         ],
-        //       )
-        //     );
-        //   }
-        // ),
         body: _pages.elementAt(_selectedIndex),
         bottomNavigationBar: bottomNavBar(),
       )

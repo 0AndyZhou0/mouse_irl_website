@@ -108,9 +108,10 @@ class _UserPageState extends State<UserPage> {
                 if (snapshot.hasData) {
                   return snapshot.data as Widget;
                 } else {
-                  return const SizedBox(height: 0);
+                  return const SizedBox.shrink();
                 }
               },
+              initialData: const Text('Loading :3'),
             ),
             const SizedBox(height: 20),
             FutureBuilder(
@@ -119,7 +120,7 @@ class _UserPageState extends State<UserPage> {
                 if (snapshot.hasData) {
                   return snapshot.data as Widget;
                 } else {
-                  return const SizedBox(height: 0);
+                  return const SizedBox.shrink();
                 }
               },
             ),

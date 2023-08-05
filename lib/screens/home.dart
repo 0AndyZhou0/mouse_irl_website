@@ -183,22 +183,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget voteEventsButton(String event) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Text('$event: ${_eventVotes[event]}'),
-          const Expanded(child: SizedBox()),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Row(
+          children: [
+            Text('$event: ${_eventVotes[event]}'),
+            const Expanded(child: SizedBox()),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.tertiary,
+              ),
+              onPressed: () {
+                voteEvent(uid, event);
+              },
+              child: const Text('Vote'),
             ),
-            onPressed: () {
-              voteEvent(uid, event);
-            },
-            child: Text('Vote for $event'),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -211,27 +213,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget voteTimesButton(String dateTime) {
-    // TODO: make parse datetime in the future
     var localTime = DateTime.parse(dateTime).toLocal();
     var localTimeStr = DateFormat('E, MMMM d, hh:mm a').format(localTime);
     // var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
-          Text('$localTimeStr: ${_timesVotes[dateTime]}'),
-          const Expanded(child: SizedBox()),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Row(
+          children: [
+            // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
+            Text('$localTimeStr: ${_timesVotes[dateTime]}'),
+            const Expanded(child: SizedBox()),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.tertiary,
+              ),
+              onPressed: () {
+                voteTime(uid, dateTime);
+              },
+              child: const Text('Vote for Time'),
             ),
-            onPressed: () {
-              voteTime(uid, dateTime);
-            },
-            child: const Text('Vote for Time'),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -246,32 +249,27 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         itemBuilder: (context, index) {
           if (index == 0) {
-            return Column(
-              children: [
-                eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)),
-                const SizedBox(height: 10,),
-              ],
+            return Container(
+              color: Colors.purple[(((index%16)-7).abs()+1)*100],
+              child: eventView('Bocchi', DateTime(2023, 7, 15, 9, 43))
             );
           }
           if (index <= _events.length && uid != '') {
-            return Column(
-              children: [
-                voteEventsButton(_events[index-1]),
-                const SizedBox(height: 10,),
-              ],
+            return Container(
+              color: Colors.purple[(((index%16)-7).abs()+1)*100],
+              child: voteEventsButton(_events[index-1])
             );
           }
           if (index <= _times.length + _events.length && uid != '') {
-            return Column(
-              children: [
-                voteTimesButton(_times[index-_events.length-1]),
-                const SizedBox(height: 10,),
-              ],
+            return Container(
+              color: Colors.purple[(((index%16)-7).abs()+1)*100],
+              child: voteTimesButton(_times[index-_events.length-1])
             );
           }
           return Container(
-            height: 200,
-            color: Colors.purple[(((index%16)-7).abs()+1)*100]
+            height: 50,
+            color: Colors.purple[(((index%16)-7).abs()+1)*100],
+            child: const Text(':3'),
           );
         },
       )
