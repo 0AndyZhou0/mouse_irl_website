@@ -19,6 +19,8 @@ class _HomePageState extends State<HomePage> {
   List<String> _times = [];
   Map<String, int> _eventVotes = {};
   Map<String, int> _timesVotes = {}; //in UTC time
+  List<String> _eventsVoted = [];
+  List<String> _timesVoted = [];
 
   @override
   void initState() {
@@ -28,16 +30,23 @@ class _HomePageState extends State<HomePage> {
       if (mounted){
         var data = event.snapshot.value;
         Map<String, int> eventVotes = {};
+        List<String> eventsVoted = [];
         if (data != null) {
           (data as Map).forEach((event, voteslist) {
             if (voteslist != null) {
-              eventVotes[event] = (voteslist as Map).length-1;  
+              (voteslist as Map).forEach((id, vote) {
+                if (vote == true && id == uid) {
+                  eventsVoted.add(event);
+                }
+              });
+              eventVotes[event] = voteslist.length-1;  
             }
           });
         }
         setState(() {
           _events = eventVotes.keys.toList();
           _eventVotes = eventVotes;
+          _eventsVoted = eventsVoted;
         });
       }
     });
@@ -46,16 +55,23 @@ class _HomePageState extends State<HomePage> {
       if (mounted){
         var data = time.snapshot.value;
         Map<String, int> timeVotes = {};
+        List<String> timesVoted = [];
         if (data != null) {
           (data as Map).forEach((time, voteslist) {
             if (voteslist != null && DateTime.tryParse(time) != null) {
-              timeVotes[time] = (voteslist as Map).length-1;
+              (voteslist as Map).forEach((id, vote) {
+                if (vote == true && id == uid) {
+                  timesVoted.add(time);
+                }
+              });
+              timeVotes[time] = voteslist.length-1;
             }
           });
         }
         setState(() {
           _times = timeVotes.keys.toList();
           _timesVotes = timeVotes;
+          _timesVoted = timesVoted;
         });
       }
     });
@@ -133,7 +149,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget eventView(String event, DateTime time) {
-    // TODO: make parse datetime in the future
     String? mostVotedTime;
     _timesVotes.forEach((key, value) {
       if (mostVotedTime == null) {
@@ -182,7 +197,38 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void unvoteEvent(String uid, String event) async {
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
+    await eventRef.update({
+      uid: null,
+    });
+  }
+
   Widget voteEventsButton(String event) {
+    // Unvote Card
+    if (_eventsVoted.contains(event)) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Row(
+            children: [
+              Text('$event: ${_eventVotes[event]}'),
+              const Expanded(child: SizedBox()),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                ),
+                onPressed: () {
+                  unvoteEvent(uid, event);
+                },
+                child: const Text('Voted'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    //Vote Card
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -197,7 +243,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 voteEvent(uid, event);
               },
-              child: const Text('Vote'),
+              child: const Text('Vote for Event'),
             ),
           ],
         ),
@@ -212,10 +258,42 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void unvoteTime(String uid, String dateTime) async {
+    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
+    await eventRef.update({
+      uid: null,
+    });
+  }
+
   Widget voteTimesButton(String dateTime) {
     var localTime = DateTime.parse(dateTime).toLocal();
     var localTimeStr = DateFormat('E, MMMM d, hh:mm a').format(localTime);
     // var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
+
+    // Unvote Card
+    if (_timesVoted.contains(dateTime)) {
+      return Card(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Row(
+            children: [
+              // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
+              Text('$localTimeStr: ${_timesVotes[dateTime]}'),
+              const Expanded(child: SizedBox()),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.tertiary,
+                ),
+                onPressed: () {
+                  unvoteTime(uid, dateTime);
+                },
+                child: const Text('Voted'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
