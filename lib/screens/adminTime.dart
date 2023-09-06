@@ -47,17 +47,48 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           const Expanded(
             child: SizedBox()
           ),
-          SizedBox(
-            width: 90,
-            child: ElevatedButton(
-              onPressed: () {
-                currentTimesVotesRef.child(time).remove();
-              },
-              child: const Text('delete'),
+          ElevatedButton(
+            onPressed: () {
+              currentTimesVotesRef.child(time).set({
+                'exists': 'true',
+              });
+            },
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
+              child: Text(
+                'clear',
+                style: TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10,),
+          ElevatedButton(
+            onPressed: () {
+              currentTimesVotesRef.child(time).remove();
+            },
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
+              child: Text(
+                'delete',
+                style: TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget removeAllTimes() {
+    return ElevatedButton(
+      onPressed: () {
+        currentTimesVotesRef.remove();
+      },
+      child: const Text('Delete All Times'),
     );
   }
 
@@ -80,6 +111,9 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Times'),
+        actions: [
+          removeAllTimes(),
+        ],
       ),
       body: listOfEvents(),
       floatingActionButton: FloatingActionButton.extended(

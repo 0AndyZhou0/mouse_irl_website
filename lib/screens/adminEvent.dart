@@ -111,6 +111,9 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Events'),
+        actions: [
+          removeAllEvents(),
+        ],
       ),
       body: listOfEvents(),
       floatingActionButton: FloatingActionButton.extended(
