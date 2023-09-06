@@ -47,17 +47,48 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
           const Expanded(
             child: SizedBox()
           ),
-          SizedBox(
-            width: 90,
-            child: ElevatedButton(
-              onPressed: () {
-                currentEventsVotesRef.child(event).remove();
-              },
-              child: const Text('delete'),
+          ElevatedButton(
+            onPressed: () {
+              currentEventsVotesRef.child(event).set({
+                'exists': 'true',
+              });
+            },
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
+              child: Text(
+                'clear',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width:10),
+          ElevatedButton(
+            onPressed: () {
+              currentEventsVotesRef.child(event).remove();
+            },
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
+              child: Text(
+                'delete',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget removeAllEvents() {
+    return ElevatedButton(
+      onPressed: () {
+        currentEventsVotesRef.remove();
+      },
+      child: const Text('Delete All Events'),
     );
   }
 
