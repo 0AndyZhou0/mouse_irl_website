@@ -1,0 +1,32 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "admins": {
+      ".read": "root.child('admins').hasChild(auth.uid)",
+    },
+    "CurrentVotes": {
+      ".read": true,
+      "Events": {
+        ".write": "root.child('admins').hasChild(auth.uid)",
+        "$event": {
+          "$uid": {
+            ".write": "auth.uid == $uid",
+          },
+        },
+      },
+      "Times": {
+        ".write": "root.child('admins').hasChild(auth.uid)",
+        "$event": {
+          "$uid": {
+            ".write": "auth.uid == $uid",
+          },
+        },
+      },
+    },
+    "Events": {
+      ".read": true,
+      ".write": "auth.uid == root.child('owner').val()",
+    },
+  }
+}
