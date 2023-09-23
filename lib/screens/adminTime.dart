@@ -27,7 +27,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
         if (data != null) {
           (data as Map).forEach((time, voteslist) {
             if (voteslist != null && DateTime.tryParse(time) != null) {
-              print(time);
               times.add(time);
             }
           });
@@ -39,7 +38,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     });
   }
 
-  Widget timeItem(String time) {
+  Widget removeTime(String time) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -93,49 +92,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     );
   }
 
-  void advanceTime(String time) {
-    String newTime = "${DateTime.parse(time).add(const Duration(days: 7)).toString().substring(0, 16)}Z";
-    currentTimesVotesRef.child(time).remove();
-    currentTimesVotesRef.update({
-      newTime: {
-        'exists': true
-      }
-    });
-  }
-
-  Widget advanceAllTimes() {
-    return FloatingActionButton.extended(
-      heroTag: "advanceAllTimes",
-      onPressed: () {
-        showDialog(
-          context: context, 
-          // TODO: Allow user to adjust time advance
-          builder: (context) => AlertDialog(
-            title: const Text("Advance All Times \nBy 1 Week?"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                }, 
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () {
-                  for (String time in _times) {
-                    advanceTime(time);
-                  }
-                  Navigator.pop(context);
-                }, 
-                child: const Text("Confirm"),
-              ),
-            ],
-          ),
-        );
-      },
-      label: const Text('Advance Times'),
-    );
-  }
-
   Widget listOfEvents() {
     if (_times.isEmpty) {
       return const Center(
@@ -145,8 +101,48 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     return ListView.builder(
       itemCount: _times.length,
       itemBuilder: (BuildContext context, int index) {
-        return timeItem(_times[index]);
+        return removeTime(_times[index]);
       },
+    );
+  }
+
+  void advanceTimes() {
+    for (String time in _times) {
+      String timeNextWeek = "${DateTime.parse(time).add(const Duration(days: 7)).toString().substring(0, 16)}Z";
+      currentTimesVotesRef.child(time).remove();
+      currentTimesVotesRef.update({
+          timeNextWeek: {
+            'exists': 'true',
+          },
+      });
+    }
+  }
+
+  Widget advanceAllTimes() {
+    return FloatingActionButton.extended(
+      heroTag: "advanceAllTimes",
+      onPressed: () => showDialog(
+        context: context, 
+        // TODO: Allow user to adjust time advanced
+        builder: (context) => AlertDialog(
+          title: const Text('Advance All Times'),
+          content: const Text('Are you sure you want to advance all times by one week?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context), 
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                advanceTimes();
+                Navigator.pop(context);
+              }, 
+              child: const Text('Confirm'),
+            ),
+          ],
+        )
+      ),
+      label: const Text('Advance Times'),
     );
   }
 
