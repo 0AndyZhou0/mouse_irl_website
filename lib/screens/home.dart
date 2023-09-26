@@ -11,12 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DatabaseReference currentEventsVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Events');
-  DatabaseReference currentTimesVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Times');
-  
+  DatabaseReference currentEventsVotesRef =
+      FirebaseDatabase.instance.ref('CurrentVotes/Events');
+  DatabaseReference currentTimesVotesRef =
+      FirebaseDatabase.instance.ref('CurrentVotes/Times');
+
   String uid = Auth().currentUser?.uid ?? '';
-  List<String> _events = [];
-  List<String> _times = [];
   Map<String, int> _eventVotes = {};
   Map<String, int> _timesVotes = {}; //in UTC time
   List<String> _eventsVoted = [];
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
-      if (mounted){
+      if (mounted) {
         var data = event.snapshot.value;
         Map<String, int> eventVotes = {};
         List<String> eventsVoted = [];
@@ -39,20 +39,19 @@ class _HomePageState extends State<HomePage> {
                   eventsVoted.add(event);
                 }
               });
-              eventVotes[event] = voteslist.length-1;  
+              eventVotes[event] = voteslist.length - 1;
             }
           });
         }
         setState(() {
-          _events = eventVotes.keys.toList();
           _eventVotes = eventVotes;
           _eventsVoted = eventsVoted;
         });
       }
     });
-    
+
     currentTimesVotesRef.onValue.listen((DatabaseEvent time) {
-      if (mounted){
+      if (mounted) {
         var data = time.snapshot.value;
         Map<String, int> timeVotes = {};
         List<String> timesVoted = [];
@@ -64,12 +63,11 @@ class _HomePageState extends State<HomePage> {
                   timesVoted.add(time);
                 }
               });
-              timeVotes[time] = voteslist.length-1;
+              timeVotes[time] = voteslist.length - 1;
             }
           });
         }
         setState(() {
-          _times = timeVotes.keys.toList();
           _timesVotes = timeVotes;
           _timesVoted = timesVoted;
         });
@@ -191,14 +189,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void voteEvent(String uid, String event) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
+    DatabaseReference eventRef =
+        FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
       uid: true,
     });
   }
 
   void unvoteEvent(String uid, String event) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
+    DatabaseReference eventRef =
+        FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
       uid: null,
     });
@@ -252,14 +252,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void voteTime(String uid, String dateTime) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
+    DatabaseReference eventRef =
+        FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
       uid: true,
     });
   }
 
   void unvoteTime(String uid, String dateTime) async {
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
+    DatabaseReference eventRef =
+        FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
       uid: null,
     });
@@ -316,7 +318,35 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  
+
+  Widget singleColumn() {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          return Container(
+              color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
+              child: eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)));
+        }
+        if (index <= _eventVotes.length && uid != '') {
+          return Container(
+              color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
+              child: voteEventsButton(_eventVotes.keys.elementAt(index - 1)));
+        }
+        if (index <= _timesVotes.length + _eventVotes.length && uid != '') {
+          return Container(
+              color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
+              child: voteTimesButton(
+                  _timesVotes.keys.elementAt(index - _eventVotes.length - 1)));
+        }
+        return Container(
+          height: 50,
+          color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
+          child: const Text(':3'),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -324,33 +354,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home Page'),
         foregroundColor: Colors.white,
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Container(
-              color: Colors.purple[(((index%16)-7).abs()+1)*100],
-              child: eventView('Bocchi', DateTime(2023, 7, 15, 9, 43))
-            );
-          }
-          if (index <= _events.length && uid != '') {
-            return Container(
-              color: Colors.purple[(((index%16)-7).abs()+1)*100],
-              child: voteEventsButton(_events[index-1])
-            );
-          }
-          if (index <= _times.length + _events.length && uid != '') {
-            return Container(
-              color: Colors.purple[(((index%16)-7).abs()+1)*100],
-              child: voteTimesButton(_times[index-_events.length-1])
-            );
-          }
-          return Container(
-            height: 50,
-            color: Colors.purple[(((index%16)-7).abs()+1)*100],
-            child: const Text(':3'),
-          );
-        },
-      )
+      body: singleColumn(),
     );
   }
 }

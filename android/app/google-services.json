@@ -41,50 +41,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:889428493541:android:82ec05961bf4719a40800c",
-        "android_client_info": {
-          "package_name": "com.methods.mouseirl"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "889428493541-qq0io79k78sb5i5g676sk5gsfj7f32d1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.methods.mouseirl",
-            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
-          }
-        },
-        {
-          "client_id": "889428493541-fl1vujt660s9hk5btj7ts4hhsimfsq8j.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAsQif9VHw9DMatUm_LsUfkm7WriACskag"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "889428493541-fl1vujt660s9hk5btj7ts4hhsimfsq8j.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "889428493541-ci5lng0o2b18o5dtnun94pgtfeg251hd.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.methods.mouseirl"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"
