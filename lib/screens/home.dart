@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       width: double.infinity,
       color: Theme.of(context).colorScheme.primary,
+      padding: const EdgeInsets.all(8.0),
       child: Text(
         '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
         style: const TextStyle(
@@ -253,6 +254,18 @@ class _HomePageState extends State<HomePage> {
       physics: const ScrollPhysics(),
       children: [
         Container(child: eventView()),
+        Container(
+            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+            height: 40,
+            child: RichText(
+                text: const TextSpan(
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+              text: 'Events',
+            ))),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -262,11 +275,21 @@ class _HomePageState extends State<HomePage> {
               return Container(
                   child: voteEventsButton(_eventVotes.keys.elementAt(index)));
             }
-            return const SizedBox(
-              height: 50,
-              child: Text(':3'),
-            );
+            return const SizedBox.shrink();
           },
+        ),
+        Container(
+          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+          height: 40,
+          child: RichText(
+              text: const TextSpan(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+            text: 'Times',
+          )),
         ),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
@@ -277,10 +300,7 @@ class _HomePageState extends State<HomePage> {
               return Container(
                   child: voteTimesButton(_timesVotes.keys.elementAt(index)));
             }
-            return const SizedBox(
-              height: 50,
-              child: Text(':3'),
-            );
+            return const SizedBox.shrink();
           },
         ),
       ],
