@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
-import 'package:mouse_irl_website/screens/addTime.dart';
+import 'package:mouse_irl_website/screens/add_time.dart';
 
 class TimesAdminPage extends StatefulWidget {
   const TimesAdminPage({super.key});
@@ -11,8 +11,9 @@ class TimesAdminPage extends StatefulWidget {
 }
 
 class _TimesAdminPageState extends State<TimesAdminPage> {
-  DatabaseReference currentTimesVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Times');
-  
+  DatabaseReference currentTimesVotesRef =
+      FirebaseDatabase.instance.ref('CurrentVotes/Times');
+
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _times = [];
 
@@ -21,7 +22,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     super.initState();
 
     currentTimesVotesRef.onValue.listen((DatabaseEvent time) {
-      if (mounted){
+      if (mounted) {
         var data = time.snapshot.value;
         List<String> times = [];
         if (data != null) {
@@ -43,10 +44,8 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          Text(DateTime.parse(time).toLocal().toString().substring(0,16)),
-          const Expanded(
-            child: SizedBox()
-          ),
+          Text(DateTime.parse(time).toLocal().toString().substring(0, 16)),
+          const Expanded(child: SizedBox()),
           ElevatedButton(
             onPressed: () {
               currentTimesVotesRef.child(time).set({
@@ -63,7 +62,9 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
               ),
             ),
           ),
-          const SizedBox(width: 10,),
+          const SizedBox(
+            width: 10,
+          ),
           ElevatedButton(
             onPressed: () {
               currentTimesVotesRef.child(time).remove();
@@ -95,7 +96,9 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
   Widget listOfEvents() {
     if (_times.isEmpty) {
       return const Center(
-        child: Text('No times',),
+        child: Text(
+          'No times',
+        ),
       );
     }
     return ListView.builder(
@@ -108,12 +111,13 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
 
   void advanceTimes() {
     for (String time in _times) {
-      String timeNextWeek = "${DateTime.parse(time).add(const Duration(days: 7)).toString().substring(0, 16)}Z";
+      String timeNextWeek =
+          "${DateTime.parse(time).add(const Duration(days: 7)).toString().substring(0, 16)}Z";
       currentTimesVotesRef.child(time).remove();
       currentTimesVotesRef.update({
-          timeNextWeek: {
-            'exists': 'true',
-          },
+        timeNextWeek: {
+          'exists': 'true',
+        },
       });
     }
   }
@@ -122,26 +126,26 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     return FloatingActionButton.extended(
       heroTag: "advanceAllTimes",
       onPressed: () => showDialog(
-        context: context, 
-        // TODO: Allow user to adjust time advanced
-        builder: (context) => AlertDialog(
-          title: const Text('Advance All Times'),
-          content: const Text('Are you sure you want to advance all times by one week?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context), 
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                advanceTimes();
-                Navigator.pop(context);
-              }, 
-              child: const Text('Confirm'),
-            ),
-          ],
-        )
-      ),
+          context: context,
+          // TODO: Allow user to adjust time advanced
+          builder: (context) => AlertDialog(
+                title: const Text('Advance All Times'),
+                content: const Text(
+                    'Are you sure you want to advance all times by one week?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      advanceTimes();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Confirm'),
+                  ),
+                ],
+              )),
       label: const Text('Advance Times'),
     );
   }
@@ -160,12 +164,14 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           advanceAllTimes(),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           FloatingActionButton.extended(
             heroTag: "addTimePage",
             onPressed: () {
               Navigator.push(
-                context, 
+                context,
                 MaterialPageRoute(builder: (context) => const AddTime()),
               );
             },

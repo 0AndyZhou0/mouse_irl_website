@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:mouse_irl_website/database.dart';
-import 'package:mouse_irl_website/screens/adminEvent.dart';
-import 'package:mouse_irl_website/screens/adminTime.dart';
+import 'package:mouse_irl_website/screens/admin_event.dart';
+import 'package:mouse_irl_website/screens/admin_time.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
-import 'package:mouse_irl_website/screens/addEvent.dart';
+import 'package:mouse_irl_website/screens/add_event.dart';
 
 class EventsAdminPage extends StatefulWidget {
   const EventsAdminPage({super.key});
@@ -11,8 +11,9 @@ class EventsAdminPage extends StatefulWidget {
 }
 
 class _EventsAdminPageState extends State<EventsAdminPage> {
-  DatabaseReference currentEventsVotesRef = FirebaseDatabase.instance.ref('CurrentVotes/Events');
-  
+  DatabaseReference currentEventsVotesRef =
+      FirebaseDatabase.instance.ref('CurrentVotes/Events');
+
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
 
@@ -21,7 +22,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
     super.initState();
 
     currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
-      if (mounted){
+      if (mounted) {
         var data = event.snapshot.value;
         List<String> eventVotes = [];
         if (data != null) {
@@ -44,9 +45,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       child: Row(
         children: [
           Text(event),
-          const Expanded(
-            child: SizedBox()
-          ),
+          const Expanded(child: SizedBox()),
           ElevatedButton(
             onPressed: () {
               currentEventsVotesRef.child(event).set({
@@ -63,7 +62,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
               ),
             ),
           ),
-          const SizedBox(width:10),
+          const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
               currentEventsVotesRef.child(event).remove();
@@ -95,7 +94,9 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
   Widget listOfEvents() {
     if (_events.isEmpty) {
       return const Center(
-        child: Text('No events',),
+        child: Text(
+          'No events',
+        ),
       );
     }
     return ListView.builder(
@@ -119,7 +120,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
-            context, 
+            context,
             MaterialPageRoute(builder: (context) => const AddEvent()),
           );
         },
