@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
     return '$weekday, $month ${time.day}\n${time.hour}:${time.minute} ${time.timeZoneName}';
   }
 
-  Widget eventView(String event, DateTime time) {
+  Widget eventView() {
     String? mostVotedTime;
     _timesVotes.forEach((key, value) {
       if (mostVotedTime == null) {
@@ -320,62 +320,46 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget singleColumn() {
-    return SingleChildScrollView(
+    return ListView(
       physics: const ScrollPhysics(),
-      child: Column(
-        children: [
-          Container(
-              color: Colors.purple,
-              child: eventView('Bocchi', DateTime(2023, 7, 15, 9, 43))),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: _eventVotes.length,
-            itemBuilder: (context, index) {
-              if (index < _eventVotes.length && uid != '') {
-                return Container(
-                    color: Colors.purple[(((index % 16) - 7).abs()) * 100],
-                    child: voteEventsButton(_eventVotes.keys.elementAt(index)));
-              }
+      children: [
+        Container(color: Colors.purple, child: eventView()),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _eventVotes.length,
+          itemBuilder: (context, index) {
+            if (index < _eventVotes.length && uid != '') {
               return Container(
-                height: 50,
-                color: Colors.purple[(((index % 16) - 7).abs()) * 100],
-                child: const Text(':3'),
-              );
-            },
-          ),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: _timesVotes.length,
-            itemBuilder: (context, index) {
-              if (index < _timesVotes.length && uid != '') {
-                return Container(
-                    color: Colors.purple[(((index % 16) - 7).abs()) * 100],
-                    child: voteTimesButton(_timesVotes.keys.elementAt(index)));
-              }
+                  color: Colors.purple[(((index % 16) - 7).abs()) * 100],
+                  child: voteEventsButton(_eventVotes.keys.elementAt(index)));
+            }
+            return Container(
+              height: 50,
+              color: Colors.purple[(((index % 16) - 7).abs()) * 100],
+              child: const Text(':3'),
+            );
+          },
+        ),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _timesVotes.length,
+          itemBuilder: (context, index) {
+            if (index < _timesVotes.length && uid != '') {
               return Container(
-                height: 50,
-                color: Colors.purple[(((index % 16) - 7).abs()) * 100],
-                child: const Text(':3'),
-              );
-            },
-          ),
-        ],
-      ),
+                  color: Colors.purple[(((index % 16) - 7).abs()) * 100],
+                  child: voteTimesButton(_timesVotes.keys.elementAt(index)));
+            }
+            return Container(
+              height: 50,
+              color: Colors.purple[(((index % 16) - 7).abs()) * 100],
+              child: const Text(':3'),
+            );
+          },
+        ),
+      ],
     );
-    // return Column(children: [
-    //   Container(
-    //       color: Colors.purple,
-    //       child: eventView('Bocchi', DateTime(2023, 7, 15, 9, 43))),
-    //   ListView.builder(itemBuilder: (context, index) {
-    //     if (index <= _eventVotes.length && uid != '') {
-    //       return Container(
-    //           color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
-    //           child: voteEventsButton(_eventVotes.keys.elementAt(index - 1)));
-    //     }
-    //   })
-    // ]);
   }
 
   @override
