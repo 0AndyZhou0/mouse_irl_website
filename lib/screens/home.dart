@@ -75,77 +75,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  String convertToTime(DateTime time) {
-    String weekday = 'Unknown';
-    switch (time.weekday) {
-      case 1:
-        weekday = 'Monday';
-        break;
-      case 2:
-        weekday = 'Tuesday';
-        break;
-      case 3:
-        weekday = 'Wednesday';
-        break;
-      case 4:
-        weekday = 'Thursday';
-        break;
-      case 5:
-        weekday = 'Friday';
-        break;
-      case 6:
-        weekday = 'Saturday';
-        break;
-      case 7:
-        weekday = 'Sunday';
-        break;
-      default:
-        break;
-    }
-    String month = 'Unknown';
-    switch (time.month) {
-      case 1:
-        month = 'January';
-        break;
-      case 2:
-        month = 'Febuary';
-        break;
-      case 3:
-        month = 'March';
-        break;
-      case 4:
-        month = 'April';
-        break;
-      case 5:
-        month = 'May';
-        break;
-      case 6:
-        month = 'June';
-        break;
-      case 7:
-        month = 'July';
-        break;
-      case 8:
-        month = 'August';
-        break;
-      case 9:
-        month = 'September';
-        break;
-      case 10:
-        month = 'October';
-        break;
-      case 11:
-        month = 'November';
-        break;
-      case 12:
-        month = 'December';
-        break;
-      default:
-        break;
-    }
-    return '$weekday, $month ${time.day}\n${time.hour}:${time.minute} ${time.timeZoneName}';
-  }
-
   Widget eventView() {
     String? mostVotedTime;
     _timesVotes.forEach((key, value) {
@@ -323,7 +252,7 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       physics: const ScrollPhysics(),
       children: [
-        Container(color: Colors.purple, child: eventView()),
+        Container(child: eventView()),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -331,13 +260,11 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             if (index < _eventVotes.length && uid != '') {
               return Container(
-                  color: Colors.purple[(((index % 16) - 7).abs()) * 100],
                   child: voteEventsButton(_eventVotes.keys.elementAt(index)));
             }
-            return Container(
+            return const SizedBox(
               height: 50,
-              color: Colors.purple[(((index % 16) - 7).abs()) * 100],
-              child: const Text(':3'),
+              child: Text(':3'),
             );
           },
         ),
@@ -348,13 +275,11 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             if (index < _timesVotes.length && uid != '') {
               return Container(
-                  color: Colors.purple[(((index % 16) - 7).abs()) * 100],
                   child: voteTimesButton(_timesVotes.keys.elementAt(index)));
             }
-            return Container(
+            return const SizedBox(
               height: 50,
-              color: Colors.purple[(((index % 16) - 7).abs()) * 100],
-              child: const Text(':3'),
+              child: Text(':3'),
             );
           },
         ),
