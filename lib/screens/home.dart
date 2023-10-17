@@ -75,78 +75,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  String convertToTime(DateTime time) {
-    String weekday = 'Unknown';
-    switch (time.weekday) {
-      case 1:
-        weekday = 'Monday';
-        break;
-      case 2:
-        weekday = 'Tuesday';
-        break;
-      case 3:
-        weekday = 'Wednesday';
-        break;
-      case 4:
-        weekday = 'Thursday';
-        break;
-      case 5:
-        weekday = 'Friday';
-        break;
-      case 6:
-        weekday = 'Saturday';
-        break;
-      case 7:
-        weekday = 'Sunday';
-        break;
-      default:
-        break;
-    }
-    String month = 'Unknown';
-    switch (time.month) {
-      case 1:
-        month = 'January';
-        break;
-      case 2:
-        month = 'Febuary';
-        break;
-      case 3:
-        month = 'March';
-        break;
-      case 4:
-        month = 'April';
-        break;
-      case 5:
-        month = 'May';
-        break;
-      case 6:
-        month = 'June';
-        break;
-      case 7:
-        month = 'July';
-        break;
-      case 8:
-        month = 'August';
-        break;
-      case 9:
-        month = 'September';
-        break;
-      case 10:
-        month = 'October';
-        break;
-      case 11:
-        month = 'November';
-        break;
-      case 12:
-        month = 'December';
-        break;
-      default:
-        break;
-    }
-    return '$weekday, $month ${time.day}\n${time.hour}:${time.minute} ${time.timeZoneName}';
-  }
-
-  Widget eventView(String event, DateTime time) {
+  Widget eventView() {
     String? mostVotedTime;
     _timesVotes.forEach((key, value) {
       if (mostVotedTime == null) {
@@ -178,6 +107,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       width: double.infinity,
       color: Theme.of(context).colorScheme.primary,
+      padding: const EdgeInsets.all(8.0),
       child: Text(
         '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
         style: const TextStyle(
@@ -319,31 +249,105 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget eventVoteList() {
+    return Column(
+      children: [
+        Container(
+            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+            height: 40,
+            child: RichText(
+                text: const TextSpan(
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+              text: 'Events',
+            ))),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _eventVotes.length,
+          itemBuilder: (context, index) {
+            // if (uid == '' && index == 0) {
+            //   return Container(
+            //     padding: const EdgeInsets.only(left: 5.0),
+            //     height: 20,
+            //     child: const Text('Sign in to vote for events!'),
+            //   );
+            // }
+            if (index < _eventVotes.length && uid != '') {
+              return Container(
+                  child: voteEventsButton(_eventVotes.keys.elementAt(index)));
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget timeVoteList() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+          height: 40,
+          child: RichText(
+              text: const TextSpan(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+            text: 'Times',
+          )),
+        ),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _timesVotes.length,
+          itemBuilder: (context, index) {
+            if (index < _timesVotes.length && uid != '') {
+              return Container(
+                  child: voteTimesButton(_timesVotes.keys.elementAt(index)));
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
+    );
+  }
+
   Widget singleColumn() {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Container(
-              color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
-              child: eventView('Bocchi', DateTime(2023, 7, 15, 9, 43)));
-        }
-        if (index <= _eventVotes.length && uid != '') {
-          return Container(
-              color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
-              child: voteEventsButton(_eventVotes.keys.elementAt(index - 1)));
-        }
-        if (index <= _timesVotes.length + _eventVotes.length && uid != '') {
-          return Container(
-              color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
-              child: voteTimesButton(
-                  _timesVotes.keys.elementAt(index - _eventVotes.length - 1)));
-        }
-        return Container(
-          height: 50,
-          color: Colors.purple[(((index % 16) - 7).abs() + 1) * 100],
-          child: const Text(':3'),
-        );
-      },
+    return ListView(
+      physics: const ScrollPhysics(),
+      children: [
+        eventView(),
+        eventVoteList(),
+        timeVoteList(),
+      ],
+    );
+  }
+
+  Widget doubleColumn() {
+    return ListView(
+      children: [
+        eventView(),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: eventVoteList(),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: timeVoteList(),
+            )
+          ],
+        ),
+      ],
     );
   }
 
@@ -354,7 +358,15 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home Page'),
         foregroundColor: Colors.white,
       ),
-      body: singleColumn(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            return doubleColumn();
+          } else {
+            return singleColumn();
+          }
+        },
+      ),
     );
   }
 }
