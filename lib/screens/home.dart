@@ -249,11 +249,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget singleColumn() {
-    return ListView(
-      physics: const ScrollPhysics(),
+  Widget eventVoteList() {
+    return Column(
       children: [
-        Container(child: eventView()),
         Container(
             padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
             height: 40,
@@ -271,6 +269,13 @@ class _HomePageState extends State<HomePage> {
           shrinkWrap: true,
           itemCount: _eventVotes.length,
           itemBuilder: (context, index) {
+            // if (uid == '' && index == 0) {
+            //   return Container(
+            //     padding: const EdgeInsets.only(left: 5.0),
+            //     height: 20,
+            //     child: const Text('Sign in to vote for events!'),
+            //   );
+            // }
             if (index < _eventVotes.length && uid != '') {
               return Container(
                   child: voteEventsButton(_eventVotes.keys.elementAt(index)));
@@ -278,6 +283,13 @@ class _HomePageState extends State<HomePage> {
             return const SizedBox.shrink();
           },
         ),
+      ],
+    );
+  }
+
+  Widget timeVoteList() {
+    return Column(
+      children: [
         Container(
           padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
           height: 40,
@@ -307,6 +319,38 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget singleColumn() {
+    return ListView(
+      physics: const ScrollPhysics(),
+      children: [
+        eventView(),
+        eventVoteList(),
+        timeVoteList(),
+      ],
+    );
+  }
+
+  Widget doubleColumn() {
+    return Column(
+      children: [
+        eventView(),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: eventVoteList(),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: timeVoteList(),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -314,7 +358,8 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home Page'),
         foregroundColor: Colors.white,
       ),
-      body: singleColumn(),
+      // body: singleColumn(),
+      body: doubleColumn(),
     );
   }
 }
