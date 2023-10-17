@@ -331,7 +331,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget doubleColumn() {
-    return Column(
+    return ListView(
       children: [
         eventView(),
         Row(
@@ -358,8 +358,15 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Home Page'),
         foregroundColor: Colors.white,
       ),
-      // body: singleColumn(),
-      body: doubleColumn(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            return doubleColumn();
+          } else {
+            return singleColumn();
+          }
+        },
+      ),
     );
   }
 }
