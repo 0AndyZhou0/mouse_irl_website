@@ -9,12 +9,14 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
+// TODO: Add reminder to violet to use "Need more pp from my osutop" in Feburary before Valentines
 void getEvents(ValueNotifier<List<String>> events, DateTime datetime) async {
-  final ref = FirebaseDatabase.instance.ref('Events/${datetime.toString().substring(0, 10)}/event');
+  final ref = FirebaseDatabase.instance
+      .ref('Events/${datetime.toString().substring(0, 10)}/event');
   // print(datetime.toString().substring(0, 10));
   final event = await ref.once(DatabaseEventType.value);
   List<String> newEvents = [];
-  if (event.snapshot.value != null){
+  if (event.snapshot.value != null) {
     newEvents.add(event.snapshot.value.toString());
   }
   events.value = newEvents;
@@ -40,9 +42,9 @@ class _CalendarPageState extends State<CalendarPage> {
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
             },
-            onDaySelected:(selectedDay, focusedDay) {
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                if (!isSameDay(_selectedDay, selectedDay)){
+                if (!isSameDay(_selectedDay, selectedDay)) {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
                   getEvents(_selectedEvents, _selectedDay!);
