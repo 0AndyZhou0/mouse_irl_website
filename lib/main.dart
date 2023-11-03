@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
+import 'package:mouse_irl_website/screens/subbox.dart';
 import 'package:mouse_irl_website/screens/user_widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -28,7 +29,8 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
   static const List<Widget> _pages = <Widget>[
     HomePage(),
-    CalendarPage(),
+    // CalendarPage(),
+    SubBoxPage(),
     UserWidgetTree(),
   ];
 
