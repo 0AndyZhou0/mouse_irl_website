@@ -1,7 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 
 class Database {
-  final DatabaseReference currentVotesRef = FirebaseDatabase.instance.ref('CurrentVotes');
+  final DatabaseReference currentVotesRef =
+      FirebaseDatabase.instance.ref('CurrentVotes');
 
   Map<String, int> _eventVotes = {};
   Map<String, int> _timesVotes = {}; //in UTC time
@@ -30,8 +31,8 @@ class Database {
   }
 
   void voteTime(String uid, String time) async {
-    //TODO: make it store in UTC datetime
-    DatabaseReference eventRef = FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
+    DatabaseReference eventRef =
+        FirebaseDatabase.instance.ref('CurrentVotes/Times/$time');
     await eventRef.update({
       uid: true,
     });
@@ -41,28 +42,27 @@ class Database {
     final data = await currentVotesRef.once(DatabaseEventType.value);
     Map<String, int> votes = {};
     (data as Map).forEach((event, voteslist) {
-      votes[event] = (voteslist as Map).length-1;
+      votes[event] = (voteslist as Map).length - 1;
     });
     return votes;
   }
 
   void addEvent(String event) async {
-    if (event == '') {return;}
+    if (event == '') {
+      return;
+    }
     DatabaseReference eventRef = currentVotesRef.child('Events');
     await eventRef.update({
-      event: {
-        'exists': true
-      }
+      event: {'exists': true}
     });
   }
 
   void addTime(DateTime dateTime) async {
-    String dateTimeUTCWithoutSeconds = '${dateTime.toUtc().toString().substring(0, 16)}Z';
+    String dateTimeUTCWithoutSeconds =
+        '${dateTime.toUtc().toString().substring(0, 16)}Z';
     DatabaseReference eventRef = currentVotesRef.child('Times');
     await eventRef.update({
-      dateTimeUTCWithoutSeconds: {
-        'exists': true
-      }
+      dateTimeUTCWithoutSeconds: {'exists': true}
     });
   }
 }

@@ -19,11 +19,10 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> signInWithEmailAndPassword() async {
     try {
       await Auth().signInWithEmailAndPassword(
-        email: _emailController.text, 
+        email: _emailController.text,
         password: _passwordController.text,
       );
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
       });
@@ -33,11 +32,10 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
-        email: _emailController.text, 
+        email: _emailController.text,
         password: _passwordController.text,
       );
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
       });
@@ -79,7 +77,9 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onPressed: () {
         // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-        isLogin ? signInWithEmailAndPassword() : createUserWithEmailAndPassword();
+        isLogin
+            ? signInWithEmailAndPassword()
+            : createUserWithEmailAndPassword();
       },
       child: isLogin ? const Text('Login') : const Text('Create Account'),
     );
@@ -96,31 +96,35 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(40.0),
-        children: [
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Image.asset('assets/images/catbot.png'),
-          ),
-          const SizedBox(height: 30,),
-          _entryField('Email', _emailController),
-          const SizedBox(height: 10,),
-          _entryField('Password', _passwordController),
-          _errorMessage(),
-          const SizedBox(height: 30,),
-          _submitButton(),
-          _loginOrRegisterButton(),
-        ],
-      )
-    );
+        appBar: AppBar(
+          title: _title(),
+        ),
+        body: ListView(
+          padding: const EdgeInsets.all(40.0),
+          children: [
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: Image.asset('assets/images/catbot.png'),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            _entryField('Email', _emailController),
+            const SizedBox(
+              height: 10,
+            ),
+            _entryField('Password', _passwordController),
+            _errorMessage(),
+            const SizedBox(
+              height: 30,
+            ),
+            _submitButton(),
+            _loginOrRegisterButton(),
+          ],
+        ));
   }
 }

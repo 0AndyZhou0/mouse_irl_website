@@ -69,8 +69,10 @@ class DefaultFirebaseOptions {
     projectId: 'mouseirl',
     databaseURL: 'https://mouseirl-default-rtdb.firebaseio.com',
     storageBucket: 'mouseirl.appspot.com',
-    androidClientId: '889428493541-n5nbn1kurnjrrvjaku4sc819sjudvg0f.apps.googleusercontent.com',
-    iosClientId: '889428493541-u1klj81gn9ak6u6j17b4rdbo4mjccgcl.apps.googleusercontent.com',
+    androidClientId:
+        '889428493541-n5nbn1kurnjrrvjaku4sc819sjudvg0f.apps.googleusercontent.com',
+    iosClientId:
+        '889428493541-u1klj81gn9ak6u6j17b4rdbo4mjccgcl.apps.googleusercontent.com',
     iosBundleId: 'com.example.mouseIrlWebsite',
   );
 
@@ -81,8 +83,10 @@ class DefaultFirebaseOptions {
     projectId: 'mouseirl',
     databaseURL: 'https://mouseirl-default-rtdb.firebaseio.com',
     storageBucket: 'mouseirl.appspot.com',
-    androidClientId: '889428493541-n5nbn1kurnjrrvjaku4sc819sjudvg0f.apps.googleusercontent.com',
-    iosClientId: '889428493541-fv26l3lj19igtnon0imh3d6a5aoioetf.apps.googleusercontent.com',
+    androidClientId:
+        '889428493541-n5nbn1kurnjrrvjaku4sc819sjudvg0f.apps.googleusercontent.com',
+    iosClientId:
+        '889428493541-fv26l3lj19igtnon0imh3d6a5aoioetf.apps.googleusercontent.com',
     iosBundleId: 'com.example.mouseIrlWebsite.RunnerTests',
   );
 }
