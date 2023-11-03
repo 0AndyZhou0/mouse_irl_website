@@ -28,15 +28,16 @@ class _AddEventState extends State<AddEvent> {
         onPressed: () {
           Database().addEvent(_eventNameController.text);
           Navigator.pop(context);
-        }
-      );
+        });
   }
 
   Widget addEventForm() {
     return Column(
       children: [
         _entryField("Event Name", _eventNameController),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         addEventButton(),
       ],
     );
