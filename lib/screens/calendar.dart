@@ -10,6 +10,10 @@ class CalendarPage extends StatefulWidget {
 }
 
 void getEvents(ValueNotifier<List<String>> events, DateTime datetime) async {
+  if (datetime.year == 2024 && datetime.month == 2 && datetime.day < 14) {
+    events.value = ['TODO: Violet makes card "Need more pp from my osutop"'];
+    return;
+  }
   final ref = FirebaseDatabase.instance
       .ref('Events/${datetime.toString().substring(0, 10)}/event');
   // print(datetime.toString().substring(0, 10));
