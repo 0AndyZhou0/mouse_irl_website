@@ -23,8 +23,8 @@ dependencies:
   intl: ^0.18.1
   datetime_picker_formfield_new: ^2.1.0
   image_picker: ^1.0.4
-  file_picker: ^5.5.0
   firebase_storage: ^11.2.7
+  logger: ^2.0.2+1
 
 dev_dependencies:
   flutter_test:

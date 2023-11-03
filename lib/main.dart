@@ -29,8 +29,8 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
   static const List<Widget> _pages = <Widget>[
     HomePage(),
-    // CalendarPage(),
     SubBoxPage(),
+    CalendarPage(),
     UserWidgetTree(),
   ];
 
@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
 
   BottomNavigationBar bottomNavBar() {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),
@@ -73,6 +74,11 @@ class _MyAppState extends State<MyApp> {
           icon: Icon(Icons.mouse_outlined),
           activeIcon: Icon(Icons.mouse),
           label: 'Mouse',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_month_outlined),
+          activeIcon: Icon(Icons.calendar_month),
+          label: 'Calendar',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
