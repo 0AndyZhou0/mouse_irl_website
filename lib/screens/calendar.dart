@@ -9,19 +9,39 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
+Future<List<String>> insertEvents(List<String> newEvents, String ref) async {
+  final event =
+      await FirebaseDatabase.instance.ref(ref).once(DatabaseEventType.value);
+  if (event.snapshot.value != null) {
+    for (String event in (event.snapshot.value! as List)) {
+      newEvents.add(event.toString());
+    }
+  }
+  return newEvents;
+}
+
 void getEvents(ValueNotifier<List<String>> events, DateTime datetime) async {
   if (datetime.year == 2024 && datetime.month == 2 && datetime.day < 14) {
     events.value = ['TODO: Violet makes card "Need more pp from my osutop"'];
     return;
   }
-  final ref = FirebaseDatabase.instance
-      .ref('Events/${datetime.toString().substring(0, 10)}/event');
-  // print(datetime.toString().substring(0, 10));
-  final event = await ref.once(DatabaseEventType.value);
+
   List<String> newEvents = [];
-  if (event.snapshot.value != null) {
-    newEvents.add(event.snapshot.value.toString());
-  }
+
+  //single events
+  await insertEvents(
+      newEvents, 'SingleEvents/${datetime.toString().substring(0, 10)}');
+
+  //yearly events
+  await insertEvents(
+      newEvents, 'YearlyEvents/${datetime.toString().substring(5, 10)}');
+
+  //monthly events
+  await insertEvents(newEvents, 'MonthlyEvents/${datetime.day}');
+
+  //weekly events
+  await insertEvents(newEvents, 'WeeklyEvents/${datetime.weekday}');
+
   events.value = newEvents;
 }
 
