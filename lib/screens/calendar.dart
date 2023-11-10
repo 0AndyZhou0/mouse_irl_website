@@ -9,40 +9,26 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-Map<String, Map<String, List<String>>> events = {
-  'singleEvents': {},
-  'yearlyEvents': {},
-  'monthlyEvents': {},
-  'weeklyEvents': {},
-};
-// singleEvents datetime(yyyy-mm-dd) : events
-// yearlyEvents datetime(mm-dd) : events
-// monthlyEvents day(int) : events
-// weeklyEvents weekday(int) : events
+Map<String, List<String>> singleEvents = {}; // datetime(yyyy-mm-dd) : events
+Map<String, List<String>> yearlyEvents = {}; // datetime(mm-dd) : events
+Map<String, List<String>> monthlyEvents = {}; // day(int) : events
+Map<String, List<String>> weeklyEvents = {}; // weekday(int) : events
 
-Future<Map<String, List<String>>> getEventsFromDatabaseBasedOnRef(
-    String ref) async {
+void getEventsFromDatabaseBasedOnRef(
+    Map<String, List<String>> eventsMap, String ref) async {
   final events = await FirebaseDatabase.instance.ref(ref).get();
-  Map<String, List<String>> eventsMap = {};
   if (events.exists) {
-    (events.value! as Map).forEach((key, value) {
+    (events.value as Map).forEach((key, value) {
       eventsMap[key] = (value as List).cast<String>();
     });
   }
-  return eventsMap;
 }
 
-Future<Map<String, Map<String, List<String>>>> getEventsFromDatabase() async {
-  Map<String, Map<String, List<String>>> eventsFromDatabase = {};
-  eventsFromDatabase['singleEvents'] =
-      await getEventsFromDatabaseBasedOnRef('SingleEvents');
-  eventsFromDatabase['yearlyEvents'] =
-      await getEventsFromDatabaseBasedOnRef('YearlyEvents');
-  eventsFromDatabase['monthlyEvents'] =
-      await getEventsFromDatabaseBasedOnRef('MonthlyEvents');
-  eventsFromDatabase['weeklyEvents'] =
-      await getEventsFromDatabaseBasedOnRef('WeeklyEvents');
-  return eventsFromDatabase;
+void getEventsFromDatabase() async {
+  getEventsFromDatabaseBasedOnRef(singleEvents, '/SingleEvents/');
+  getEventsFromDatabaseBasedOnRef(yearlyEvents, '/YearlyEvents/');
+  getEventsFromDatabaseBasedOnRef(monthlyEvents, '/MonthlyEvents/');
+  getEventsFromDatabaseBasedOnRef(weeklyEvents, '/WeeklyEvents/');
 }
 
 void updateEvents(ValueNotifier<List<String>> events, DateTime datetime) {
@@ -57,27 +43,23 @@ List<String> getEvents(DateTime datetime) {
   }
 
   //single events
-  if (events['singleEvents']!
-      .containsKey(datetime.toString().substring(0, 10))) {
-    newEvents
-        .addAll(events['singleEvents']![datetime.toString().substring(0, 10)]!);
+  if (singleEvents.containsKey(datetime.toString().substring(0, 10))) {
+    newEvents.addAll(singleEvents[datetime.toString().substring(0, 10)]!);
   }
 
   //yearly events
-  if (events['yearlyEvents']!
-      .containsKey(datetime.toString().substring(5, 10))) {
-    newEvents
-        .addAll(events['yearlyEvents']![datetime.toString().substring(5, 10)]!);
+  if (yearlyEvents.containsKey(datetime.toString().substring(5, 10))) {
+    newEvents.addAll(yearlyEvents[datetime.toString().substring(5, 10)]!);
   }
 
   //monthly events
-  if (events['monthlyEvents']!.containsKey(datetime.day.toString())) {
-    newEvents.addAll(events['monthlyEvents']![datetime.day.toString()]!);
+  if (monthlyEvents.containsKey(datetime.day.toString())) {
+    newEvents.addAll(monthlyEvents[datetime.day.toString()]!);
   }
 
   //weekly events
-  if (events['weeklyEvents']!.containsKey(datetime.weekday.toString())) {
-    newEvents.addAll(events['weeklyEvents']![datetime.weekday.toString()]!);
+  if (weeklyEvents.containsKey(datetime.weekday.toString())) {
+    newEvents.addAll(weeklyEvents[datetime.weekday.toString()]!);
   }
 
   return newEvents;
@@ -92,12 +74,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
-    getEventsFromDatabase().then((results) {
-      setState(() {
-        events = results;
-      });
-    });
     super.initState();
+    getEventsFromDatabase();
   }
 
   @override
