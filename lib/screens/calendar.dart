@@ -14,21 +14,29 @@ Map<String, List<String>> yearlyEvents = {}; // datetime(mm-dd) : events
 Map<String, List<String>> monthlyEvents = {}; // day(int) : events
 Map<String, List<String>> weeklyEvents = {}; // weekday(int) : events
 
-void getEventsFromDatabaseBasedOnRef(
-    Map<String, List<String>> eventsMap, String ref) async {
+Future<Map<String, List<String>>> getEventsFromDatabaseBasedOnRef(
+    String ref) async {
   final events = await FirebaseDatabase.instance.ref(ref).get();
+  Map<String, List<String>> eventsMap = {};
   if (events.exists) {
-    (events.value as Map).forEach((key, value) {
+    (events.value! as Map).forEach((key, value) {
       eventsMap[key] = (value as List).cast<String>();
     });
   }
+  return eventsMap;
 }
 
-void getEventsFromDatabase() async {
-  getEventsFromDatabaseBasedOnRef(singleEvents, '/SingleEvents/');
-  getEventsFromDatabaseBasedOnRef(yearlyEvents, '/YearlyEvents/');
-  getEventsFromDatabaseBasedOnRef(monthlyEvents, '/MonthlyEvents/');
-  getEventsFromDatabaseBasedOnRef(weeklyEvents, '/WeeklyEvents/');
+Future<Map<String, Map<String, List<String>>>> getEventsFromDatabase() async {
+  Map<String, Map<String, List<String>>> eventsFromDatabase = {};
+  eventsFromDatabase['singleEvents'] =
+      await getEventsFromDatabaseBasedOnRef('SingleEvents');
+  eventsFromDatabase['yearlyEvents'] =
+      await getEventsFromDatabaseBasedOnRef('YearlyEvents');
+  eventsFromDatabase['monthlyEvents'] =
+      await getEventsFromDatabaseBasedOnRef('MonthlyEvents');
+  eventsFromDatabase['weeklyEvents'] =
+      await getEventsFromDatabaseBasedOnRef('WeeklyEvents');
+  return eventsFromDatabase;
 }
 
 void updateEvents(ValueNotifier<List<String>> events, DateTime datetime) {
@@ -74,8 +82,15 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   void initState() {
+    getEventsFromDatabase().then((results) {
+      setState(() {
+        singleEvents = results['singleEvents']!;
+        yearlyEvents = results['yearlyEvents']!;
+        monthlyEvents = results['monthlyEvents']!;
+        weeklyEvents = results['weeklyEvents']!;
+      });
+    });
     super.initState();
-    getEventsFromDatabase();
   }
 
   @override
