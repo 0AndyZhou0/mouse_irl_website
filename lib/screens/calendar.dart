@@ -9,20 +9,62 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-void getEvents(ValueNotifier<List<String>> events, DateTime datetime) async {
-  if (datetime.year == 2024 && datetime.month == 2 && datetime.day < 14) {
-    events.value = ['TODO: Violet makes card "Need more pp from my osutop"'];
-    return;
+Map<String, List<String>> singleEvents = {}; // datetime(yyyy-mm-dd) : events
+Map<String, List<String>> yearlyEvents = {}; // datetime(mm-dd) : events
+Map<String, List<String>> monthlyEvents = {}; // day(int) : events
+Map<String, List<String>> weeklyEvents = {}; // weekday(int) : events
+
+void getEventsFromDatabaseBasedOnRef(
+    Map<String, List<String>> eventsMap, String ref) async {
+  final events =
+      await FirebaseDatabase.instance.ref(ref).once(DatabaseEventType.value);
+  if (events.snapshot.value != null) {
+    (events.snapshot.value! as Map).forEach((key, value) {
+      eventsMap[key] = (value as List).cast<String>();
+    });
   }
-  final ref = FirebaseDatabase.instance
-      .ref('Events/${datetime.toString().substring(0, 10)}/event');
-  // print(datetime.toString().substring(0, 10));
-  final event = await ref.once(DatabaseEventType.value);
+}
+
+void getEventsFromDatabase() async {
+  getEventsFromDatabaseBasedOnRef(singleEvents, '/SingleEvents/');
+  getEventsFromDatabaseBasedOnRef(yearlyEvents, '/YearlyEvents/');
+  getEventsFromDatabaseBasedOnRef(monthlyEvents, '/MonthlyEvents/');
+  getEventsFromDatabaseBasedOnRef(weeklyEvents, '/WeeklyEvents/');
+}
+
+void updateEvents(ValueNotifier<List<String>> events, DateTime datetime) {
+  events.value = getEvents(datetime);
+}
+
+List<String> getEvents(DateTime datetime) {
   List<String> newEvents = [];
-  if (event.snapshot.value != null) {
-    newEvents.add(event.snapshot.value.toString());
+
+  if (datetime.year == 2024 && datetime.month == 2 && datetime.day < 14) {
+    newEvents = ['TODO: Violet makes card "Need more pp from my osutop"'];
   }
-  events.value = newEvents;
+
+  //single events
+  if (singleEvents.containsKey(datetime.toString().substring(0, 10))) {
+    print(singleEvents[datetime.toString().substring(0, 10)]);
+    newEvents.addAll(singleEvents[datetime.toString().substring(0, 10)]!);
+  }
+
+  //yearly events
+  if (yearlyEvents.containsKey(datetime.toString().substring(5, 10))) {
+    newEvents.addAll(yearlyEvents[datetime.toString().substring(5, 10)]!);
+  }
+
+  //monthly events
+  if (monthlyEvents.containsKey(datetime.day.toString())) {
+    newEvents.addAll(monthlyEvents[datetime.day.toString()]!);
+  }
+
+  //weekly events
+  if (weeklyEvents.containsKey(datetime.weekday.toString())) {
+    newEvents.addAll(weeklyEvents[datetime.weekday.toString()]!);
+  }
+
+  return newEvents;
 }
 
 class _CalendarPageState extends State<CalendarPage> {
@@ -30,6 +72,12 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
   ValueNotifier<List<String>> _selectedEvents = ValueNotifier<List<String>>([]);
+
+  @override
+  void initState() {
+    super.initState();
+    getEventsFromDatabase();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +98,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 if (!isSameDay(_selectedDay, selectedDay)) {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
-                  getEvents(_selectedEvents, _selectedDay!);
+                  updateEvents(_selectedEvents, _selectedDay!);
                 }
               });
             },
@@ -61,6 +109,9 @@ class _CalendarPageState extends State<CalendarPage> {
             },
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
+            },
+            eventLoader: (day) {
+              return getEvents(day);
             },
           ),
           const SizedBox(height: 8.0),
