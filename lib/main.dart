@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'mouse_irl',
         theme: ThemeData(
-          colorScheme: const ColorScheme(
+          colorScheme: const ColorScheme.dark(
             brightness: Brightness.light,
             primary: Color.fromARGB(255, 101, 90, 124),
             onPrimary: Colors.black,
@@ -51,6 +51,23 @@ class _MyAppState extends State<MyApp> {
             onSurface: Colors.black,
             error: Colors.red,
             onError: Colors.black,
+          ),
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          inputDecorationTheme: const InputDecorationTheme(
+              labelStyle: TextStyle(
+            color: Colors.black54,
+          )),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.white,
+            unselectedItemColor: Color.fromARGB(255, 101, 90, 124),
+            selectedItemColor: Color.fromARGB(255, 101, 90, 124),
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color.fromARGB(255, 101, 90, 124),
           ),
         ),
         home: Scaffold(
