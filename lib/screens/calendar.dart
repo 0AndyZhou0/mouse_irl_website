@@ -13,7 +13,7 @@ Map<String, List<String>> singleEvents = {}; // datetime(yyyy-mm-dd) : events
 Map<String, List<String>> yearlyEvents = {}; // datetime(mm-dd) : events
 Map<String, List<String>> monthlyEvents = {}; // day(int) : events
 Map<String, List<String>> weeklyEvents = {}; // weekday(int) : events
-
+Map<String, List<String>> holidays = {}; // datetime(mm-dd) : events
 Future<Map<String, List<String>>> getEventsFromDatabaseBasedOnRef(
     String ref) async {
   final events = await FirebaseDatabase.instance.ref(ref).get();
@@ -36,11 +36,18 @@ Future<Map<String, Map<String, List<String>>>> getEventsFromDatabase() async {
       await getEventsFromDatabaseBasedOnRef('MonthlyEvents');
   eventsFromDatabase['weeklyEvents'] =
       await getEventsFromDatabaseBasedOnRef('WeeklyEvents');
+  eventsFromDatabase['holidays'] =
+      await getEventsFromDatabaseBasedOnRef('Holidays');
   return eventsFromDatabase;
 }
 
 void updateEvents(ValueNotifier<List<String>> events, DateTime datetime) {
-  events.value = getEvents(datetime);
+  List<String> newEvents = getEvents(datetime);
+  //holidays
+  if (holidays.containsKey(datetime.toString().substring(5, 10))) {
+    newEvents.addAll(holidays[datetime.toString().substring(5, 10)]!);
+  }
+  events.value = newEvents;
 }
 
 List<String> getEvents(DateTime datetime) {
@@ -70,6 +77,11 @@ List<String> getEvents(DateTime datetime) {
     newEvents.addAll(weeklyEvents[datetime.weekday.toString()]!);
   }
 
+  // //holidays
+  // if (holidays.containsKey(datetime.toString().substring(5, 10))) {
+  //   newEvents.addAll(holidays[datetime.toString().substring(5, 10)]!);
+  // }
+
   return newEvents;
 }
 
@@ -88,6 +100,7 @@ class _CalendarPageState extends State<CalendarPage> {
         yearlyEvents = results['yearlyEvents']!;
         monthlyEvents = results['monthlyEvents']!;
         weeklyEvents = results['weeklyEvents']!;
+        holidays = results['holidays']!;
       });
     });
     super.initState();
@@ -127,6 +140,26 @@ class _CalendarPageState extends State<CalendarPage> {
             eventLoader: (day) {
               return getEvents(day);
             },
+            holidayPredicate: (day) {
+              return holidays.containsKey(day.toString().substring(5, 10));
+            },
+            calendarStyle: CalendarStyle(
+                markerDecoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+                holidayDecoration: BoxDecoration(
+                  border: Border.fromBorderSide(BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 1.4)),
+                  shape: BoxShape.circle,
+                ),
+                holidayTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                )),
           ),
           const SizedBox(height: 8.0),
           Expanded(
