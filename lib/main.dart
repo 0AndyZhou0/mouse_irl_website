@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'mouse_irl',
         theme: ThemeData(
-          colorScheme: const ColorScheme.dark(
+          colorScheme: const ColorScheme(
             brightness: Brightness.light,
             primary: Color.fromARGB(255, 101, 90, 124),
             onPrimary: Colors.black,
