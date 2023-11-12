@@ -143,6 +143,14 @@ class _CalendarPageState extends State<CalendarPage> {
             holidayPredicate: (day) {
               return holidays.containsKey(day.toString().substring(5, 10));
             },
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary.withAlpha(150),
+              ),
+              weekendStyle: TextStyle(
+                color: Theme.of(context).textTheme.bodySmall!.color,
+              ),
+            ),
             calendarStyle: CalendarStyle(
               markerDecoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onPrimary,
