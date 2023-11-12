@@ -98,8 +98,8 @@ class _MyAppState extends State<MyApp> {
           ),
           bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: Colors.black87,
-            unselectedItemColor: Color.fromARGB(255, 55, 45, 77),
-            selectedItemColor: Color.fromARGB(255, 55, 45, 77),
+            unselectedItemColor: Color.fromARGB(255, 133, 109, 184),
+            selectedItemColor: Color.fromARGB(255, 133, 109, 184),
           ),
           appBarTheme: const AppBarTheme(
             backgroundColor: Color.fromARGB(255, 55, 45, 77),
