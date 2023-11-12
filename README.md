@@ -2,7 +2,13 @@
 
 Ok I'm back
 
-todo
-- [ ] make actually good looking
-- [ ] add more layouts
-- [ ] add submission box for random photos for future feature
+Done
+- User Auth
+- Voting System
+- Calendar with annual, monthly, and weekly events
+- Photo submission
+
+TODO
+- Google login
+- Reset password
+- Use photo submission for something like profiles
