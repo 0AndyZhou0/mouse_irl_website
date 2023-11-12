@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
           ),
           textTheme: const TextTheme(
             bodyMedium: TextStyle(
-              color: Colors.black87,
+              color: Colors.black,
             ),
           ),
           inputDecorationTheme: const InputDecorationTheme(
