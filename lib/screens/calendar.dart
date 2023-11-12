@@ -141,17 +141,25 @@ class _CalendarPageState extends State<CalendarPage> {
               return getEvents(day);
             },
             holidayPredicate: (day) {
-              if (holidays.containsKey(day.toString().substring(5, 10))) {
-                return true;
-              }
-              return false;
+              return holidays.containsKey(day.toString().substring(5, 10));
             },
             calendarStyle: CalendarStyle(
-              markerDecoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                shape: BoxShape.circle,
-              ),
-            ),
+                markerDecoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+                holidayDecoration: BoxDecoration(
+                  border: Border.fromBorderSide(BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 1.4)),
+                  shape: BoxShape.circle,
+                ),
+                holidayTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                )),
           ),
           const SizedBox(height: 8.0),
           Expanded(
