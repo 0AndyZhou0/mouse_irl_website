@@ -112,17 +112,21 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _signInWithGoogle() {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
       ),
+      icon: Image.asset(
+        'assets/images/google_logo.png',
+        width: 20,
+      ),
+      label: const Text('Sign in with Google'),
       onPressed: () {
         Auth().signInWithGoogle();
       },
-      child: const Text('Sign in with Google'),
     );
   }
 
