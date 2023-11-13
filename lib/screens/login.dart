@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
+import 'reset_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -96,6 +97,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _resetPasswordButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResetPassword(),
+          ),
+        );
+      },
+      child: const Text('Forgot Password'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,6 +139,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             _submitButton(),
             _loginOrRegisterButton(),
+            _resetPasswordButton(),
           ],
         ));
   }
