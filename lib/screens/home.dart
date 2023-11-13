@@ -253,17 +253,19 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Container(
-            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
-            height: 40,
-            child: RichText(
-                text: const TextSpan(
+          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+          height: 40,
+          child: RichText(
+            text: TextSpan(
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
               text: 'Events',
-            ))),
+            ),
+          ),
+        ),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -294,14 +296,15 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
           height: 40,
           child: RichText(
-              text: const TextSpan(
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
+            text: TextSpan(
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+              text: 'Times',
             ),
-            text: 'Times',
-          )),
+          ),
         ),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),

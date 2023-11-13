@@ -24,6 +24,26 @@
         },
       },
     },
+    "SingleEvents": {
+      ".read": true,
+      ".write": "auth.uid == root.child('owner').val()",
+    },
+    "YearlyEvents": {
+      ".read": true,
+      ".write": "auth.uid == root.child('owner').val()",
+    },
+    "MonthlyEvents": {
+      ".read": true,
+      ".write": "auth.uid == root.child('owner').val()",
+    },
+    "WeeklyEvents": {
+      ".read": true,
+      ".write": "auth.uid == root.child('owner').val()",
+    },
+    "Holidays": {
+      ".read": true,
+      ".write": "auth.uid == root.child('owner').val()",
+    },
     "Events": {
       ".read": true,
       ".write": "auth.uid == root.child('owner').val()",
