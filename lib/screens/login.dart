@@ -88,6 +88,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginOrRegisterButton() {
     return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+      ),
       onPressed: () {
         setState(() {
           isLogin = !isLogin;
@@ -99,6 +102,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _resetPasswordButton() {
     return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+      ),
       onPressed: () {
         Navigator.push(
           context,
@@ -118,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        foregroundColor: Colors.white,
       ),
       icon: Image.asset(
         'assets/images/google_logo.png',
@@ -159,9 +166,6 @@ class _LoginPageState extends State<LoginPage> {
             _submitButton(),
             _loginOrRegisterButton(),
             _resetPasswordButton(),
-            const SizedBox(
-              height: 30,
-            ),
             _signInWithGoogle(),
           ],
         ));
