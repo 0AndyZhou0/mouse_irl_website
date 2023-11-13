@@ -111,6 +111,21 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _signInWithGoogle() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      onPressed: () {
+        Auth().signInWithGoogle();
+      },
+      child: const Text('Sign in with Google'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +155,10 @@ class _LoginPageState extends State<LoginPage> {
             _submitButton(),
             _loginOrRegisterButton(),
             _resetPasswordButton(),
+            const SizedBox(
+              height: 30,
+            ),
+            _signInWithGoogle(),
           ],
         ));
   }

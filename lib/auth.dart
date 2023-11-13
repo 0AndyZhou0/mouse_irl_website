@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   User? get currentUser => _auth.currentUser;
+  User? googleUser;
+  String? name, imageUrl, userEmail, uid;
+
+  // final GoogleSignInPlugin googleSignIn = GoogleSignInPlugin();
 
   String _token = '';
 
@@ -20,7 +27,7 @@ class Auth {
         .catchError(
             (onError) => print('Error sending email verification $onError'))
         .then((value) => print('Successfully sent email verification'));
-    //TODO: change to logger
+    //TODO: change to logger maybe idk how this works
   }
 
   Future<void> createUserWithEmailAndPassword(
@@ -34,11 +41,40 @@ class Auth {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future<void> signOut() async {
-    await _auth.signOut();
+  Future<void> signInWithGoogle() async {
+    GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+    try {
+      //web
+      if (kIsWeb) {
+        await _auth.signInWithRedirect(googleProvider);
+      } else if (Platform.isAndroid || Platform.isIOS) {
+        // TODO: implement
+        // await _auth.signInWithProvider(googleProvider);
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    if (googleUser != null) {
+      name = googleUser!.displayName;
+      imageUrl = googleUser!.photoURL;
+      userEmail = googleUser!.email;
+      uid = googleUser!.uid;
+
+      print("name: $name");
+      print("userEmail: $userEmail");
+      print("imageUrl: $imageUrl");
+    }
   }
 
-  Future<bool> isLoggedIn() async {
+  Future<void> signOut() async {
+    if (isLoggedIn()) {
+      await _auth.signOut();
+    }
+  }
+
+  bool isLoggedIn() {
     return currentUser != null;
   }
 
