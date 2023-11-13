@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
+import 'reset_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -96,36 +97,73 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _resetPasswordButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResetPassword(),
+          ),
+        );
+      },
+      child: const Text('Forgot Password'),
+    );
+  }
+
+  Widget _signInWithGoogle() {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      icon: Image.asset(
+        'assets/images/google_logo.png',
+        width: 20,
+      ),
+      label: const Text('Sign in with Google'),
+      onPressed: () {
+        Auth().signInWithGoogle();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(40.0),
-        children: [
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Image.asset('assets/images/catbot.png'),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          _entryField('Email', _emailController),
-          const SizedBox(
-            height: 10,
-          ),
-          _entryField('Password', _passwordController),
-          _errorMessage(),
-          const SizedBox(
-            height: 30,
-          ),
-          _submitButton(),
-          _loginOrRegisterButton(),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: _title(),
+        ),
+        body: ListView(
+          padding: const EdgeInsets.all(40.0),
+          children: [
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: Image.asset('assets/images/catbot.png'),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            _entryField('Email', _emailController),
+            const SizedBox(
+              height: 10,
+            ),
+            _entryField('Password', _passwordController),
+            _errorMessage(),
+            const SizedBox(
+              height: 30,
+            ),
+            _submitButton(),
+            _loginOrRegisterButton(),
+            _resetPasswordButton(),
+            const SizedBox(
+              height: 30,
+            ),
+            _signInWithGoogle(),
+          ],
+        ));
   }
 }
