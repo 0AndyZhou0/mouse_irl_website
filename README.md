@@ -7,8 +7,8 @@ Done
 - Voting System
 - Calendar with annual, monthly, and weekly events
 - Photo submission
-
-TODO
 - Google login
 - Reset password
+
+TODO
 - Use photo submission for something like profiles
