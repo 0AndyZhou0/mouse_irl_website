@@ -35,7 +35,6 @@ class _UserPageState extends State<UserPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        foregroundColor: Colors.white,
       ),
       onPressed: () {
         Auth().signOut();
@@ -52,7 +51,6 @@ class _UserPageState extends State<UserPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          foregroundColor: Colors.white,
         ),
         onPressed: () {
           Navigator.push(
@@ -74,7 +72,6 @@ class _UserPageState extends State<UserPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          foregroundColor: Colors.white,
         ),
         onPressed: () {
           Navigator.push(
