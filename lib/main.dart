@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
@@ -37,79 +38,15 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'mouse_irl',
       theme: ThemeData(
-        colorScheme: const ColorScheme(
+        colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-          primary: Color.fromARGB(255, 101, 90, 124),
-          onPrimary: Colors.black,
-          secondary: Color.fromARGB(255, 171, 146, 191),
-          onSecondary: Color.fromARGB(255, 88, 76, 116),
-          tertiary: Color.fromARGB(255, 175, 193, 214),
-          onTertiary: Colors.black,
-          background: Color.fromARGB(255, 206, 249, 242),
-          onBackground: Colors.black,
-          surface: Colors.white,
-          onSurface: Colors.black,
-          error: Colors.red,
-          onError: Colors.black,
-        ),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.black,
-          ),
-          bodySmall: TextStyle(
-            color: Colors.black54,
-          ),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          labelStyle: TextStyle(
-            color: Colors.black54,
-          ),
-        ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
-          unselectedItemColor: Color.fromARGB(255, 101, 90, 124),
-          selectedItemColor: Color.fromARGB(255, 101, 90, 124),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 101, 90, 124),
+          seedColor: Colors.deepPurple,
         ),
       ),
       darkTheme: ThemeData(
-        colorScheme: const ColorScheme(
+        colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
-          primary: Color.fromARGB(255, 55, 45, 77),
-          onPrimary: Colors.white,
-          secondary: Color.fromARGB(255, 139, 71, 196),
-          onSecondary: Color.fromARGB(255, 179, 150, 241),
-          tertiary: Color.fromARGB(255, 47, 119, 202),
-          onTertiary: Colors.white,
-          background: Color.fromARGB(255, 48, 116, 104),
-          onBackground: Colors.white,
-          surface: Colors.black,
-          onSurface: Colors.white,
-          error: Colors.red,
-          onError: Colors.white,
-        ),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.white,
-          ),
-          bodySmall: TextStyle(
-            color: Colors.white54,
-          ),
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          labelStyle: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black87,
-          unselectedItemColor: Color.fromARGB(255, 133, 109, 184),
-          selectedItemColor: Color.fromARGB(255, 133, 109, 184),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 55, 45, 77),
+          seedColor: Colors.deepPurple,
         ),
       ),
       themeMode: ThemeMode.system,

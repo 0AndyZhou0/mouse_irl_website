@@ -74,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        foregroundColor: Colors.white,
       ),
       onPressed: () {
         // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -89,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginOrRegisterButton() {
     return TextButton(
       style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
       onPressed: () {
         setState(() {
@@ -103,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _resetPasswordButton() {
     return TextButton(
       style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
       ),
       onPressed: () {
         Navigator.push(
@@ -124,7 +123,6 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        foregroundColor: Colors.white,
       ),
       icon: Image.asset(
         'assets/images/google_logo.png',

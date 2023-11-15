@@ -56,9 +56,6 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
               padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
               child: Text(
                 'clear',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
               ),
             ),
           ),
@@ -71,9 +68,6 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
               padding: EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
               child: Text(
                 'delete',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
               ),
             ),
           ),
@@ -83,11 +77,18 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
   }
 
   Widget removeAllEvents() {
-    return ElevatedButton(
-      onPressed: () {
-        currentEventsVotesRef.remove();
-      },
-      child: const Text('Delete All Events'),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        onPressed: () {
+          currentEventsVotesRef.remove();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+        ),
+        child: const Text('Delete All Events'),
+      ),
     );
   }
 

@@ -145,7 +145,8 @@ class _CalendarPageState extends State<CalendarPage> {
             },
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary.withAlpha(150),
+                color:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(230),
               ),
               weekendStyle: TextStyle(
                 color: Theme.of(context).textTheme.bodySmall!.color,
@@ -153,11 +154,11 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             calendarStyle: CalendarStyle(
               markerDecoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onBackground,
                 shape: BoxShape.circle,
               ),
               weekendTextStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
               holidayDecoration: BoxDecoration(
                 border: Border.fromBorderSide(

@@ -56,9 +56,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
               padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
               child: Text(
                 'clear',
-                style: TextStyle(
-                  fontSize: 12.0,
-                ),
               ),
             ),
           ),
@@ -73,9 +70,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
               padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
               child: Text(
                 'delete',
-                style: TextStyle(
-                  fontSize: 12.0,
-                ),
               ),
             ),
           ),
@@ -85,11 +79,18 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
   }
 
   Widget removeAllTimes() {
-    return ElevatedButton(
-      onPressed: () {
-        currentTimesVotesRef.remove();
-      },
-      child: const Text('Delete All Times'),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        onPressed: () {
+          currentTimesVotesRef.remove();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+        ),
+        child: const Text('Delete All Times'),
+      ),
     );
   }
 

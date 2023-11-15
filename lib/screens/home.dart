@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
 
     return Container(
       width: double.infinity,
-      color: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.primaryContainer,
       padding: const EdgeInsets.all(8.0),
       child: Text(
         '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
           child: RichText(
             text: TextSpan(
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onBackground,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
@@ -298,7 +298,7 @@ class _HomePageState extends State<HomePage> {
           child: RichText(
             text: TextSpan(
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onBackground,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
