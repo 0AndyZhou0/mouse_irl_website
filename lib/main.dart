@@ -50,9 +50,21 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       themeMode: ThemeMode.system,
-      home: Scaffold(
-        body: _pages.elementAt(_selectedIndex),
-        bottomNavigationBar: bottomNavBar(),
+      home: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            return Scaffold(
+              body: _pages.elementAt(_selectedIndex),
+              bottomNavigationBar: bottomNavBar(),
+            );
+          } else {
+            // TODO: implement desktop layout
+            return Scaffold(
+              body: _pages.elementAt(_selectedIndex),
+              bottomNavigationBar: bottomNavBar(),
+            );
+          }
+        },
       ),
     );
   }
