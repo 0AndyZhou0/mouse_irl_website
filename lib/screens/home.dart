@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void voteEvent(String uid, String event) async {
+  void voteEvent(String event) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void unvoteEvent(String uid, String event) async {
+  void unvoteEvent(String event) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
@@ -134,6 +134,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // Vote/Unvote Event
   Widget voteEventsButton(String event) {
     return Card(
       child: Padding(
@@ -148,9 +149,9 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 if (_eventsVoted.contains(event)) {
-                  unvoteEvent(uid, event);
+                  unvoteEvent(event);
                 } else {
-                  voteEvent(uid, event);
+                  voteEvent(event);
                 }
               },
               child: LayoutBuilder(
@@ -169,7 +170,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void voteTime(String uid, String dateTime) async {
+  void voteTime(String dateTime) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
@@ -177,7 +178,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void unvoteTime(String uid, String dateTime) async {
+  void unvoteTime(String dateTime) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
@@ -205,9 +206,9 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: () {
                 if (_timesVoted.contains(dateTime)) {
-                  unvoteTime(uid, dateTime);
+                  unvoteTime(dateTime);
                 } else {
-                  voteTime(uid, dateTime);
+                  voteTime(dateTime);
                 }
               },
               child: LayoutBuilder(
