@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
@@ -23,15 +22,45 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
+class Page {
+  const Page({
+    required this.page,
+    required this.name,
+    required this.icon,
+    required this.selectedIcon,
+  });
+  final Widget page;
+  final String name;
+  final Widget icon;
+  final Widget selectedIcon;
+}
+
+List<Page> _pages = [
+  const Page(
+    page: HomePage(),
+    name: 'Home',
+    icon: Icon(Icons.home),
+    selectedIcon: Icon(Icons.home),
+  ),
+  const Page(
+    page: CalendarPage(),
+    name: 'Calendar',
+    icon: Icon(Icons.mouse_outlined),
+    selectedIcon: Icon(Icons.mouse),
+  ),
+  const Page(
+    page: UserWidgetTree(),
+    name: 'User',
+    icon: Icon(Icons.person),
+    selectedIcon: Icon(Icons.person),
+  ),
+];
+
 class _MyAppState extends State<MyApp> {
   final User? user = Auth().currentUser;
 
   int _selectedIndex = 0;
-  static const List<Widget> _pages = <Widget>[
-    HomePage(),
-    CalendarPage(),
-    UserWidgetTree(),
-  ];
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +79,46 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       themeMode: ThemeMode.system,
+      // home: LayoutBuilder(
+      //   builder: (context, constraints) {
+      //     if (constraints.maxWidth < 600) {
+      //       return Scaffold(
+      //         body: _pages[_selectedIndex].page,
+      //         bottomNavigationBar: bottomNavBar(),
+      //       );
+      //     } else {
+      //       return Scaffold(
+      //         key: scaffoldKey,
+      //         drawer: drawer(),
+      //         body: Row(
+      //           children: [
+      //             rail(),
+      //             const VerticalDivider(thickness: 1, width: 1),
+      //             Expanded(child: _pages[_selectedIndex].page),
+      //           ],
+      //         ),
+      //       );
+      //     }
+      //   },
+      // ),
       home: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
             return Scaffold(
-              body: _pages.elementAt(_selectedIndex),
+              body: _pages[_selectedIndex].page,
               bottomNavigationBar: bottomNavBar(),
             );
           } else {
-            // TODO: implement desktop layout
             return Scaffold(
-              body: _pages.elementAt(_selectedIndex),
-              bottomNavigationBar: bottomNavBar(),
+              key: scaffoldKey,
+              drawer: drawer(),
+              body: Row(
+                children: [
+                  navRail(),
+                  const VerticalDivider(thickness: 1, width: 1),
+                  Expanded(child: _pages[_selectedIndex].page),
+                ],
+              ),
             );
           }
         },
@@ -71,25 +128,63 @@ class _MyAppState extends State<MyApp> {
 
   BottomNavigationBar bottomNavBar() {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          activeIcon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.mouse_outlined),
-          activeIcon: Icon(Icons.mouse),
-          label: 'Mouse',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          activeIcon: Icon(Icons.person),
-          label: 'User',
-        ),
-      ],
+      items: _pages
+          .map(
+            (page) => BottomNavigationBarItem(
+              icon: page.icon,
+              activeIcon: page.selectedIcon,
+              label: page.name,
+            ),
+          )
+          .toList(),
       currentIndex: _selectedIndex,
       onTap: (value) {
+        setState(() {
+          _selectedIndex = value;
+        });
+      },
+    );
+  }
+
+  NavigationDrawer drawer() {
+    return NavigationDrawer(
+      selectedIndex: _selectedIndex,
+      onDestinationSelected: (value) {
+        setState(() {
+          _selectedIndex = value;
+        });
+      },
+      children: _pages.map((page) {
+        return NavigationDrawerDestination(
+          icon: page.icon,
+          label: Text(page.name),
+          selectedIcon: page.selectedIcon,
+        );
+      }).toList(),
+    );
+  }
+
+  NavigationRail navRail() {
+    return NavigationRail(
+      leading: Builder(builder: (context) {
+        return IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: Scaffold.of(context).openDrawer,
+        );
+      }),
+      minWidth: 50,
+      labelType: NavigationRailLabelType.all,
+      destinations: _pages
+          .map(
+            (page) => NavigationRailDestination(
+              icon: page.icon,
+              label: Text(page.name),
+              selectedIcon: page.selectedIcon,
+            ),
+          )
+          .toList(),
+      selectedIndex: _selectedIndex,
+      onDestinationSelected: (value) {
         setState(() {
           _selectedIndex = value;
         });
