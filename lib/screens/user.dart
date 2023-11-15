@@ -34,46 +34,40 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Future<Widget> get _adminEventsPageButton async {
-    if (await Database().isAdmin(user!.uid)) {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+  Widget _adminEventsPageButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const EventsAdminPage()),
-          );
-        },
-        child: const Text('Edit Events'),
-      );
-    }
-    return Container();
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EventsAdminPage()),
+        );
+      },
+      child: const Text('Edit Events'),
+    );
   }
 
-  Future<Widget> get _adminTimesPageButton async {
-    if (await Database().isAdmin(user!.uid)) {
-      return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+  Widget _adminTimesPageButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const TimesAdminPage()),
-          );
-        },
-        child: const Text('Edit Times'),
-      );
-    }
-    return Container();
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const TimesAdminPage()),
+        );
+      },
+      child: const Text('Edit Times'),
+    );
   }
 
   @override
@@ -88,26 +82,19 @@ class _UserPageState extends State<UserPage> {
             _userEmail(),
             const SizedBox(height: 20),
             FutureBuilder(
-              future: _adminEventsPageButton,
+              future: Database().isAdmin(user!.uid),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return snapshot.data as Widget;
+                if (snapshot.hasData && snapshot.data == true) {
+                  return Column(children: [
+                    _adminEventsPageButton(),
+                    const SizedBox(height: 20),
+                    _adminTimesPageButton(),
+                  ]);
                 } else {
                   return const SizedBox.shrink();
                 }
               },
               initialData: const Text('Loading :3'),
-            ),
-            const SizedBox(height: 20),
-            FutureBuilder(
-              future: _adminTimesPageButton,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return snapshot.data as Widget;
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
             ),
             const SizedBox(height: 20),
             _userSignOutButton(),

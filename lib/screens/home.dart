@@ -318,12 +318,10 @@ class _HomePageState extends State<HomePage> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+            Expanded(
               child: eventVoteList(),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+            Expanded(
               child: timeVoteList(),
             )
           ],
