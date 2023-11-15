@@ -84,7 +84,7 @@ class _UserPageState extends State<UserPage> {
             FutureBuilder(
               future: Database().isAdmin(user!.uid),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && snapshot.data == true) {
                   return Column(children: [
                     _adminEventsPageButton(),
                     const SizedBox(height: 20),
