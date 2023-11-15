@@ -135,30 +135,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget voteEventsButton(String event) {
-    // Unvote Card
-    if (_eventsVoted.contains(event)) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            children: [
-              Text('$event: ${_eventVotes[event]}'),
-              const Expanded(child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
-                ),
-                onPressed: () {
-                  unvoteEvent(uid, event);
-                },
-                child: const Text('Voted'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    //Vote Card
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -171,9 +147,21 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               onPressed: () {
-                voteEvent(uid, event);
+                if (_eventsVoted.contains(event)) {
+                  unvoteEvent(uid, event);
+                } else {
+                  voteEvent(uid, event);
+                }
               },
-              child: const Text('Vote for Event'),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (_eventsVoted.contains(event)) {
+                    return const Text('Voted');
+                  } else {
+                    return const Text('Vote for Event');
+                  }
+                },
+              ),
             ),
           ],
         ),
