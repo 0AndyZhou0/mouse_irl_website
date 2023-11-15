@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
@@ -79,28 +80,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       themeMode: ThemeMode.system,
-      // home: LayoutBuilder(
-      //   builder: (context, constraints) {
-      //     if (constraints.maxWidth < 600) {
-      //       return Scaffold(
-      //         body: _pages[_selectedIndex].page,
-      //         bottomNavigationBar: bottomNavBar(),
-      //       );
-      //     } else {
-      //       return Scaffold(
-      //         key: scaffoldKey,
-      //         drawer: drawer(),
-      //         body: Row(
-      //           children: [
-      //             rail(),
-      //             const VerticalDivider(thickness: 1, width: 1),
-      //             Expanded(child: _pages[_selectedIndex].page),
-      //           ],
-      //         ),
-      //       );
-      //     }
-      //   },
-      // ),
       home: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {

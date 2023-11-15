@@ -77,11 +77,6 @@ List<String> getEvents(DateTime datetime) {
     newEvents.addAll(weeklyEvents[datetime.weekday.toString()]!);
   }
 
-  // //holidays
-  // if (holidays.containsKey(datetime.toString().substring(5, 10))) {
-  //   newEvents.addAll(holidays[datetime.toString().substring(5, 10)]!);
-  // }
-
   return newEvents;
 }
 
@@ -104,6 +99,12 @@ class _CalendarPageState extends State<CalendarPage> {
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _selectedEvents.dispose();
+    super.dispose();
   }
 
   @override
@@ -145,33 +146,36 @@ class _CalendarPageState extends State<CalendarPage> {
             },
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withAlpha(230),
+                color: Theme.of(context).colorScheme.primary,
               ),
               weekendStyle: TextStyle(
-                color: Theme.of(context).textTheme.bodySmall!.color,
-              ),
-            ),
-            calendarStyle: CalendarStyle(
-              markerDecoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onBackground,
-                shape: BoxShape.circle,
-              ),
-              weekendTextStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
-              holidayDecoration: BoxDecoration(
-                border: Border.fromBorderSide(
-                  BorderSide(
-                      color: Theme.of(context).colorScheme.secondary,
-                      width: 1.4),
-                ),
-                shape: BoxShape.circle,
-              ),
-              holidayTextStyle: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
+            calendarStyle: CalendarStyle(
+                markerDecoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onBackground,
+                  shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(
+                  color:
+                      Theme.of(context).colorScheme.onBackground.withAlpha(200),
+                ),
+                holidayDecoration: BoxDecoration(
+                  border: Border.fromBorderSide(
+                    BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                        width: 1.4),
+                  ),
+                  shape: BoxShape.circle,
+                ),
+                holidayTextStyle: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                outsideTextStyle: TextStyle(
+                  color:
+                      Theme.of(context).colorScheme.onBackground.withAlpha(100),
+                )),
           ),
           const SizedBox(height: 8.0),
           Expanded(
