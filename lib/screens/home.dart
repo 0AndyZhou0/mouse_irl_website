@@ -202,30 +202,7 @@ class _HomePageState extends State<HomePage> {
     var localTimeStr = DateFormat('E, MMMM d, hh:mm a').format(localTime);
     // var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
 
-    // Unvote Card
-    if (_timesVoted.contains(dateTime)) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            children: [
-              // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
-              Text('$localTimeStr: ${_timesVotes[dateTime]}'),
-              const Expanded(child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
-                ),
-                onPressed: () {
-                  unvoteTime(uid, dateTime);
-                },
-                child: const Text('Voted'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    // Vote/Unvote Card
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -239,9 +216,21 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               onPressed: () {
-                voteTime(uid, dateTime);
+                if (_timesVoted.contains(dateTime)) {
+                  unvoteTime(uid, dateTime);
+                } else {
+                  voteTime(uid, dateTime);
+                }
               },
-              child: const Text('Vote for Time'),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (_timesVoted.contains(dateTime)) {
+                    return const Text('Voted');
+                  } else {
+                    return const Text('Vote for Time');
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -363,10 +352,10 @@ class _HomePageState extends State<HomePage> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          if (constraints.maxWidth > 600) {
-            return doubleColumn();
-          } else {
+          if (constraints.maxWidth < 600) {
             return singleColumn();
+          } else {
+            return doubleColumn();
           }
         },
       ),
