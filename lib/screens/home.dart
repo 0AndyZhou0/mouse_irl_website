@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void voteEvent(String uid, String event) async {
+  void voteEvent(String event) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void unvoteEvent(String uid, String event) async {
+  void unvoteEvent(String event) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
     await eventRef.update({
@@ -134,31 +134,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // Vote/Unvote Event
   Widget voteEventsButton(String event) {
-    // Unvote Card
-    if (_eventsVoted.contains(event)) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            children: [
-              Text('$event: ${_eventVotes[event]}'),
-              const Expanded(child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
-                ),
-                onPressed: () {
-                  unvoteEvent(uid, event);
-                },
-                child: const Text('Voted'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    //Vote Card
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -171,9 +148,21 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               onPressed: () {
-                voteEvent(uid, event);
+                if (_eventsVoted.contains(event)) {
+                  unvoteEvent(event);
+                } else {
+                  voteEvent(event);
+                }
               },
-              child: const Text('Vote for Event'),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (_eventsVoted.contains(event)) {
+                    return const Text('Voted');
+                  } else {
+                    return const Text('Vote for Event');
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -181,7 +170,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void voteTime(String uid, String dateTime) async {
+  void voteTime(String dateTime) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
@@ -189,7 +178,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void unvoteTime(String uid, String dateTime) async {
+  void unvoteTime(String dateTime) async {
     DatabaseReference eventRef =
         FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
     await eventRef.update({
@@ -202,30 +191,7 @@ class _HomePageState extends State<HomePage> {
     var localTimeStr = DateFormat('E, MMMM d, hh:mm a').format(localTime);
     // var localendTimeStr = DateFormat('hh:mm a').format(localTime.add(const Duration(hours: 2)));
 
-    // Unvote Card
-    if (_timesVoted.contains(dateTime)) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            children: [
-              // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
-              Text('$localTimeStr: ${_timesVotes[dateTime]}'),
-              const Expanded(child: SizedBox()),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
-                ),
-                onPressed: () {
-                  unvoteTime(uid, dateTime);
-                },
-                child: const Text('Voted'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    // Vote/Unvote Card
     return Card(
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -239,9 +205,21 @@ class _HomePageState extends State<HomePage> {
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               onPressed: () {
-                voteTime(uid, dateTime);
+                if (_timesVoted.contains(dateTime)) {
+                  unvoteTime(dateTime);
+                } else {
+                  voteTime(dateTime);
+                }
               },
-              child: const Text('Vote for Time'),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (_timesVoted.contains(dateTime)) {
+                    return const Text('Voted');
+                  } else {
+                    return const Text('Vote for Time');
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -357,16 +335,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-        foregroundColor: Colors.white,
-      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          if (constraints.maxWidth > 600) {
-            return doubleColumn();
-          } else {
+          if (constraints.maxWidth < 600) {
             return singleColumn();
+          } else {
+            return doubleColumn();
           }
         },
       ),

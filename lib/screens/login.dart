@@ -43,15 +43,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget _title() {
-    return const Text(
-      'mouse_irl login',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    );
-  }
-
   Widget _entryField(String title, TextEditingController controller) {
     return TextField(
       obscureText: title == 'Password' ? true : false,
@@ -138,34 +129,31 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: _title(),
-        ),
         body: ListView(
-          padding: const EdgeInsets.all(40.0),
-          children: [
-            SizedBox(
-              height: 200,
-              width: 200,
-              child: Image.asset('assets/images/catbot.png'),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            _entryField('Email', _emailController),
-            const SizedBox(
-              height: 10,
-            ),
-            _entryField('Password', _passwordController),
-            _errorMessage(),
-            const SizedBox(
-              height: 30,
-            ),
-            _submitButton(),
-            _loginOrRegisterButton(),
-            _resetPasswordButton(),
-            _signInWithGoogle(),
-          ],
-        ));
+      padding: const EdgeInsets.all(40.0),
+      children: [
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: Image.asset('assets/images/catbot.png'),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        _entryField('Email', _emailController),
+        const SizedBox(
+          height: 10,
+        ),
+        _entryField('Password', _passwordController),
+        _errorMessage(),
+        const SizedBox(
+          height: 30,
+        ),
+        _submitButton(),
+        _loginOrRegisterButton(),
+        _resetPasswordButton(),
+        _signInWithGoogle(),
+      ],
+    ));
   }
 }

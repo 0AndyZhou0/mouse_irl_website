@@ -15,15 +15,6 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   final User? user = Auth().currentUser;
 
-  Widget _title() {
-    return const Text(
-      'mouse_irl login',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    );
-  }
-
   Widget _userEmail() {
     return Text(user?.email ?? '');
   }
@@ -88,9 +79,6 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
