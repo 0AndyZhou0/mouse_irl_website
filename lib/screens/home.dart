@@ -138,14 +138,14 @@ class _HomePageState extends State<HomePage> {
   Widget voteEventsButton(String event) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        padding: const EdgeInsets.only(left: 8.0),
         child: Row(
           children: [
             Text('$event: ${_eventVotes[event]}'),
             const Expanded(child: SizedBox()),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () {
                 if (_eventsVoted.contains(event)) {
@@ -194,31 +194,33 @@ class _HomePageState extends State<HomePage> {
     // Vote/Unvote Card
     return Card(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        padding: const EdgeInsets.only(left: 8.0),
         child: Row(
           children: [
             // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
             Text('$localTimeStr: ${_timesVotes[dateTime]}'),
             const Expanded(child: SizedBox()),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-              ),
-              onPressed: () {
-                if (_timesVoted.contains(dateTime)) {
-                  unvoteTime(dateTime);
-                } else {
-                  voteTime(dateTime);
-                }
-              },
-              child: LayoutBuilder(
-                builder: (context, constraints) {
+            SizedBox(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () {
                   if (_timesVoted.contains(dateTime)) {
-                    return const Text('Voted');
+                    unvoteTime(dateTime);
                   } else {
-                    return const Text('Vote for Time');
+                    voteTime(dateTime);
                   }
                 },
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (_timesVoted.contains(dateTime)) {
+                      return const Text('Voted');
+                    } else {
+                      return const Text('Vote for Time');
+                    }
+                  },
+                ),
               ),
             ),
           ],
@@ -231,7 +233,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
           height: 40,
           child: RichText(
             text: TextSpan(
@@ -271,7 +273,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.fromLTRB(5.0, 10.0, 0.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
           height: 40,
           child: RichText(
             text: TextSpan(
@@ -318,12 +320,10 @@ class _HomePageState extends State<HomePage> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+            Expanded(
               child: eventVoteList(),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+            Expanded(
               child: timeVoteList(),
             )
           ],

@@ -52,24 +52,14 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
                 'exists': 'true',
               });
             },
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
-              child: Text(
-                'clear',
-              ),
-            ),
+            child: const Text('clear'),
           ),
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
               currentEventsVotesRef.child(event).remove();
             },
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
-              child: Text(
-                'delete',
-              ),
-            ),
+            child: const Text('delete'),
           ),
         ],
       ),

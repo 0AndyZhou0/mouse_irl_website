@@ -52,12 +52,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
                 'exists': 'true',
               });
             },
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
-              child: Text(
-                'clear',
-              ),
-            ),
+            child: const Text('clear'),
           ),
           const SizedBox(
             width: 10,
@@ -66,12 +61,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
             onPressed: () {
               currentTimesVotesRef.child(time).remove();
             },
-            child: const Padding(
-              padding: EdgeInsets.fromLTRB(2.0, 0, 2.0, 0),
-              child: Text(
-                'delete',
-              ),
-            ),
+            child: const Text('delete'),
           ),
         ],
       ),
