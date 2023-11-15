@@ -146,21 +146,48 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  NavigationDrawer drawer() {
-    return NavigationDrawer(
-      selectedIndex: _selectedIndex,
-      onDestinationSelected: (value) {
-        setState(() {
-          _selectedIndex = value;
-        });
-      },
-      children: _pages.map((page) {
-        return NavigationDrawerDestination(
-          icon: page.icon,
-          label: Text(page.name),
-          selectedIcon: page.selectedIcon,
-        );
-      }).toList(),
+  Drawer drawer() {
+    return Drawer(
+      width: 200,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(9, 9, 0, 0),
+        child: ListView(
+          children: ([
+                Builder(builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        onPressed: Navigator.of(context).pop,
+                        icon: const Icon(Icons.menu),
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                      ),
+                    ),
+                  );
+                })
+              ] +
+              _pages.map((page) {
+                return Builder(builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                    child: ListTile(
+                      title: Text(page.name),
+                      leading: page.icon,
+                      onTap: () {
+                        setState(() {
+                          _selectedIndex = _pages.indexOf(page);
+                          Navigator.of(context).pop();
+                        });
+                      },
+                    ),
+                  );
+                });
+              }).toList()),
+        ),
+      ),
     );
   }
 
@@ -170,6 +197,9 @@ class _MyAppState extends State<MyApp> {
         return IconButton(
           icon: const Icon(Icons.menu),
           onPressed: Scaffold.of(context).openDrawer,
+          hoverColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
         );
       }),
       minWidth: 50,
