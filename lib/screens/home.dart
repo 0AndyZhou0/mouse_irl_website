@@ -76,38 +76,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget eventView() {
-    String? mostVotedTime;
+    if (_timesVotes.isEmpty || _eventVotes.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    // Get most voted time
+    String mostVotedTime = _timesVotes.keys.first;
     _timesVotes.forEach((key, value) {
-      if (mostVotedTime == null) {
-        mostVotedTime = key.toString();
-      } else if (value > _timesVotes[mostVotedTime]!) {
+      if (value > _timesVotes[mostVotedTime]!) {
         mostVotedTime = key.toString();
       }
     });
 
-    if (mostVotedTime == null) {
-      return Container();
-    }
+    var localTime = DateTime.parse(mostVotedTime).toLocal();
 
-    var localTime = DateTime.parse(mostVotedTime!).toLocal();
-
-    String? mostVotedEvent;
+    // Get most voted event
+    String mostVotedEvent = _eventVotes.keys.first;
     _eventVotes.forEach((key, value) {
-      if (mostVotedEvent == null) {
-        mostVotedEvent = key;
-      } else if (value > _eventVotes[mostVotedEvent]!) {
+      if (value > _eventVotes[mostVotedEvent]!) {
         mostVotedEvent = key;
       }
     });
-
-    if (mostVotedEvent == null) {
-      return Container();
-    }
 
     return Container(
-      width: double.infinity,
-      color: Theme.of(context).colorScheme.primaryContainer,
+      // color: Theme.of(context).colorScheme.primaryContainer,
       padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
       child: Text(
         '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
         style: const TextStyle(
@@ -141,12 +139,10 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.only(left: 8.0),
         child: Row(
           children: [
-            Text('$event: ${_eventVotes[event]}'),
+            Text(event),
             const Expanded(child: SizedBox()),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
+            Text('${_eventVotes[event]}'),
+            IconButton(
               onPressed: () {
                 if (_eventsVoted.contains(event)) {
                   unvoteEvent(event);
@@ -154,15 +150,14 @@ class _HomePageState extends State<HomePage> {
                   voteEvent(event);
                 }
               },
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (_eventsVoted.contains(event)) {
-                    return const Text('Voted');
-                  } else {
-                    return const Text('Vote for Event');
-                  }
-                },
-              ),
+              tooltip: _eventsVoted.contains(event) ? 'Unvote' : 'Vote',
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              color: Theme.of(context).colorScheme.primary,
+              icon: _eventsVoted.contains(event)
+                  ? const Icon(Icons.favorite)
+                  : const Icon(Icons.favorite_outline),
             ),
           ],
         ),
@@ -198,30 +193,27 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           children: [
             // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
-            Text('$localTimeStr: ${_timesVotes[dateTime]}'),
+            Text(localTimeStr),
             const Expanded(child: SizedBox()),
-            SizedBox(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                onPressed: () {
-                  if (_timesVoted.contains(dateTime)) {
-                    unvoteTime(dateTime);
-                  } else {
-                    voteTime(dateTime);
-                  }
-                },
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (_timesVoted.contains(dateTime)) {
-                      return const Text('Voted');
-                    } else {
-                      return const Text('Vote for Time');
-                    }
-                  },
-                ),
-              ),
+            Text('${_timesVotes[dateTime]}'),
+            IconButton(
+              onPressed: () {
+                if (_timesVoted.contains(dateTime)) {
+                  unvoteTime(dateTime);
+                } else {
+                  voteTime(dateTime);
+                }
+              },
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              tooltip: _timesVoted.contains(dateTime) ? 'Unvote' : 'Vote',
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              color: Theme.of(context).colorScheme.primary,
+              icon: _timesVoted.contains(dateTime)
+                  ? const Icon(Icons.favorite)
+                  : const Icon(Icons.favorite_outline),
             ),
           ],
         ),
@@ -232,18 +224,12 @@ class _HomePageState extends State<HomePage> {
   Widget eventVoteList() {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-          height: 40,
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              text: 'Events',
-            ),
+        Text(
+          'Events',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
           ),
         ),
         ListView.builder(
@@ -272,18 +258,12 @@ class _HomePageState extends State<HomePage> {
   Widget timeVoteList() {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-          height: 40,
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              text: 'Times',
-            ),
+        Text(
+          'Times',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
           ),
         ),
         ListView.builder(
@@ -299,6 +279,21 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ],
+    );
+  }
+
+  Widget border(Widget child) {
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          width: 3.0,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: child,
     );
   }
 
@@ -321,10 +316,10 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: eventVoteList(),
+              child: border(eventVoteList()),
             ),
             Expanded(
-              child: timeVoteList(),
+              child: border(timeVoteList()),
             )
           ],
         ),

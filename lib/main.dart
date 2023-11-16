@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
@@ -63,6 +62,8 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
+  bool _isExtended = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -78,6 +79,7 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
           seedColor: Colors.deepPurple,
         ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 29, 27, 30),
       ),
       themeMode: ThemeMode.system,
       home: LayoutBuilder(
@@ -90,11 +92,10 @@ class _MyAppState extends State<MyApp> {
           } else {
             return Scaffold(
               key: scaffoldKey,
-              drawer: drawer(),
+              appBar: appbar() as PreferredSizeWidget,
               body: Row(
                 children: [
                   navRail(),
-                  const VerticalDivider(thickness: 1, width: 1),
                   Expanded(child: _pages[_selectedIndex].page),
                 ],
               ),
@@ -125,64 +126,15 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Drawer drawer() {
-    return Drawer(
-      width: 200,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(9, 9, 0, 0),
-        child: ListView(
-          children: ([
-                Builder(builder: (context) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        onPressed: Navigator.of(context).pop,
-                        icon: const Icon(Icons.menu),
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                      ),
-                    ),
-                  );
-                })
-              ] +
-              _pages.map((page) {
-                return Builder(builder: (context) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                    child: ListTile(
-                      title: Text(page.name),
-                      leading: page.icon,
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = _pages.indexOf(page);
-                          Navigator.of(context).pop();
-                        });
-                      },
-                    ),
-                  );
-                });
-              }).toList()),
-        ),
-      ),
-    );
-  }
-
-  NavigationRail navRail() {
+  //TODO: replace with custom widget without animations
+  Widget navRail() {
     return NavigationRail(
-      leading: Builder(builder: (context) {
-        return IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: Scaffold.of(context).openDrawer,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-        );
-      }),
       minWidth: 50,
-      labelType: NavigationRailLabelType.all,
+      minExtendedWidth: 200,
+      extended: _isExtended,
+      labelType: _isExtended
+          ? NavigationRailLabelType.none
+          : NavigationRailLabelType.all,
       destinations: _pages
           .map(
             (page) => NavigationRailDestination(
@@ -198,6 +150,30 @@ class _MyAppState extends State<MyApp> {
           _selectedIndex = value;
         });
       },
+    );
+  }
+
+  Widget appbar() {
+    return AppBar(
+      // title: const Text('mouse_irl'),
+      leading: Builder(builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 14.0),
+          child: IconButton(
+            icon: const Icon(Icons.menu),
+            // onPressed: Scaffold.of(context).openDrawer,
+            onPressed: () {
+              setState(() {
+                _isExtended = !_isExtended;
+              });
+            },
+            hoverColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+          ),
+        );
+      }),
+      shadowColor: Colors.transparent,
     );
   }
 }

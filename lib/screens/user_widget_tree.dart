@@ -14,6 +14,10 @@ class UserWidgetTreeState extends State<UserWidgetTree> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
+      initialData: const Scaffold(
+          body: Center(
+        child: CircularProgressIndicator(),
+      )),
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
