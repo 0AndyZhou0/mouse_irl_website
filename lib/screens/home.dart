@@ -141,10 +141,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text('$event: ${_eventVotes[event]}'),
             const Expanded(child: SizedBox()),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ),
+            IconButton(
               onPressed: () {
                 if (_eventsVoted.contains(event)) {
                   unvoteEvent(event);
@@ -152,15 +149,14 @@ class _HomePageState extends State<HomePage> {
                   voteEvent(event);
                 }
               },
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (_eventsVoted.contains(event)) {
-                    return const Text('Voted');
-                  } else {
-                    return const Text('Vote for Event');
-                  }
-                },
-              ),
+              tooltip: _eventsVoted.contains(event) ? 'Unvote' : 'Vote',
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              color: Theme.of(context).colorScheme.primary,
+              icon: _eventsVoted.contains(event)
+                  ? const Icon(Icons.favorite)
+                  : const Icon(Icons.favorite_outline),
             ),
           ],
         ),
@@ -198,28 +194,22 @@ class _HomePageState extends State<HomePage> {
             // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
             Text('$localTimeStr: ${_timesVotes[dateTime]}'),
             const Expanded(child: SizedBox()),
-            SizedBox(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-                onPressed: () {
-                  if (_timesVoted.contains(dateTime)) {
-                    unvoteTime(dateTime);
-                  } else {
-                    voteTime(dateTime);
-                  }
-                },
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (_timesVoted.contains(dateTime)) {
-                      return const Text('Voted');
-                    } else {
-                      return const Text('Vote for Time');
-                    }
-                  },
-                ),
-              ),
+            IconButton(
+              onPressed: () {
+                if (_timesVoted.contains(dateTime)) {
+                  unvoteTime(dateTime);
+                } else {
+                  voteTime(dateTime);
+                }
+              },
+              tooltip: _timesVoted.contains(dateTime) ? 'Unvote' : 'Vote',
+              hoverColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              color: Theme.of(context).colorScheme.primary,
+              icon: _timesVoted.contains(dateTime)
+                  ? const Icon(Icons.favorite)
+                  : const Icon(Icons.favorite_outline),
             ),
           ],
         ),
