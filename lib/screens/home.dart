@@ -139,8 +139,9 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.only(left: 8.0),
         child: Row(
           children: [
-            Text('$event: ${_eventVotes[event]}'),
+            Text(event),
             const Expanded(child: SizedBox()),
+            Text('${_eventVotes[event]}'),
             IconButton(
               onPressed: () {
                 if (_eventsVoted.contains(event)) {
@@ -192,8 +193,9 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           children: [
             // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
-            Text('$localTimeStr: ${_timesVotes[dateTime]}'),
+            Text(localTimeStr),
             const Expanded(child: SizedBox()),
+            Text('${_timesVotes[dateTime]}'),
             IconButton(
               onPressed: () {
                 if (_timesVoted.contains(dateTime)) {
@@ -202,6 +204,8 @@ class _HomePageState extends State<HomePage> {
                   voteTime(dateTime);
                 }
               },
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
               tooltip: _timesVoted.contains(dateTime) ? 'Unvote' : 'Vote',
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
