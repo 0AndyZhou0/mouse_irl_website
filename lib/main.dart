@@ -79,6 +79,7 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
           seedColor: Colors.deepPurple,
         ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 29, 27, 30),
       ),
       themeMode: ThemeMode.system,
       home: LayoutBuilder(
@@ -125,6 +126,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  //TODO: replace with custom widget without animations
   Widget navRail() {
     return NavigationRail(
       minWidth: 50,
