@@ -76,38 +76,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget eventView() {
-    String? mostVotedTime;
+    if (_timesVotes.isEmpty || _eventVotes.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    // Get most voted time
+    String mostVotedTime = _timesVotes.keys.first;
     _timesVotes.forEach((key, value) {
-      if (mostVotedTime == null) {
-        mostVotedTime = key.toString();
-      } else if (value > _timesVotes[mostVotedTime]!) {
+      if (value > _timesVotes[mostVotedTime]!) {
         mostVotedTime = key.toString();
       }
     });
 
-    if (mostVotedTime == null) {
-      return Container();
-    }
+    var localTime = DateTime.parse(mostVotedTime).toLocal();
 
-    var localTime = DateTime.parse(mostVotedTime!).toLocal();
-
-    String? mostVotedEvent;
+    // Get most voted event
+    String mostVotedEvent = _eventVotes.keys.first;
     _eventVotes.forEach((key, value) {
-      if (mostVotedEvent == null) {
-        mostVotedEvent = key;
-      } else if (value > _eventVotes[mostVotedEvent]!) {
+      if (value > _eventVotes[mostVotedEvent]!) {
         mostVotedEvent = key;
       }
     });
-
-    if (mostVotedEvent == null) {
-      return Container();
-    }
 
     return Container(
-      width: double.infinity,
-      color: Theme.of(context).colorScheme.primaryContainer,
+      // color: Theme.of(context).colorScheme.primaryContainer,
       padding: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
       child: Text(
         '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
         style: const TextStyle(
@@ -232,18 +230,12 @@ class _HomePageState extends State<HomePage> {
   Widget eventVoteList() {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-          height: 40,
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              text: 'Events',
-            ),
+        Text(
+          'Events',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
           ),
         ),
         ListView.builder(
@@ -272,18 +264,12 @@ class _HomePageState extends State<HomePage> {
   Widget timeVoteList() {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-          height: 40,
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              text: 'Times',
-            ),
+        Text(
+          'Times',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
           ),
         ),
         ListView.builder(
@@ -299,6 +285,21 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ],
+    );
+  }
+
+  Widget border(Widget child) {
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          width: 3.0,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: child,
     );
   }
 
@@ -321,10 +322,10 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: eventVoteList(),
+              child: border(eventVoteList()),
             ),
             Expanded(
-              child: timeVoteList(),
+              child: border(timeVoteList()),
             )
           ],
         ),

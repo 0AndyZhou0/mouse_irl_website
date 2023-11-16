@@ -90,11 +90,26 @@ class _MyAppState extends State<MyApp> {
           } else {
             return Scaffold(
               key: scaffoldKey,
-              drawer: drawer(),
+              drawer: drawerBuilder(),
+              appBar: AppBar(
+                // title: const Text('mouse_irl'),
+                leading: Builder(builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 14.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: Scaffold.of(context).openDrawer,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                    ),
+                  );
+                }),
+                shadowColor: Colors.transparent,
+              ),
               body: Row(
                 children: [
                   navRail(),
-                  const VerticalDivider(thickness: 1, width: 1),
                   Expanded(child: _pages[_selectedIndex].page),
                 ],
               ),
@@ -125,15 +140,17 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Drawer drawer() {
-    return Drawer(
-      width: 200,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(9, 9, 0, 0),
-        child: ListView(
-          children: ([
-                Builder(builder: (context) {
-                  return Padding(
+  Widget drawerBuilder() {
+    return Builder(builder: (context) {
+      return Drawer(
+        // backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        width: 200,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(9, 9, 0, 0),
+          child: ListView(
+            children: ([
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
                     child: Align(
                       alignment: Alignment.topLeft,
@@ -145,13 +162,11 @@ class _MyAppState extends State<MyApp> {
                         splashColor: Colors.transparent,
                       ),
                     ),
-                  );
-                })
-              ] +
-              _pages.map((page) {
-                return Builder(builder: (context) {
+                  ),
+                ] +
+                _pages.map((page) {
                   return Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
                     child: ListTile(
                       title: Text(page.name),
                       leading: page.icon,
@@ -163,24 +178,24 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                   );
-                });
-              }).toList()),
+                }).toList()),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   NavigationRail navRail() {
     return NavigationRail(
-      leading: Builder(builder: (context) {
-        return IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: Scaffold.of(context).openDrawer,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-        );
-      }),
+      // leading: Builder(builder: (context) {
+      //   return IconButton(
+      //     icon: const Icon(Icons.menu),
+      //     onPressed: Scaffold.of(context).openDrawer,
+      //     hoverColor: Colors.transparent,
+      //     highlightColor: Colors.transparent,
+      //     splashColor: Colors.transparent,
+      //   );
+      // }),
       minWidth: 50,
       labelType: NavigationRailLabelType.all,
       destinations: _pages
