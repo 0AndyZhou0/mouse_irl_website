@@ -46,3 +46,6 @@ app.*.map.json
 # Firebase
 /.firebase
 /.github/
+
+# Workspace
+mouse_irl_website.code-workspace
