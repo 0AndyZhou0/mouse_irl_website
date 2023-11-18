@@ -15,13 +15,18 @@ Map<String, List<String>> monthlyEvents = {}; // day(int) : events
 Map<String, List<String>> weeklyEvents = {}; // weekday(int) : events
 Map<String, List<String>> holidays = {}; // datetime(mm-dd) : events
 Future<Map<String, List<String>>> getEventsFromDatabaseBasedOnRef(
-    String ref) async {
-  final events = await FirebaseDatabase.instance.ref(ref).get();
+    String refname) async {
   Map<String, List<String>> eventsMap = {};
-  if (events.exists) {
-    (events.value! as Map).forEach((key, value) {
-      eventsMap[key] = (value as List).cast<String>();
-    });
+  try {
+    var events = await FirebaseDatabase.instance.ref(refname).get();
+    if (events.exists) {
+      (events.value! as Map).forEach((key, value) {
+        eventsMap[key] = (value as List).cast<String>();
+      });
+    }
+  } catch (e) {
+    // print(e);
+    return {};
   }
   return eventsMap;
 }
@@ -38,6 +43,7 @@ Future<Map<String, Map<String, List<String>>>> getEventsFromDatabase() async {
       await getEventsFromDatabaseBasedOnRef('WeeklyEvents');
   eventsFromDatabase['holidays'] =
       await getEventsFromDatabaseBasedOnRef('Holidays');
+
   return eventsFromDatabase;
 }
 
