@@ -18,12 +18,10 @@ Future<Map<String, List<String>>> getEventsFromDatabaseBasedOnRef(
     String refname) async {
   Map<String, List<String>> eventsMap = {};
   try {
-    var events = await FirebaseDatabase.instance.ref(refname).get();
-    if (events.exists) {
-      (events.value! as Map).forEach((key, value) {
-        eventsMap[key] = (value as List).cast<String>();
-      });
-    }
+    var events = await FirebaseDatabase.instance.ref(refname).once();
+    (events.snapshot.value! as Map).forEach((key, value) {
+      eventsMap[key] = (value as List).cast<String>();
+    });
   } catch (e) {
     // print(e);
     return {};
