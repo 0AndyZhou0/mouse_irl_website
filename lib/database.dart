@@ -4,8 +4,8 @@ class Database {
   final DatabaseReference currentVotesRef =
       FirebaseDatabase.instance.ref('CurrentVotes');
 
-  Map<String, int> _eventVotes = {};
-  Map<String, int> _timesVotes = {}; //in UTC time
+  final Map<String, int> _eventVotes = {};
+  final Map<String, int> _timesVotes = {}; //in UTC time
 
   Map<String, int> get eventVotes => _eventVotes;
   Map<String, int> get timesVotes => _timesVotes;
