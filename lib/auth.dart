@@ -12,23 +12,23 @@ class Auth {
 
   // final GoogleSignInPlugin googleSignIn = GoogleSignInPlugin();
 
-  String _token = '';
+  // String _token = '';
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future<void> _authenticate({
-    required String email,
-    required String password,
-    required String urlSegment,
-  }) async {
-    var acs = ActionCodeSettings(url: 'https://mouseirl.firebaseapp.com');
-    FirebaseAuth.instance
-        .sendSignInLinkToEmail(email: email, actionCodeSettings: acs)
-        .catchError(
-            (onError) => print('Error sending email verification $onError'))
-        .then((value) => print('Successfully sent email verification'));
-    //TODO: change to logger maybe idk how this works
-  }
+  // Future<void> _authenticate({
+  //   required String email,
+  //   required String password,
+  //   required String urlSegment,
+  // }) async {
+  //   var acs = ActionCodeSettings(url: 'https://mouseirl.firebaseapp.com');
+  //   FirebaseAuth.instance
+  //       .sendSignInLinkToEmail(email: email, actionCodeSettings: acs)
+  //       .catchError(
+  //           (onError) => print('Error sending email verification $onError'))
+  //       .then((value) => print('Successfully sent email verification'));
+  //   //TODO: change to logger maybe idk how this works
+  // }
 
   Future<void> createUserWithEmailAndPassword(
       {required String email, required String password}) async {
@@ -53,7 +53,7 @@ class Auth {
         // await _auth.signInWithProvider(googleProvider);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
 
     if (googleUser != null) {
@@ -62,9 +62,9 @@ class Auth {
       userEmail = googleUser!.email;
       uid = googleUser!.uid;
 
-      print("name: $name");
-      print("userEmail: $userEmail");
-      print("imageUrl: $imageUrl");
+      // print("name: $name");
+      // print("userEmail: $userEmail");
+      // print("imageUrl: $imageUrl");
     }
   }
 
