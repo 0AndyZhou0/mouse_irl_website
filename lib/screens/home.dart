@@ -144,7 +144,21 @@ class _HomePageState extends State<HomePage> {
             Text('${_eventVotes[event]}'),
             IconButton(
               onPressed: () {
-                if (_eventsVoted.contains(event)) {
+                if (uid == '') {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text('Please login to vote'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ));
+                } else if (_eventsVoted.contains(event)) {
                   unvoteEvent(event);
                 } else {
                   voteEvent(event);
@@ -198,7 +212,21 @@ class _HomePageState extends State<HomePage> {
             Text('${_timesVotes[dateTime]}'),
             IconButton(
               onPressed: () {
-                if (_timesVoted.contains(dateTime)) {
+                if (uid == '') {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text('Please login to vote'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ));
+                } else if (_timesVoted.contains(dateTime)) {
                   unvoteTime(dateTime);
                 } else {
                   voteTime(dateTime);
@@ -237,14 +265,7 @@ class _HomePageState extends State<HomePage> {
           shrinkWrap: true,
           itemCount: _eventVotes.length,
           itemBuilder: (context, index) {
-            // if (uid == '' && index == 0) {
-            //   return Container(
-            //     padding: const EdgeInsets.only(left: 5.0),
-            //     height: 20,
-            //     child: const Text('Sign in to vote for events!'),
-            //   );
-            // }
-            if (index < _eventVotes.length && uid != '') {
+            if (index < _eventVotes.length) {
               return Container(
                   child: voteEventsButton(_eventVotes.keys.elementAt(index)));
             }
@@ -271,7 +292,7 @@ class _HomePageState extends State<HomePage> {
           shrinkWrap: true,
           itemCount: _timesVotes.length,
           itemBuilder: (context, index) {
-            if (index < _timesVotes.length && uid != '') {
+            if (index < _timesVotes.length) {
               return Container(
                   child: voteTimesButton(_timesVotes.keys.elementAt(index)));
             }
