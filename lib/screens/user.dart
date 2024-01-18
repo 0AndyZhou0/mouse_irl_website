@@ -24,15 +24,59 @@ class _UserPageState extends State<UserPage> {
   }
 
   Widget _userProfilePicture() {
-    // TODO: turn into button that goes to user profile edit page
     return CircleAvatar(
       radius: 20,
       backgroundImage: NetworkImage(user?.photoURL ?? ''),
     );
   }
 
-  Widget _userProfile() {
+  Widget _userName() {
     return Text(user?.displayName ?? '');
+  }
+
+  Widget _userProfileEditButton() {
+    return IconButton(
+      onPressed: () {
+        final TextEditingController _controller = TextEditingController();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Edit Profile'),
+            content: SizedBox(
+              height: 150,
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    decoration:
+                        const InputDecoration(hintText: "Enter new username"),
+                    controller: _controller,
+                  ),
+                  // Add a file picker here for the profile picture
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  print(_controller.text);
+                  Auth().updateUserProfile(name: _controller.text);
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Update'),
+              ),
+            ],
+          ),
+        );
+      },
+      icon: const Icon(Icons.edit),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+    );
   }
 
   Widget _userSignOutButton() {
@@ -107,10 +151,11 @@ class _UserPageState extends State<UserPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _userProfile(),
+                        _userName(),
                         _userEmail(),
                       ],
-                    )
+                    ),
+                    _userProfileEditButton(),
                   ],
                 ),
                 const SizedBox(height: 20),

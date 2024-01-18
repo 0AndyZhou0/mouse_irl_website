@@ -106,13 +106,17 @@ class Auth {
   }
 
   Future<void> updateUserProfile({
-    required String name,
-    required String imageUrl,
+    String? name,
+    String? imageUrl,
   }) async {
     if (currentUser == null) {
       return;
     }
-    currentUser!.updateDisplayName(name);
-    currentUser!.updatePhotoURL(imageUrl);
+    if (name != null) {
+      currentUser!.updateDisplayName(name);
+    }
+    if (imageUrl != null) {
+      currentUser!.updatePhotoURL(imageUrl);
+    }
   }
 }
