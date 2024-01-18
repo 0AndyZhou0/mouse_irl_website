@@ -94,13 +94,15 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   void initState() {
     getEventsFromDatabase().then((results) {
-      setState(() {
-        singleEvents = results['singleEvents']!;
-        yearlyEvents = results['yearlyEvents']!;
-        monthlyEvents = results['monthlyEvents']!;
-        weeklyEvents = results['weeklyEvents']!;
-        holidays = results['holidays']!;
-      });
+      if (mounted) {
+        setState(() {
+          singleEvents = results['singleEvents']!;
+          yearlyEvents = results['yearlyEvents']!;
+          monthlyEvents = results['monthlyEvents']!;
+          weeklyEvents = results['weeklyEvents']!;
+          holidays = results['holidays']!;
+        });
+      }
     });
     super.initState();
   }
