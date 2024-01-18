@@ -85,13 +85,41 @@ class Auth {
     return currentUser!.emailVerified;
   }
 
-  Future<void> sendEmailVerification() async {
-    if (currentUser == null) {
-      return;
-    }
-  }
+  // Future<void> sendEmailVerification() async {
+  //   if (currentUser == null) {
+  //     return;
+  //   }
+  // }
 
   Future<void> sendPasswordResetEmail({required String email}) async {
     await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> getUserProfile() async {
+    if (currentUser == null) {
+      return;
+    }
+    name = currentUser!.displayName;
+    imageUrl = currentUser!.photoURL;
+    userEmail = currentUser!.email;
+    uid = currentUser!.uid;
+  }
+
+  Future<void> updateUserName(String? name) async {
+    if (currentUser == null) {
+      return;
+    }
+    if (name != null && name != '') {
+      currentUser!.updateDisplayName(name);
+    }
+  }
+
+  Future<void> updateUserProfilePic(String? imageUrl) async {
+    if (currentUser == null) {
+      return;
+    }
+    if (imageUrl != null && imageUrl != '') {
+      currentUser!.updatePhotoURL(imageUrl);
+    }
   }
 }
