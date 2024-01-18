@@ -57,6 +57,8 @@ class _UserPageState extends State<UserPage> {
                 Future pickImage() async {
                   final XFile? image = await picker.pickImage(
                     source: ImageSource.gallery,
+                    maxWidth: 200,
+                    maxHeight: 200,
                   );
                   if (image != null) {
                     setState(() {
