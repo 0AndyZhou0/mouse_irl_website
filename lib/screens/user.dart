@@ -44,83 +44,120 @@ class _UserPageState extends State<UserPage> {
   Widget _userProfileEditButton() {
     return IconButton(
       onPressed: () {
-        final TextEditingController controller = TextEditingController();
-        XFile? profilePic;
-        final ImagePicker picker = ImagePicker();
-        String? imageUrl;
-
-        Future pickImage() async {
-          final XFile? image = await picker.pickImage(
-            source: ImageSource.gallery,
-          );
-          if (image != null) {
-            profilePic = image;
-          }
-        }
-
-        Future uploadPic() async {
-          if (profilePic != null) {
-            String fileName = user!.uid;
-            Reference ref =
-                FirebaseStorage.instance.ref().child("profiles/$fileName");
-            try {
-              TaskSnapshot taskSnapshot;
-              if (kIsWeb) {
-                taskSnapshot = await ref.putData(
-                  await profilePic!.readAsBytes(),
-                  SettableMetadata(
-                    contentType: profilePic!.mimeType,
-                  ),
-                );
-              } else {
-                taskSnapshot = await ref.putFile(File(profilePic!.path));
-              }
-              imageUrl = await taskSnapshot.ref.getDownloadURL();
-              Auth().updateUserProfilePic(imageUrl!);
-              _logger.info('Uploaded profile picture: $imageUrl');
-            } catch (e) {
-              _logger.severe('Error occurred while uploading file: $e');
-            }
-          }
-        }
-
         showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Edit Profile'),
-            content: SizedBox(
-              height: 150,
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    decoration:
-                        const InputDecoration(hintText: "Enter new username"),
-                    controller: controller,
+          builder: (context) {
+            final TextEditingController controller = TextEditingController();
+            XFile? profilePic;
+            final ImagePicker picker = ImagePicker();
+            String? imageUrl;
+
+            return StatefulBuilder(
+              builder: (context, setState) {
+                Future pickImage() async {
+                  final XFile? image = await picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  if (image != null) {
+                    setState(() {
+                      profilePic = image;
+                    });
+                  }
+                }
+
+                Future uploadPic() async {
+                  if (profilePic != null) {
+                    String fileName = user!.uid;
+                    Reference ref = FirebaseStorage.instance
+                        .ref()
+                        .child("profiles/$fileName");
+                    try {
+                      TaskSnapshot taskSnapshot;
+                      if (kIsWeb) {
+                        taskSnapshot = await ref.putData(
+                          await profilePic!.readAsBytes(),
+                          SettableMetadata(
+                            contentType: profilePic!.mimeType,
+                          ),
+                        );
+                      } else {
+                        taskSnapshot =
+                            await ref.putFile(File(profilePic!.path));
+                      }
+                      imageUrl = await taskSnapshot.ref.getDownloadURL();
+                      Auth().updateUserProfilePic(imageUrl!);
+                      _logger.info('Uploaded profile picture: $imageUrl');
+                    } catch (e) {
+                      _logger.severe('Error occurred while uploading file: $e');
+                    }
+                  }
+                }
+
+                Widget profilePreview() {
+                  if (profilePic != null) {
+                    if (kIsWeb) {
+                      return CircleAvatar(
+                        radius: 15,
+                        backgroundImage: NetworkImage(profilePic!.path),
+                      );
+                    } else {
+                      return CircleAvatar(
+                        radius: 15,
+                        backgroundImage: FileImage(File(profilePic!.path)),
+                      );
+                    }
+                  }
+                  return const Text('Select Image');
+                }
+
+                return AlertDialog(
+                  title: const Text('Edit Profile'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextField(
+                        decoration: const InputDecoration(
+                            hintText: "Enter new username"),
+                        controller: controller,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              pickImage();
+                            },
+                            child: const Text('Pick Image'),
+                          ),
+                          const SizedBox(width: 16),
+                          Center(
+                            child: profilePreview(),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      pickImage();
-                    },
-                    child: const Text('Pick Image'),
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  uploadPic();
-                  Auth().updateUserName(controller.text);
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Update'),
-              ),
-            ],
-          ),
+                  contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        uploadPic();
+                        Auth().updateUserName(controller.text);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Update'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         );
       },
       icon: const Icon(Icons.edit),
