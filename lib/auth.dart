@@ -105,17 +105,20 @@ class Auth {
     uid = currentUser!.uid;
   }
 
-  Future<void> updateUserProfile({
-    String? name,
-    String? imageUrl,
-  }) async {
+  Future<void> updateUserName(String? name) async {
     if (currentUser == null) {
       return;
     }
-    if (name != null) {
+    if (name != null && name != '') {
       currentUser!.updateDisplayName(name);
     }
-    if (imageUrl != null) {
+  }
+
+  Future<void> updateUserProfilePic(String? imageUrl) async {
+    if (currentUser == null) {
+      return;
+    }
+    if (imageUrl != null && imageUrl != '') {
       currentUser!.updatePhotoURL(imageUrl);
     }
   }

@@ -1,9 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:mouse_irl_website/database.dart';
 import 'package:mouse_irl_website/screens/admin_event.dart';
 import 'package:mouse_irl_website/screens/admin_time.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:logging/logging.dart';
 
 // TODO: merge user page with home page
 // Profile goes in the corner
@@ -17,6 +22,8 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  final _logger = Logger('UserPage');
+
   final User? user = Auth().currentUser;
 
   Widget _userEmail() {
@@ -37,7 +44,46 @@ class _UserPageState extends State<UserPage> {
   Widget _userProfileEditButton() {
     return IconButton(
       onPressed: () {
-        final TextEditingController _controller = TextEditingController();
+        final TextEditingController controller = TextEditingController();
+        XFile? profilePic;
+        final ImagePicker picker = ImagePicker();
+        String? imageUrl;
+
+        Future pickImage() async {
+          final XFile? image = await picker.pickImage(
+            source: ImageSource.gallery,
+          );
+          if (image != null) {
+            profilePic = image;
+          }
+        }
+
+        Future uploadPic() async {
+          if (profilePic != null) {
+            String fileName = user!.uid;
+            Reference ref =
+                FirebaseStorage.instance.ref().child("profiles/$fileName");
+            try {
+              TaskSnapshot taskSnapshot;
+              if (kIsWeb) {
+                taskSnapshot = await ref.putData(
+                  await profilePic!.readAsBytes(),
+                  SettableMetadata(
+                    contentType: profilePic!.mimeType,
+                  ),
+                );
+              } else {
+                taskSnapshot = await ref.putFile(File(profilePic!.path));
+              }
+              imageUrl = await taskSnapshot.ref.getDownloadURL();
+              Auth().updateUserProfilePic(imageUrl!);
+              _logger.info('Uploaded profile picture: $imageUrl');
+            } catch (e) {
+              _logger.severe('Error occurred while uploading file: $e');
+            }
+          }
+        }
+
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -49,9 +95,14 @@ class _UserPageState extends State<UserPage> {
                   TextField(
                     decoration:
                         const InputDecoration(hintText: "Enter new username"),
-                    controller: _controller,
+                    controller: controller,
                   ),
-                  // Add a file picker here for the profile picture
+                  ElevatedButton(
+                    onPressed: () {
+                      pickImage();
+                    },
+                    child: const Text('Pick Image'),
+                  ),
                 ],
               ),
             ),
@@ -62,8 +113,8 @@ class _UserPageState extends State<UserPage> {
               ),
               TextButton(
                 onPressed: () {
-                  print(_controller.text);
-                  Auth().updateUserProfile(name: _controller.text);
+                  uploadPic();
+                  Auth().updateUserName(controller.text);
                   Navigator.of(context).pop();
                 },
                 child: const Text('Update'),
