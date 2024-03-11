@@ -22,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   List<String> _eventsVoted = [];
   List<String> _timesVoted = [];
 
+  double? colWidth;
+
   @override
   void initState() {
     super.initState();
@@ -141,7 +143,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width - 80,
+                maxWidth: colWidth! - 100,
               ),
               child: Text(event),
             ),
@@ -338,8 +340,10 @@ class _HomePageState extends State<HomePage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
+            colWidth = constraints.maxWidth - 16;
             return singleColumn();
           } else {
+            colWidth = constraints.maxWidth / 2 - 16;
             return doubleColumn();
           }
         },
