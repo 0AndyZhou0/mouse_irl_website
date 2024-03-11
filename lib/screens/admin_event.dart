@@ -44,22 +44,38 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          Text(event),
+          Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width - 150,
+              ),
+              child: Text(event)),
           const Expanded(child: SizedBox()),
-          ElevatedButton(
-            onPressed: () {
-              currentEventsVotesRef.child(event).set({
-                'exists': 'true',
-              });
-            },
-            child: const Text('clear'),
+          SizedBox(
+            width: 60,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.zero),
+              ),
+              onPressed: () {
+                currentEventsVotesRef.child(event).set({
+                  'exists': 'true',
+                });
+              },
+              child: const Text('clear'),
+            ),
           ),
           const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () {
-              currentEventsVotesRef.child(event).remove();
-            },
-            child: const Text('delete'),
+          SizedBox(
+            width: 60,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.zero),
+              ),
+              onPressed: () {
+                currentEventsVotesRef.child(event).remove();
+              },
+              child: const Text('delete'),
+            ),
           ),
         ],
       ),

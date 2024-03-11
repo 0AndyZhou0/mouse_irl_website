@@ -139,7 +139,12 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.only(left: 8.0),
         child: Row(
           children: [
-            Text(event),
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width - 80,
+              ),
+              child: Text(event),
+            ),
             const Expanded(child: SizedBox()),
             Text('${_eventVotes[event]}'),
             IconButton(
