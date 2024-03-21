@@ -107,6 +107,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       );
     }
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 69),
       itemCount: _events.length,
       itemBuilder: (BuildContext context, int index) {
         return removeEvent(_events[index]);

@@ -93,6 +93,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       );
     }
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 69 * 2),
       itemCount: _times.length,
       itemBuilder: (BuildContext context, int index) {
         return removeTime(_times[index]);
