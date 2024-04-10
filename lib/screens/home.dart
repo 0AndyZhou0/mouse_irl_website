@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:mouse_irl_website/database.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,10 +18,6 @@ class _HomePageState extends State<HomePage> {
       FirebaseDatabase.instance.ref('CurrentVotes/Times');
 
   String uid = Auth().currentUser?.uid ?? '';
-  Map<String, int> _eventVotes = {};
-  Map<String, int> _timesVotes = {}; //in UTC time
-  List<String> _eventsVoted = [];
-  List<String> _timesVoted = [];
 
   double? colWidth;
 
@@ -28,64 +25,67 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
-      if (mounted) {
-        var data = event.snapshot.value;
-        Map<String, int> eventVotes = {};
-        List<String> eventsVoted = [];
-        if (data != null) {
-          (data as Map).forEach((event, voteslist) {
-            if (voteslist != null) {
-              (voteslist as Map).forEach((id, vote) {
-                if (vote == true && id == uid) {
-                  eventsVoted.add(event);
-                }
-              });
-              eventVotes[event] = voteslist.length - 1;
-            }
-          });
-        }
-        setState(() {
-          _eventVotes = eventVotes;
-          _eventsVoted = eventsVoted;
-        });
-      }
-    });
+    // Database().getVotes();
+    // print(Database().eventVotes);
 
-    currentTimesVotesRef.onValue.listen((DatabaseEvent time) {
-      if (mounted) {
-        var data = time.snapshot.value;
-        Map<String, int> timeVotes = {};
-        List<String> timesVoted = [];
-        if (data != null) {
-          (data as Map).forEach((time, voteslist) {
-            if (voteslist != null && DateTime.tryParse(time) != null) {
-              (voteslist as Map).forEach((id, vote) {
-                if (vote == true && id == uid) {
-                  timesVoted.add(time);
-                }
-              });
-              timeVotes[time] = voteslist.length - 1;
-            }
-          });
-        }
-        setState(() {
-          _timesVotes = timeVotes;
-          _timesVoted = timesVoted;
-        });
-      }
-    });
+    //   currentEventsVotesRef.onValue.listen((DatabaseEvent event) {
+    //     if (mounted) {
+    //       var data = event.snapshot.value;
+    //       Map<String, int> eventVotes = {};
+    //       Set<String> eventsVoted = {};
+    //       if (data != null) {
+    //         (data as Map).forEach((event, voteslist) {
+    //           if (voteslist != null) {
+    //             (voteslist as Map).forEach((id, vote) {
+    //               if (vote == true && id == uid) {
+    //                 eventsVoted.add(event);
+    //               }
+    //             });
+    //             eventVotes[event] = voteslist.length - 1;
+    //           }
+    //         });
+    //       }
+    //       setState(() {
+    //         Database().eventVotes = eventVotes;
+    //         Database().eventsVoted = eventsVoted;
+    //       });
+    //     }
+    //   });
+
+    //   currentTimesVotesRef.onValue.listen((DatabaseEvent time) {
+    //     if (mounted) {
+    //       var data = time.snapshot.value;
+    //       Map<String, int> timeVotes = {};
+    //       Set<String> timesVoted = {};
+    //       if (data != null) {
+    //         (data as Map).forEach((time, voteslist) {
+    //           if (voteslist != null && DateTime.tryParse(time) != null) {
+    //             (voteslist as Map).forEach((id, vote) {
+    //               if (vote == true && id == uid) {
+    //                 timesVoted.add(time);
+    //               }
+    //             });
+    //             timeVotes[time] = voteslist.length - 1;
+    //           }
+    //         });
+    //       }
+    //       setState(() {
+    //         Database().timeVotes = timeVotes;
+    //         Database().timesVoted = timesVoted;
+    //       });
+    //     }
+    //   });
   }
 
   Widget eventView() {
-    if (_timesVotes.isEmpty || _eventVotes.isEmpty) {
+    if (Database().timeVotes.isEmpty || Database().eventVotes.isEmpty) {
       return const SizedBox.shrink();
     }
 
     // Get most voted time
-    String mostVotedTime = _timesVotes.keys.first;
-    _timesVotes.forEach((key, value) {
-      if (value > _timesVotes[mostVotedTime]!) {
+    String mostVotedTime = Database().timeVotes.keys.first;
+    Database().timeVotes.forEach((key, value) {
+      if (value > Database().timeVotes[mostVotedTime]!) {
         mostVotedTime = key.toString();
       }
     });
@@ -93,9 +93,9 @@ class _HomePageState extends State<HomePage> {
     var localTime = DateTime.parse(mostVotedTime).toLocal();
 
     // Get most voted event
-    String mostVotedEvent = _eventVotes.keys.first;
-    _eventVotes.forEach((key, value) {
-      if (value > _eventVotes[mostVotedEvent]!) {
+    String mostVotedEvent = Database().eventVotes.keys.first;
+    Database().eventVotes.forEach((key, value) {
+      if (value > Database().eventVotes[mostVotedEvent]!) {
         mostVotedEvent = key;
       }
     });
@@ -118,22 +118,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void voteEvent(String event) async {
-    DatabaseReference eventRef =
-        FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
-    await eventRef.update({
-      uid: true,
-    });
-  }
-
-  void unvoteEvent(String event) async {
-    DatabaseReference eventRef =
-        FirebaseDatabase.instance.ref('CurrentVotes/Events/$event');
-    await eventRef.update({
-      uid: null,
-    });
-  }
-
   // Vote/Unvote Event
   Widget voteEventsButton(String event) {
     return Card(
@@ -148,21 +132,22 @@ class _HomePageState extends State<HomePage> {
               child: Text(event),
             ),
             const Expanded(child: SizedBox()),
-            Text('${_eventVotes[event]}'),
+            Text('${Database().eventVotes[event]}'),
             IconButton(
               onPressed: () {
-                if (_eventsVoted.contains(event)) {
-                  unvoteEvent(event);
+                if (Database().eventsVoted.contains(event)) {
+                  Database().unvoteEvent(event);
                 } else {
-                  voteEvent(event);
+                  Database().voteEvent(event);
                 }
               },
-              tooltip: _eventsVoted.contains(event) ? 'Unvote' : 'Vote',
+              tooltip:
+                  Database().eventsVoted.contains(event) ? 'Unvote' : 'Vote',
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               color: Theme.of(context).colorScheme.primary,
-              icon: _eventsVoted.contains(event)
+              icon: Database().eventsVoted.contains(event)
                   ? const Icon(Icons.favorite)
                   : const Icon(Icons.favorite_outline),
             ),
@@ -170,22 +155,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  void voteTime(String dateTime) async {
-    DatabaseReference eventRef =
-        FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
-    await eventRef.update({
-      uid: true,
-    });
-  }
-
-  void unvoteTime(String dateTime) async {
-    DatabaseReference eventRef =
-        FirebaseDatabase.instance.ref('CurrentVotes/Times/$dateTime');
-    await eventRef.update({
-      uid: null,
-    });
   }
 
   Widget voteTimesButton(String dateTime) {
@@ -202,23 +171,24 @@ class _HomePageState extends State<HomePage> {
             // Text('$localTimeStr - $localendTimeStr: ${_timesVotes[dateTime]}'),
             Text(localTimeStr),
             const Expanded(child: SizedBox()),
-            Text('${_timesVotes[dateTime]}'),
+            Text('${Database().timeVotes[dateTime]}'),
             IconButton(
               onPressed: () {
-                if (_timesVoted.contains(dateTime)) {
-                  unvoteTime(dateTime);
+                if (Database().timesVoted.contains(dateTime)) {
+                  Database().unvoteTime(dateTime);
                 } else {
-                  voteTime(dateTime);
+                  Database().voteTime(dateTime);
                 }
               },
               visualDensity: VisualDensity.compact,
               padding: EdgeInsets.zero,
-              tooltip: _timesVoted.contains(dateTime) ? 'Unvote' : 'Vote',
+              tooltip:
+                  Database().timesVoted.contains(dateTime) ? 'Unvote' : 'Vote',
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               color: Theme.of(context).colorScheme.primary,
-              icon: _timesVoted.contains(dateTime)
+              icon: Database().timesVoted.contains(dateTime)
                   ? const Icon(Icons.favorite)
                   : const Icon(Icons.favorite_outline),
             ),
@@ -242,7 +212,7 @@ class _HomePageState extends State<HomePage> {
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: _eventVotes.length,
+          itemCount: Database().eventVotes.length,
           itemBuilder: (context, index) {
             // if (uid == '' && index == 0) {
             //   return Container(
@@ -251,9 +221,10 @@ class _HomePageState extends State<HomePage> {
             //     child: const Text('Sign in to vote for events!'),
             //   );
             // }
-            if (index < _eventVotes.length && uid != '') {
+            if (index < Database().eventVotes.length && uid != '') {
               return Container(
-                  child: voteEventsButton(_eventVotes.keys.elementAt(index)));
+                  child: voteEventsButton(
+                      Database().eventVotes.keys.elementAt(index)));
             }
             return const SizedBox.shrink();
           },
@@ -276,11 +247,12 @@ class _HomePageState extends State<HomePage> {
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: _timesVotes.length,
+          itemCount: Database().timeVotes.length,
           itemBuilder: (context, index) {
-            if (index < _timesVotes.length && uid != '') {
+            if (index < Database().timeVotes.length && uid != '') {
               return Container(
-                  child: voteTimesButton(_timesVotes.keys.elementAt(index)));
+                  child: voteTimesButton(
+                      Database().timeVotes.keys.elementAt(index)));
             }
             return const SizedBox.shrink();
           },
