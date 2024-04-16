@@ -88,7 +88,7 @@ class _UserPageState extends State<UserPage> {
                       }
                       imageUrl = await taskSnapshot.ref.getDownloadURL();
                       Auth().updateUserProfilePic(imageUrl!);
-                      _logger.info('Uploaded profile picture: $imageUrl');
+                      _logger.finer('Uploaded profile picture: $imageUrl');
                     } catch (e) {
                       _logger.severe('Error occurred while uploading file: $e');
                     }
