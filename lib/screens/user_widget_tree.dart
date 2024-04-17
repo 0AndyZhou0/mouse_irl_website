@@ -11,22 +11,25 @@ class UserWidgetTree extends StatefulWidget {
 }
 
 class UserWidgetTreeState extends State<UserWidgetTree> {
+  Widget page = const Scaffold();
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return const UserPage();
+          page = const UserPage();
+        } else if (!Auth().isLoggedIn()) {
+          page = const LoginPage();
         } else {
-          return const LoginPage();
+          page = const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
-      },
-      initialData: {
-        if (Auth().currentUser != null)
-          {const UserPage()}
-        else
-          {const LoginPage()}
+        return page;
       },
     );
   }
