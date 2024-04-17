@@ -22,6 +22,12 @@ class UserWidgetTreeState extends State<UserWidgetTree> {
           return const LoginPage();
         }
       },
+      initialData: {
+        if (Auth().currentUser != null)
+          {const UserPage()}
+        else
+          {const LoginPage()}
+      },
     );
   }
 }
