@@ -18,6 +18,10 @@ class _AddEventState extends State<AddEvent> {
       decoration: InputDecoration(
         labelText: title,
         border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+          onPressed: _eventNameController.clear,
+          icon: const Icon(Icons.clear),
+        ),
       ),
     );
   }

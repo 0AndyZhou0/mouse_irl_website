@@ -40,6 +40,26 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
     });
   }
 
+  Widget alertDialogYesNoMessage(
+      String title, String content, Function callback,
+      {String yesText = "Yes", String cancelText = "Cancel"}) {
+    return AlertDialog(title: Text(title), content: Text(content), actions: [
+      TextButton(
+        child: Text(yesText),
+        onPressed: () {
+          callback();
+          Navigator.of(context).pop();
+        },
+      ),
+      TextButton(
+        child: Text(cancelText),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    ]);
+  }
+
   Widget removeEvent(String event) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -58,9 +78,19 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
               ),
               onPressed: () {
-                currentEventsVotesRef.child(event).set({
-                  'exists': 'true',
-                });
+                // warning dialog
+                showDialog(
+                  context: context,
+                  builder: (context) => alertDialogYesNoMessage(
+                    "Clear event?",
+                    "Are you sure you want to clear $event?",
+                    () => currentEventsVotesRef.child(event).set(
+                      {
+                        'exists': 'true',
+                      },
+                    ),
+                  ),
+                );
               },
               child: const Text('clear'),
             ),
@@ -73,7 +103,14 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
               ),
               onPressed: () {
-                currentEventsVotesRef.child(event).remove();
+                showDialog(
+                  context: context,
+                  builder: (context) => alertDialogYesNoMessage(
+                    "Delete event?",
+                    "Are you sure you want to delete $event?",
+                    () => currentEventsVotesRef.child(event).remove(),
+                  ),
+                );
               },
               child: const Text('delete'),
             ),
@@ -88,7 +125,15 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
-          currentEventsVotesRef.remove();
+          // warning dialog
+          showDialog(
+            context: context,
+            builder: (context) => alertDialogYesNoMessage(
+              "Delete all events?",
+              "Are you sure you want to delete all events?",
+              () => currentEventsVotesRef.remove(),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
@@ -121,11 +166,21 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       width: buttonWidth,
       child: FloatingActionButton.extended(
         onPressed: () {
-          for (String event in _events) {
-            currentEventsVotesRef.child(event).set({
-              'exists': 'true',
-            });
-          }
+          showDialog(
+            context: context,
+            builder: (context) => alertDialogYesNoMessage(
+              "Clear all events?",
+              "Are you sure you want to clear all events?",
+              () => {
+                for (String event in _events)
+                  {
+                    currentEventsVotesRef.child(event).set({
+                      'exists': 'true',
+                    })
+                  }
+              },
+            ),
+          );
         },
         icon: const Icon(Icons.clear),
         label: const Text('Clear Events'),

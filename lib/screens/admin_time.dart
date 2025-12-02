@@ -40,6 +40,26 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     });
   }
 
+  Widget alertDialogYesNoMessage(
+      String title, String content, Function callback,
+      {String yesText = "Yes", String cancelText = "Cancel"}) {
+    return AlertDialog(title: Text(title), content: Text(content), actions: [
+      TextButton(
+        child: Text(yesText),
+        onPressed: () {
+          callback();
+          Navigator.of(context).pop();
+        },
+      ),
+      TextButton(
+        child: Text(cancelText),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+    ]);
+  }
+
   Widget removeTime(String time) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -49,9 +69,18 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           const Expanded(child: SizedBox()),
           ElevatedButton(
             onPressed: () {
-              currentTimesVotesRef.child(time).set({
-                'exists': 'true',
-              });
+              showDialog(
+                context: context,
+                builder: (context) => alertDialogYesNoMessage(
+                  "Clear time?",
+                  "Are you sure you want to clear ${DateTime.parse(time).toLocal().toString().substring(0, 16)}?",
+                  () => currentTimesVotesRef.child(time).set(
+                    {
+                      'exists': 'true',
+                    },
+                  ),
+                ),
+              );
             },
             child: const Text('clear'),
           ),
@@ -60,7 +89,14 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              currentTimesVotesRef.child(time).remove();
+              showDialog(
+                context: context,
+                builder: (context) => alertDialogYesNoMessage(
+                  "Delete time?",
+                  "Are you sure you want to delete ${DateTime.parse(time).toLocal().toString().substring(0, 16)}?",
+                  () => currentTimesVotesRef.child(time).remove(),
+                ),
+              );
             },
             child: const Text('delete'),
           ),
@@ -74,7 +110,14 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         onPressed: () {
-          currentTimesVotesRef.remove();
+          showDialog(
+            context: context,
+            builder: (context) => alertDialogYesNoMessage(
+              "Delete all times?",
+              "Are you sure you want to delete all times?",
+              () => currentTimesVotesRef.remove(),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red,
@@ -121,26 +164,16 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       child: FloatingActionButton.extended(
         heroTag: "advanceAllTimes",
         onPressed: () => showDialog(
-            context: context,
-            // TODO: Allow user to adjust time advanced
-            builder: (context) => AlertDialog(
-                  title: const Text('Advance All Times'),
-                  content: const Text(
-                      'Are you sure you want to advance all times by one week?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        advanceTimes();
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Confirm'),
-                    ),
-                  ],
-                )),
+          context: context,
+          // TODO: Allow user to adjust time advanced
+          builder: (context) => alertDialogYesNoMessage(
+            "Advance all times?",
+            "Are you sure you want to advance all times by one week?",
+            advanceTimes,
+            yesText: "Confirm",
+            cancelText: "Cancel",
+          ),
+        ),
         label: const Text('Advance Times'),
       ),
     );
@@ -151,11 +184,21 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       width: buttonWidth,
       child: FloatingActionButton.extended(
         onPressed: () {
-          for (String time in _times) {
-            currentTimesVotesRef.child(time).set({
-              'exists': 'true',
-            });
-          }
+          showDialog(
+            context: context,
+            builder: (context) => alertDialogYesNoMessage(
+              "Clear all times?",
+              "Are you sure you want to clear all times?",
+              () => {
+                for (String time in _times)
+                  {
+                    currentTimesVotesRef.child(time).set({
+                      'exists': 'true',
+                    })
+                  }
+              },
+            ),
+          );
         },
         icon: const Icon(Icons.clear),
         label: const Text('Clear Times'),
