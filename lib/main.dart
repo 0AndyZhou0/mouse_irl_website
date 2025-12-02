@@ -73,12 +73,16 @@ class _MyAppState extends State<MyApp> {
           brightness: Brightness.light,
           seedColor: Colors.deepPurple,
         ),
+        splashColor: Colors.purple,
+        hoverColor: Colors.purple.shade200,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: Colors.deepPurple,
         ),
+        hoverColor: Colors.purple.shade200,
+        splashColor: Colors.purple,
         scaffoldBackgroundColor: const Color.fromARGB(255, 29, 27, 30),
       ),
       themeMode: ThemeMode.system,
