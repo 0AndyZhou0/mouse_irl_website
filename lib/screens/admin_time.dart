@@ -16,6 +16,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
 
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _times = [];
+  static const double buttonWidth = 150;
 
   @override
   void initState() {
@@ -93,7 +94,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       );
     }
     return ListView.builder(
-      padding: const EdgeInsets.only(bottom: 69 * 2),
+      padding: const EdgeInsets.only(bottom: 69 * 3),
       itemCount: _times.length,
       itemBuilder: (BuildContext context, int index) {
         return removeTime(_times[index]);
@@ -114,31 +115,68 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     }
   }
 
-  Widget advanceAllTimes() {
-    return FloatingActionButton.extended(
-      heroTag: "advanceAllTimes",
-      onPressed: () => showDialog(
-          context: context,
-          // TODO: Allow user to adjust time advanced
-          builder: (context) => AlertDialog(
-                title: const Text('Advance All Times'),
-                content: const Text(
-                    'Are you sure you want to advance all times by one week?'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      advanceTimes();
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Confirm'),
-                  ),
-                ],
-              )),
-      label: const Text('Advance Times'),
+  Widget advanceAllTimesButton() {
+    return SizedBox(
+      width: buttonWidth,
+      child: FloatingActionButton.extended(
+        heroTag: "advanceAllTimes",
+        onPressed: () => showDialog(
+            context: context,
+            // TODO: Allow user to adjust time advanced
+            builder: (context) => AlertDialog(
+                  title: const Text('Advance All Times'),
+                  content: const Text(
+                      'Are you sure you want to advance all times by one week?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        advanceTimes();
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Confirm'),
+                    ),
+                  ],
+                )),
+        label: const Text('Advance Times'),
+      ),
+    );
+  }
+
+  Widget clearAllTimesButton() {
+    return SizedBox(
+      width: buttonWidth,
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          for (String time in _times) {
+            currentTimesVotesRef.child(time).set({
+              'exists': 'true',
+            });
+          }
+        },
+        icon: const Icon(Icons.clear),
+        label: const Text('Clear Times'),
+      ),
+    );
+  }
+
+  Widget addTimeButton() {
+    return SizedBox(
+      width: buttonWidth,
+      child: FloatingActionButton.extended(
+        heroTag: "addTimePage",
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddTime()),
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Add Time'),
+      ),
     );
   }
 
@@ -155,21 +193,15 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          advanceAllTimes(),
+          advanceAllTimesButton(),
           const SizedBox(
             height: 10,
           ),
-          FloatingActionButton.extended(
-            heroTag: "addTimePage",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddTime()),
-              );
-            },
-            icon: const Icon(Icons.add),
-            label: const Text('Add Time'),
+          clearAllTimesButton(),
+          const SizedBox(
+            height: 10,
           ),
+          addTimeButton(),
         ],
       ),
     );
