@@ -16,6 +16,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
 
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
+  static const double buttonWidth = 150;
 
   @override
   void initState() {
@@ -107,11 +108,44 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       );
     }
     return ListView.builder(
-      padding: const EdgeInsets.only(bottom: 69),
+      padding: const EdgeInsets.only(bottom: 69 * 2),
       itemCount: _events.length,
       itemBuilder: (BuildContext context, int index) {
         return removeEvent(_events[index]);
       },
+    );
+  }
+
+  Widget clearAllEventsButton() {
+    return SizedBox(
+      width: buttonWidth,
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          for (String event in _events) {
+            currentEventsVotesRef.child(event).set({
+              'exists': 'true',
+            });
+          }
+        },
+        icon: const Icon(Icons.clear),
+        label: const Text('Clear Events'),
+      ),
+    );
+  }
+
+  Widget addEventButton() {
+    return SizedBox(
+      width: buttonWidth,
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddEvent()),
+          );
+        },
+        icon: const Icon(Icons.add),
+        label: const Text('Add Event'),
+      ),
     );
   }
 
@@ -125,16 +159,14 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
         ],
       ),
       body: listOfEvents(),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddEvent()),
-          );
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Add Event'),
-      ),
+      floatingActionButton:
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        clearAllEventsButton(),
+        const SizedBox(
+          height: 10,
+        ),
+        addEventButton(),
+      ]),
     );
   }
 }

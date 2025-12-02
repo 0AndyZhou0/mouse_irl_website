@@ -10,26 +10,17 @@ class AddTime extends StatefulWidget {
   State<AddTime> createState() => _AddTimeState();
 }
 
+DateFormat format = DateFormat("yyyy-MM-dd HH:mm");
+TextEditingController _timeBoxController = TextEditingController();
+
 class _AddTimeState extends State<AddTime> {
-  DateTime _dateTime = DateTime.now();
+  // DateTime _dateTime = DateTime.now();
   // DateTime _date = DateTime.now();
   // DateTime _time = DateTime.now();
 
-  void onDateTimeChanged(DateTime newDateTime) {
-    setState(() {
-      _dateTime = newDateTime;
-    });
-  }
-
-  // void onDateChanged(DateTime newDate) {
+  // void onDateTimeChanged(DateTime newDateTime) {
   //   setState(() {
-  //     _date = newDate;
-  //   });
-  // }
-
-  // void onTimeChanged(DateTime newTime) {
-  //   setState(() {
-  //     _time = newTime;
+  //     _dateTime = newDateTime;
   //   });
   // }
 
@@ -80,11 +71,12 @@ class _AddTimeState extends State<AddTime> {
   // }
 
   Widget basicDateTimeField() {
-    final format = DateFormat("yyyy-MM-dd HH:mm");
     return Column(
       children: <Widget>[
         Text('Basic date & time field (${format.pattern})'),
         DateTimeField(
+          controller: _timeBoxController,
+          readOnly: false,
           format: format,
           onShowPicker: (context, currentValue) async {
             return await showDatePicker(
@@ -105,11 +97,11 @@ class _AddTimeState extends State<AddTime> {
               }
             });
           },
-          onChanged: (value) {
-            if (value != null) {
-              onDateTimeChanged(value);
-            }
-          },
+          // onChanged: (value) {
+          //   if (value != null) {
+          //     onDateTimeChanged(value);
+          //   }
+          // },
         ),
       ],
     );
@@ -118,7 +110,8 @@ class _AddTimeState extends State<AddTime> {
   Widget addDateButton() {
     return ElevatedButton(
       onPressed: () {
-        Database().addTime(_dateTime);
+        // Database().addTime(_dateTime);
+        Database().addTime(format.parse(_timeBoxController.text));
         Navigator.pop(context);
       },
       child: const Text('Add Date'),
