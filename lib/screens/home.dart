@@ -101,8 +101,8 @@ class _HomePageState extends State<HomePage> {
     });
 
     return Container(
-      padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+      margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
       decoration: BoxDecoration(
         // color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8.0),
