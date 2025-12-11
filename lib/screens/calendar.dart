@@ -152,36 +152,40 @@ class _CalendarPageState extends State<CalendarPage> {
             },
             daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
               weekendStyle: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSecondary,
               ),
             ),
             calendarStyle: CalendarStyle(
-                markerDecoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  shape: BoxShape.circle,
+              markerDecoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onBackground,
+                shape: BoxShape.circle,
+              ),
+              weekendTextStyle: TextStyle(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(200),
+              ),
+              outsideTextStyle: TextStyle(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withAlpha(100),
+              ),
+              holidayDecoration: BoxDecoration(
+                border: Border.fromBorderSide(
+                  BorderSide(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSecondary
+                          .withAlpha(150),
+                      width: 1.4),
                 ),
-                weekendTextStyle: TextStyle(
-                  color:
-                      Theme.of(context).colorScheme.onBackground.withAlpha(200),
-                ),
-                holidayDecoration: BoxDecoration(
-                  border: Border.fromBorderSide(
-                    BorderSide(
-                        color: Theme.of(context).colorScheme.secondary,
-                        width: 1.4),
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                holidayTextStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                outsideTextStyle: TextStyle(
-                  color:
-                      Theme.of(context).colorScheme.onBackground.withAlpha(100),
-                )),
+                shape: BoxShape.circle,
+              ),
+              holidayTextStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+            ),
           ),
           const SizedBox(height: 8.0),
           Expanded(

@@ -28,11 +28,12 @@ class _AddEventState extends State<AddEvent> {
 
   Widget addEventButton() {
     return ElevatedButton(
-        child: const Text('Add Event'),
-        onPressed: () {
-          Database().addEvent(_eventNameController.text);
-          Navigator.pop(context);
-        });
+      child: const Text('Add Event'),
+      onPressed: () {
+        Database().addEvent(_eventNameController.text);
+        Navigator.pop(context);
+      },
+    );
   }
 
   Widget addEventForm() {

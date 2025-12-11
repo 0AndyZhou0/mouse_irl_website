@@ -3,6 +3,7 @@ import 'package:mouse_irl_website/screens/home.dart';
 import 'package:mouse_irl_website/screens/calendar.dart';
 import 'package:mouse_irl_website/screens/user_widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mouse_irl_website/theme.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mouse_irl_website/auth.dart';
@@ -68,23 +69,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'mouse_irl',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.light,
-          seedColor: Colors.deepPurple,
-        ),
-        splashColor: Colors.purple,
-        hoverColor: Colors.purple.shade200,
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: Colors.deepPurple,
-        ),
-        hoverColor: Colors.purple.shade200,
-        splashColor: Colors.purple,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 29, 27, 30),
-      ),
+      theme: catppuccinLatteTheme(),
+      darkTheme: catppuccinMochaTheme(),
       themeMode: ThemeMode.system,
       home: LayoutBuilder(
         builder: (context, constraints) {

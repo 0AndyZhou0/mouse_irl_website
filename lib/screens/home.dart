@@ -101,18 +101,17 @@ class _HomePageState extends State<HomePage> {
     });
 
     return Container(
-      // color: Theme.of(context).colorScheme.primaryContainer,
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        // color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Text(
         '$mostVotedEvent,\n${DateFormat('EEEE, MMMM d, y, h:mm a').format(localTime)}',
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 50,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     );
@@ -157,11 +156,11 @@ class _HomePageState extends State<HomePage> {
                   voteEvent(event);
                 }
               },
+              color: Theme.of(context).colorScheme.onSecondary,
               tooltip: _eventsVoted.contains(event) ? 'Unvote' : 'Vote',
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
-              color: Theme.of(context).colorScheme.primary,
               icon: _eventsVoted.contains(event)
                   ? const Icon(Icons.favorite)
                   : const Icon(Icons.favorite_outline),
@@ -211,13 +210,12 @@ class _HomePageState extends State<HomePage> {
                   voteTime(dateTime);
                 }
               },
-              visualDensity: VisualDensity.compact,
+              color: Theme.of(context).colorScheme.onSecondary,
               padding: EdgeInsets.zero,
               tooltip: _timesVoted.contains(dateTime) ? 'Unvote' : 'Vote',
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
-              color: Theme.of(context).colorScheme.primary,
               icon: _timesVoted.contains(dateTime)
                   ? const Icon(Icons.favorite)
                   : const Icon(Icons.favorite_outline),
@@ -231,10 +229,9 @@ class _HomePageState extends State<HomePage> {
   Widget eventVoteList() {
     return Column(
       children: [
-        Text(
+        const Text(
           'Events',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
@@ -253,7 +250,8 @@ class _HomePageState extends State<HomePage> {
             // }
             if (index < _eventVotes.length && uid != '') {
               return Container(
-                  child: voteEventsButton(_eventVotes.keys.elementAt(index)));
+                child: voteEventsButton(_eventVotes.keys.elementAt(index)),
+              );
             }
             return const SizedBox.shrink();
           },
@@ -265,10 +263,9 @@ class _HomePageState extends State<HomePage> {
   Widget timeVoteList() {
     return Column(
       children: [
-        Text(
+        const Text(
           'Times',
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
@@ -295,8 +292,8 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         border: Border.all(
-          color: Theme.of(context).colorScheme.primaryContainer,
           width: 3.0,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
         borderRadius: BorderRadius.circular(8.0),
       ),
