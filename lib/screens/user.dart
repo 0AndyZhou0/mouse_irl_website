@@ -141,11 +141,15 @@ class _UserPageState extends State<UserPage> {
                       ),
                     ],
                   ),
-                  contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  // contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
@@ -153,7 +157,11 @@ class _UserPageState extends State<UserPage> {
                         Auth().updateUserName(controller.text);
                         Navigator.of(context).pop();
                       },
-                      child: const Text('Update'),
+                      child: Text(
+                        'Update',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      ),
                     ),
                   ],
                 );
