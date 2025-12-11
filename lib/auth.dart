@@ -48,6 +48,10 @@ class Auth {
       _logger.fine('User creation with email and password succeeded');
     } on FirebaseAuthException catch (e) {
       _logger.severe('Failed to create a user with email and password', e);
+      throw FirebaseAuthException(
+        code: e.code,
+        message: 'Failed to create a user with email and password',
+      );
     }
   }
 
@@ -65,6 +69,10 @@ class Auth {
       _logger.fine('Sign in with email and password succeeded');
     } on FirebaseAuthException catch (e) {
       _logger.warning('Failed to sign in with email and password', e);
+      throw FirebaseAuthException(
+        code: e.code,
+        message: 'Failed to sign in with email and password',
+      );
     }
   }
 
@@ -142,6 +150,7 @@ class Auth {
       _logger.fine('Password reset email sent successfully to $email');
     } catch (e) {
       _logger.severe('Failed to send password reset email to $email', e);
+      rethrow;
     }
   }
 
