@@ -1,5 +1,65 @@
 import 'package:flutter/material.dart';
 
+ThemeData catpuccinTheme(Map<String, Color> colors) {
+  Color primaryColor = colors['mauve']!;
+  Color secondaryColor = colors['pink']!;
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme(
+      background: colors['base']!,
+      brightness: Brightness.light,
+      primary: colors['crust']!,
+      secondary: colors['mantle']!,
+      surface: colors['surface0']!,
+      error: colors['surface2']!,
+      onBackground: colors['text']!,
+      onError: colors['red']!,
+      onSurface: colors['text']!,
+      onPrimary: primaryColor,
+      onSecondary: secondaryColor,
+    ),
+    textTheme: const TextTheme().apply(
+      bodyColor: colors['text']!,
+      displayColor: primaryColor,
+    ),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: primaryColor,
+      selectionColor: primaryColor.withAlpha(128),
+      selectionHandleColor: primaryColor,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      elevation: 0,
+      backgroundColor: colors['overlay2']!,
+      foregroundColor: colors['base']!,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(primaryColor),
+        foregroundColor: MaterialStatePropertyAll(colors['base']!),
+      ),
+    ),
+    // iconButtonTheme: IconButtonThemeData(
+    //   style: ButtonStyle(
+    //     iconColor: MaterialStatePropertyAll(secondaryColor),
+    //   ),
+    // ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: colors['base']!,
+      foregroundColor: colors['text']!,
+    ),
+    navigationRailTheme: NavigationRailThemeData(
+      backgroundColor: colors['base']!,
+      unselectedIconTheme: IconThemeData(color: colors['text']!),
+      selectedIconTheme: IconThemeData(color: primaryColor),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      selectedItemColor: primaryColor,
+      backgroundColor: colors['base']!,
+      unselectedItemColor: colors['text']!,
+    ),
+  );
+}
+
 // rgb(220, 138, 120)
 // rgb(221, 120, 120)
 // rgb(234, 118, 203)
@@ -54,61 +114,61 @@ const Map<String, Color> catppuccinLatteColors = {
   'mantle': Color.fromARGB(255, 230, 233, 239),
   'crust': Color.fromARGB(255, 220, 224, 232),
 };
-ThemeData catppuccinLatteTheme() {
-  Color primaryColor = catppuccinLatteColors['mauve']!;
-  Color secondaryColor = catppuccinLatteColors['pink']!;
-  return ThemeData(
-    useMaterial3: true,
-    colorScheme: ColorScheme(
-      background: catppuccinLatteColors['base']!,
-      brightness: Brightness.light,
-      primary: catppuccinLatteColors['crust']!,
-      secondary: catppuccinLatteColors['mantle']!,
-      surface: catppuccinLatteColors['surface0']!,
-      error: catppuccinLatteColors['surface2']!,
-      onBackground: catppuccinLatteColors['text']!,
-      onError: catppuccinLatteColors['red']!,
-      onSurface: catppuccinLatteColors['text']!,
-      onPrimary: primaryColor,
-      onSecondary: secondaryColor,
-    ),
-    textTheme: const TextTheme().apply(
-      bodyColor: catppuccinLatteColors['text']!,
-      displayColor: primaryColor,
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      elevation: 0,
-      backgroundColor: catppuccinLatteColors['overlay2']!,
-      foregroundColor: catppuccinLatteColors['base']!,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(primaryColor),
-        foregroundColor:
-            MaterialStatePropertyAll(catppuccinLatteColors['base']!),
-      ),
-    ),
-    // iconButtonTheme: IconButtonThemeData(
-    //   style: ButtonStyle(
-    //     iconColor: MaterialStatePropertyAll(secondaryColor),
-    //   ),
-    // ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: catppuccinLatteColors['base']!,
-      foregroundColor: catppuccinLatteColors['text']!,
-    ),
-    navigationRailTheme: NavigationRailThemeData(
-      backgroundColor: catppuccinLatteColors['base']!,
-      unselectedIconTheme: IconThemeData(color: catppuccinLatteColors['text']!),
-      selectedIconTheme: IconThemeData(color: primaryColor),
-    ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedItemColor: primaryColor,
-      backgroundColor: catppuccinLatteColors['base']!,
-      unselectedItemColor: catppuccinLatteColors['text']!,
-    ),
-  );
-}
+// ThemeData catppuccinLatteTheme() {
+//   Color primaryColor = catppuccinLatteColors['mauve']!;
+//   Color secondaryColor = catppuccinLatteColors['pink']!;
+//   return ThemeData(
+//     useMaterial3: true,
+//     colorScheme: ColorScheme(
+//       background: catppuccinLatteColors['base']!,
+//       brightness: Brightness.light,
+//       primary: catppuccinLatteColors['crust']!,
+//       secondary: catppuccinLatteColors['mantle']!,
+//       surface: catppuccinLatteColors['surface0']!,
+//       error: catppuccinLatteColors['surface2']!,
+//       onBackground: catppuccinLatteColors['text']!,
+//       onError: catppuccinLatteColors['red']!,
+//       onSurface: catppuccinLatteColors['text']!,
+//       onPrimary: primaryColor,
+//       onSecondary: secondaryColor,
+//     ),
+//     textTheme: const TextTheme().apply(
+//       bodyColor: catppuccinLatteColors['text']!,
+//       displayColor: primaryColor,
+//     ),
+//     floatingActionButtonTheme: FloatingActionButtonThemeData(
+//       elevation: 0,
+//       backgroundColor: catppuccinLatteColors['overlay2']!,
+//       foregroundColor: catppuccinLatteColors['base']!,
+//     ),
+//     elevatedButtonTheme: ElevatedButtonThemeData(
+//       style: ButtonStyle(
+//         backgroundColor: MaterialStatePropertyAll(primaryColor),
+//         foregroundColor:
+//             MaterialStatePropertyAll(catppuccinLatteColors['base']!),
+//       ),
+//     ),
+//     // iconButtonTheme: IconButtonThemeData(
+//     //   style: ButtonStyle(
+//     //     iconColor: MaterialStatePropertyAll(secondaryColor),
+//     //   ),
+//     // ),
+//     appBarTheme: AppBarTheme(
+//       backgroundColor: catppuccinLatteColors['base']!,
+//       foregroundColor: catppuccinLatteColors['text']!,
+//     ),
+//     navigationRailTheme: NavigationRailThemeData(
+//       backgroundColor: catppuccinLatteColors['base']!,
+//       unselectedIconTheme: IconThemeData(color: catppuccinLatteColors['text']!),
+//       selectedIconTheme: IconThemeData(color: primaryColor),
+//     ),
+//     bottomNavigationBarTheme: BottomNavigationBarThemeData(
+//       selectedItemColor: primaryColor,
+//       backgroundColor: catppuccinLatteColors['base']!,
+//       unselectedItemColor: catppuccinLatteColors['text']!,
+//     ),
+//   );
+// }
 
 // rgb(245, 224, 220)
 // rgb(242, 205, 205)
@@ -165,61 +225,61 @@ const Map<String, Color> catppuccinMochaColors = {
   'crust': Color.fromARGB(255, 17, 17, 27),
 };
 
-ThemeData catppuccinMochaTheme() {
-  Color primaryColor = catppuccinMochaColors['mauve']!;
-  Color secondaryColor = catppuccinMochaColors['pink']!;
-  return ThemeData(
-    useMaterial3: true,
-    colorScheme: ColorScheme(
-      background: catppuccinMochaColors['base']!,
-      brightness: Brightness.dark,
-      primary: catppuccinMochaColors['crust']!,
-      secondary: catppuccinMochaColors['mantle']!,
-      surface: catppuccinMochaColors['surface0']!,
-      error: catppuccinMochaColors['surface2']!,
-      onBackground: catppuccinMochaColors['text']!,
-      onError: catppuccinMochaColors['red']!,
-      onSurface: catppuccinMochaColors['text']!,
-      onPrimary: primaryColor,
-      onSecondary: secondaryColor,
-    ),
-    textTheme: const TextTheme().apply(
-      bodyColor: catppuccinMochaColors['text']!,
-      displayColor: primaryColor,
-    ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      elevation: 0,
-      backgroundColor: catppuccinMochaColors['overlay2']!,
-      foregroundColor: catppuccinMochaColors['base']!,
-    ),
-    // iconButtonTheme: IconButtonThemeData(
-    //   style: ButtonStyle(
-    //     iconColor: MaterialStatePropertyAll(secondaryColor),
-    //   ),
-    // ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: catppuccinMochaColors['base']!,
-      foregroundColor: catppuccinMochaColors['text']!,
-    ),
-    navigationRailTheme: NavigationRailThemeData(
-      backgroundColor: catppuccinMochaColors['base']!,
-      unselectedIconTheme: IconThemeData(color: catppuccinMochaColors['text']!),
-      selectedIconTheme: IconThemeData(color: primaryColor),
-    ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedItemColor: primaryColor,
-      backgroundColor: catppuccinMochaColors['base']!,
-      unselectedItemColor: catppuccinMochaColors['text']!,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(primaryColor),
-        foregroundColor:
-            MaterialStatePropertyAll(catppuccinMochaColors['base']!),
-      ),
-    ),
-  );
-}
+// ThemeData catppuccinMochaTheme() {
+//   Color primaryColor = catppuccinMochaColors['mauve']!;
+//   Color secondaryColor = catppuccinMochaColors['pink']!;
+//   return ThemeData(
+//     useMaterial3: true,
+//     colorScheme: ColorScheme(
+//       background: catppuccinMochaColors['base']!,
+//       brightness: Brightness.dark,
+//       primary: catppuccinMochaColors['crust']!,
+//       secondary: catppuccinMochaColors['mantle']!,
+//       surface: catppuccinMochaColors['surface0']!,
+//       error: catppuccinMochaColors['surface2']!,
+//       onBackground: catppuccinMochaColors['text']!,
+//       onError: catppuccinMochaColors['red']!,
+//       onSurface: catppuccinMochaColors['text']!,
+//       onPrimary: primaryColor,
+//       onSecondary: secondaryColor,
+//     ),
+//     textTheme: const TextTheme().apply(
+//       bodyColor: catppuccinMochaColors['text']!,
+//       displayColor: primaryColor,
+//     ),
+//     floatingActionButtonTheme: FloatingActionButtonThemeData(
+//       elevation: 0,
+//       backgroundColor: catppuccinMochaColors['overlay2']!,
+//       foregroundColor: catppuccinMochaColors['base']!,
+//     ),
+//     // iconButtonTheme: IconButtonThemeData(
+//     //   style: ButtonStyle(
+//     //     iconColor: MaterialStatePropertyAll(secondaryColor),
+//     //   ),
+//     // ),
+//     appBarTheme: AppBarTheme(
+//       backgroundColor: catppuccinMochaColors['base']!,
+//       foregroundColor: catppuccinMochaColors['text']!,
+//     ),
+//     navigationRailTheme: NavigationRailThemeData(
+//       backgroundColor: catppuccinMochaColors['base']!,
+//       unselectedIconTheme: IconThemeData(color: catppuccinMochaColors['text']!),
+//       selectedIconTheme: IconThemeData(color: primaryColor),
+//     ),
+//     bottomNavigationBarTheme: BottomNavigationBarThemeData(
+//       selectedItemColor: primaryColor,
+//       backgroundColor: catppuccinMochaColors['base']!,
+//       unselectedItemColor: catppuccinMochaColors['text']!,
+//     ),
+//     elevatedButtonTheme: ElevatedButtonThemeData(
+//       style: ButtonStyle(
+//         backgroundColor: MaterialStatePropertyAll(primaryColor),
+//         foregroundColor:
+//             MaterialStatePropertyAll(catppuccinMochaColors['base']!),
+//       ),
+//     ),
+//   );
+// }
 
 ThemeData oldLightTheme() {
   return ThemeData(

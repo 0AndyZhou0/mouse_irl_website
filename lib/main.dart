@@ -69,8 +69,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'mouse_irl',
-      theme: catppuccinLatteTheme(),
-      darkTheme: catppuccinMochaTheme(),
+      theme: catpuccinTheme(catppuccinLatteColors),
+      darkTheme: catpuccinTheme(catppuccinMochaColors),
       themeMode: ThemeMode.system,
       home: LayoutBuilder(
         builder: (context, constraints) {
