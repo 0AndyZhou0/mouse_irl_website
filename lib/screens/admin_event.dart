@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:mouse_irl_website/screens/add_event.dart';
+import 'package:mouse_irl_website/screens/alert_dialog.dart';
 
 class EventsAdminPage extends StatefulWidget {
   const EventsAdminPage({super.key});
@@ -40,25 +41,25 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
     });
   }
 
-  Widget alertDialogYesNoMessage(
-      String title, String content, Function callback,
-      {String yesText = "Yes", String cancelText = "Cancel"}) {
-    return AlertDialog(title: Text(title), content: Text(content), actions: [
-      TextButton(
-        child: Text(yesText),
-        onPressed: () {
-          callback();
-          Navigator.of(context).pop();
-        },
-      ),
-      TextButton(
-        child: Text(cancelText),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-    ]);
-  }
+  // Widget alertDialogYesNoMessage(
+  //     String title, String content, Function callback,
+  //     {String yesText = "Yes", String cancelText = "Cancel"}) {
+  //   return AlertDialog(title: Text(title), content: Text(content), actions: [
+  //     TextButton(
+  //       child: Text(yesText),
+  //       onPressed: () {
+  //         callback();
+  //         Navigator.of(context).pop();
+  //       },
+  //     ),
+  //     TextButton(
+  //       child: Text(cancelText),
+  //       onPressed: () {
+  //         Navigator.of(context).pop();
+  //       },
+  //     ),
+  //   ]);
+  // }
 
   Widget removeEvent(String event) {
     return Padding(
@@ -82,6 +83,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
                 showDialog(
                   context: context,
                   builder: (context) => alertDialogYesNoMessage(
+                    context,
                     "Clear event?",
                     "Are you sure you want to clear $event?",
                     () => currentEventsVotesRef.child(event).set(
@@ -106,6 +108,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
                 showDialog(
                   context: context,
                   builder: (context) => alertDialogYesNoMessage(
+                    context,
                     "Delete event?",
                     "Are you sure you want to delete $event?",
                     () => currentEventsVotesRef.child(event).remove(),
@@ -129,6 +132,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
           showDialog(
             context: context,
             builder: (context) => alertDialogYesNoMessage(
+              context,
               "Delete all events?",
               "Are you sure you want to delete all events?",
               () => currentEventsVotesRef.remove(),
@@ -169,6 +173,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
           showDialog(
             context: context,
             builder: (context) => alertDialogYesNoMessage(
+              context,
               "Clear all events?",
               "Are you sure you want to clear all events?",
               () => {

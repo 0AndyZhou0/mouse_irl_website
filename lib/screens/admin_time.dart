@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:mouse_irl_website/screens/add_time.dart';
+import 'package:mouse_irl_website/screens/alert_dialog.dart';
 
 class TimesAdminPage extends StatefulWidget {
   const TimesAdminPage({super.key});
@@ -40,25 +41,25 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     });
   }
 
-  Widget alertDialogYesNoMessage(
-      String title, String content, Function callback,
-      {String yesText = "Yes", String cancelText = "Cancel"}) {
-    return AlertDialog(title: Text(title), content: Text(content), actions: [
-      TextButton(
-        child: Text(yesText),
-        onPressed: () {
-          callback();
-          Navigator.of(context).pop();
-        },
-      ),
-      TextButton(
-        child: Text(cancelText),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-    ]);
-  }
+  // Widget alertDialogYesNoMessage(
+  //     String title, String content, Function callback,
+  //     {String yesText = "Yes", String cancelText = "Cancel"}) {
+  //   return AlertDialog(title: Text(title), content: Text(content), actions: [
+  //     TextButton(
+  //       child: Text(yesText),
+  //       onPressed: () {
+  //         callback();
+  //         Navigator.of(context).pop();
+  //       },
+  //     ),
+  //     TextButton(
+  //       child: Text(cancelText),
+  //       onPressed: () {
+  //         Navigator.of(context).pop();
+  //       },
+  //     ),
+  //   ]);
+  // }
 
   Widget removeTime(String time) {
     return Padding(
@@ -72,6 +73,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
               showDialog(
                 context: context,
                 builder: (context) => alertDialogYesNoMessage(
+                  context,
                   "Clear time?",
                   "Are you sure you want to clear ${DateTime.parse(time).toLocal().toString().substring(0, 16)}?",
                   () => currentTimesVotesRef.child(time).set(
@@ -92,6 +94,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
               showDialog(
                 context: context,
                 builder: (context) => alertDialogYesNoMessage(
+                  context,
                   "Delete time?",
                   "Are you sure you want to delete ${DateTime.parse(time).toLocal().toString().substring(0, 16)}?",
                   () => currentTimesVotesRef.child(time).remove(),
@@ -113,6 +116,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           showDialog(
             context: context,
             builder: (context) => alertDialogYesNoMessage(
+              context,
               "Delete all times?",
               "Are you sure you want to delete all times?",
               () => currentTimesVotesRef.remove(),
@@ -167,6 +171,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           context: context,
           // TODO: Allow user to adjust time advanced
           builder: (context) => alertDialogYesNoMessage(
+            context,
             "Advance all times?",
             "Are you sure you want to advance all times by one week?",
             advanceTimes,
@@ -187,6 +192,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           showDialog(
             context: context,
             builder: (context) => alertDialogYesNoMessage(
+              context,
               "Clear all times?",
               "Are you sure you want to clear all times?",
               () => {
