@@ -3,23 +3,35 @@ import 'package:flutter/material.dart';
 ThemeData catpuccinTheme(Map<String, Color> colors) {
   Color primaryColor = colors['mauve']!;
   Color secondaryColor = colors['pink']!;
+  Color redColor = colors['red']!;
+  Color lavenderColor = colors['lavender']!;
+  Color baseColor = colors['base']!;
+  Color crustColor = colors['crust']!;
+  Color surface0Color = colors['surface0']!;
+  Color surface1Color = colors['surface1']!;
+  Color surface2Color = colors['surface2']!;
+  Color overlay2Color = colors['overlay2']!;
+  Color mantleColor = colors['mantle']!;
+  Color textColor = colors['text']!;
   return ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme(
-      background: colors['base']!,
+      background: baseColor,
       brightness: Brightness.light,
-      primary: colors['crust']!,
-      secondary: colors['mantle']!,
-      surface: colors['surface0']!,
-      error: colors['surface2']!,
-      onBackground: colors['text']!,
-      onError: colors['red']!,
-      onSurface: colors['text']!,
+      primary: crustColor,
+      secondary: mantleColor,
+      surface: surface0Color,
+      error: surface2Color,
+      onBackground: textColor,
+      onError: redColor,
+      onSurface: textColor,
       onPrimary: primaryColor,
       onSecondary: secondaryColor,
+      tertiary: surface1Color,
+      onTertiary: lavenderColor,
     ),
     textTheme: const TextTheme().apply(
-      bodyColor: colors['text']!,
+      bodyColor: textColor,
       displayColor: primaryColor,
     ),
     textSelectionTheme: TextSelectionThemeData(
@@ -29,13 +41,13 @@ ThemeData catpuccinTheme(Map<String, Color> colors) {
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       elevation: 0,
-      backgroundColor: colors['overlay2']!,
-      foregroundColor: colors['base']!,
+      backgroundColor: overlay2Color,
+      foregroundColor: baseColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStatePropertyAll(primaryColor),
-        foregroundColor: MaterialStatePropertyAll(colors['base']!),
+        foregroundColor: MaterialStatePropertyAll(baseColor),
       ),
     ),
     // iconButtonTheme: IconButtonThemeData(
@@ -44,18 +56,18 @@ ThemeData catpuccinTheme(Map<String, Color> colors) {
     //   ),
     // ),
     appBarTheme: AppBarTheme(
-      backgroundColor: colors['base']!,
-      foregroundColor: colors['text']!,
+      backgroundColor: baseColor,
+      foregroundColor: textColor,
     ),
     navigationRailTheme: NavigationRailThemeData(
-      backgroundColor: colors['base']!,
-      unselectedIconTheme: IconThemeData(color: colors['text']!),
+      backgroundColor: baseColor,
+      unselectedIconTheme: IconThemeData(color: textColor),
       selectedIconTheme: IconThemeData(color: primaryColor),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: primaryColor,
-      backgroundColor: colors['base']!,
-      unselectedItemColor: colors['text']!,
+      backgroundColor: baseColor,
+      unselectedItemColor: textColor,
     ),
   );
 }
