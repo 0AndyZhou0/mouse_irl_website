@@ -1,7 +1,9 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mouse_irl_website/database.dart';
-import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 
 class AddTime extends StatefulWidget {
   const AddTime({super.key});
@@ -10,122 +12,184 @@ class AddTime extends StatefulWidget {
   State<AddTime> createState() => _AddTimeState();
 }
 
-DateFormat format = DateFormat("yyyy-MM-dd HH:mm");
-TextEditingController _timeBoxController = TextEditingController();
+final TextEditingController _timeBoxController = TextEditingController();
+final DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+final DateFormat timeFormat = DateFormat("HH:mm");
+final DateFormat format = DateFormat("yyyy-MM-dd HH:mm");
+
+DateTime? selectedDateTime;
 
 class _AddTimeState extends State<AddTime> {
-  // DateTime _dateTime = DateTime.now();
-  // DateTime _date = DateTime.now();
-  // DateTime _time = DateTime.now();
+  Key _key = UniqueKey();
 
-  // void onDateTimeChanged(DateTime newDateTime) {
-  //   setState(() {
-  //     _dateTime = newDateTime;
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    selectedDateTime = selectedDateTime ?? DateTime.now();
+  }
 
-  //taken from https://pub.dev/packages/datetime_picker_formfield_new
-  // Widget basicDateField() {
-  //   final format = DateFormat("yyyy-MM-dd");
-  //   return Column(children: <Widget>[
-  //     Text('Basic date field (${format.pattern})'),
-  //     DateTimeField(
-  //       format: format,
-  //       onShowPicker: (context, currentValue) {
-  //         return showDatePicker(
-  //           context: context,
-  //           firstDate: DateTime(1900),
-  //           initialDate: currentValue ?? DateTime.now(),
-  //           lastDate: DateTime(2100),
-  //         );
-  //       },
-  //       onChanged: (value) {
-  //         if (value != null) {
-  //           onDateChanged(value);
-  //         }
-  //       },
-  //     ),
-  //   ]);
-  // }
-
-  // Widget basicTimeField() {
-  //   final format = DateFormat("HH:mm");
-  //   return Column(children: <Widget>[
-  //     Text('Basic time field (${format.pattern})'),
-  //     DateTimeField(
-  //       format: format,
-  //       onShowPicker: (context, currentValue) async {
-  //         final time = await showTimePicker(
-  //           context: context,
-  //           initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-  //         );
-  //         return DateTimeField.convert(time);
-  //       },
-  //       onChanged: (value) {
-  //         if (value != null) {
-  //           onTimeChanged(value);
-  //         }
-  //       },
-  //     ),
-  //   ]);
-  // }
+  void updateCupertinoDatePicker() {
+    setState(() {
+      _key = UniqueKey();
+    });
+  }
 
   Widget basicDateTimeField() {
     return Column(
       children: <Widget>[
-        Text('Basic date & time field (${format.pattern})'),
-        DateTimeField(
+        Text('Date & Time field format (${format.pattern})'),
+        TextField(
           controller: _timeBoxController,
-          readOnly: false,
-          format: format,
-          onShowPicker: (context, currentValue) async {
-            return await showDatePicker(
-              context: context,
-              firstDate: DateTime(1900),
-              initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2100),
-            ).then((DateTime? date) async {
-              if (date != null) {
-                final time = await showTimePicker(
-                  context: context,
-                  initialTime:
-                      TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                );
-                return DateTimeField.combine(date, time);
-              } else {
-                return currentValue;
-              }
-            });
-          },
-          // onChanged: (value) {
-          //   if (value != null) {
-          //     onDateTimeChanged(value);
-          //   }
-          // },
-        ),
+          onChanged: (value) => setState(() {
+            try {
+              selectedDateTime = format.parse(value);
+            } finally {
+              _timeBoxController.text = format.format(selectedDateTime!);
+            }
+          }),
+        )
       ],
     );
   }
 
-  Widget addDateButton() {
+  Widget editDateField() {
+    return ListTile(
+      title: Center(child: Text(dateFormat.format(selectedDateTime!))),
+      onTap: () async {
+        final date = await showDatePicker(
+          builder: (context, child) => Theme(
+            data: Theme.of(context).copyWith(
+              textButtonTheme: TextButtonThemeData(
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+            ),
+            child: child!,
+          ),
+          context: context,
+          initialDate: selectedDateTime!,
+          firstDate: DateTime(1900),
+          lastDate: DateTime(2100),
+        );
+        if (date != null) {
+          setState(() {
+            selectedDateTime = selectedDateTime!.copyWith(
+              year: date.year,
+              month: date.month,
+              day: date.day,
+            );
+            updateCupertinoDatePicker();
+          });
+        }
+      },
+    );
+  }
+
+  Widget editTimeField() {
+    return ListTile(
+      title: Center(child: Text(timeFormat.format(selectedDateTime!))),
+      onTap: () async {
+        final time = await showTimePicker(
+          builder: (context, child) => Theme(
+            data: Theme.of(context).copyWith(
+              textButtonTheme: TextButtonThemeData(
+                style: ButtonStyle(
+                  foregroundColor: WidgetStateProperty.all<Color>(
+                      Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+            ),
+            child: child!,
+          ),
+          context: context,
+          initialTime: TimeOfDay.fromDateTime(selectedDateTime!),
+        );
+        if (time != null) {
+          setState(() {
+            selectedDateTime = selectedDateTime!.copyWith(
+              hour: time.hour,
+              minute: time.minute,
+            );
+            updateCupertinoDatePicker();
+          });
+        }
+      },
+    );
+  }
+
+  Widget addDateTimeButton() {
     return ElevatedButton(
       onPressed: () {
         // Database().addTime(_dateTime);
-        Database().addTime(format.parse(_timeBoxController.text));
+        Database().addTime(selectedDateTime!);
         Navigator.pop(context);
       },
-      child: const Text('Add Date'),
+      child: const Text('Add Date and Time'),
+    );
+  }
+
+  Widget dateTimePicker() {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 300),
+      child: ScrollConfiguration(
+        behavior: MouseDragScrollBehavior(),
+        child: CupertinoTheme(
+          data: CupertinoThemeData(),
+          child: CupertinoDatePicker(
+            key: _key,
+            dateOrder: DatePickerDateOrder.ymd,
+            minimumDate: DateTime(1900, 1, 1),
+            maximumDate: DateTime(2100, 12, 31),
+            mode: CupertinoDatePickerMode.dateAndTime,
+            initialDateTime: selectedDateTime,
+            onDateTimeChanged: (DateTime newDateTime) {
+              setState(() {
+                selectedDateTime = newDateTime;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget loop() {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxHeight: 100),
+      child: ListWheelScrollView.useDelegate(
+        scrollBehavior: MouseDragScrollBehavior(),
+        itemExtent: 24,
+        childDelegate: ListWheelChildLoopingListDelegate(
+          children: List<Widget>.generate(
+            24,
+            (index) => Text((index + 1).toString()),
+          ),
+        ),
+        onSelectedItemChanged: (index) {
+          setState(() {
+            selectedDateTime = selectedDateTime!.copyWith(
+              hour: index + 1,
+            );
+          });
+        },
+      ),
     );
   }
 
   Widget addTimeForm() {
     return Column(
       children: [
-        basicDateTimeField(),
+        dateTimePicker(),
+        // loop(),
+        // basicDateTimeField(),
+        editDateField(),
+        editTimeField(),
         const SizedBox(
           height: 20,
         ),
-        addDateButton(),
+        addDateTimeButton(),
       ],
     );
   }
@@ -142,4 +206,14 @@ class _AddTimeState extends State<AddTime> {
       ),
     );
   }
+}
+
+class MouseDragScrollBehavior extends CupertinoScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.invertedStylus
+      };
 }

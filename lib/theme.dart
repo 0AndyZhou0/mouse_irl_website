@@ -46,8 +46,8 @@ ThemeData catpuccinTheme(Map<String, Color> colors) {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(primaryColor),
-        foregroundColor: MaterialStatePropertyAll(baseColor),
+        backgroundColor: WidgetStatePropertyAll(primaryColor),
+        foregroundColor: WidgetStatePropertyAll(baseColor),
       ),
     ),
     // iconButtonTheme: IconButtonThemeData(
