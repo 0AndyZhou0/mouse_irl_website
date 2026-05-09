@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
-import 'package:mouse_irl_website/configs/mouse.dart';
 import 'package:mouse_irl_website/screens/add_time.dart';
+import 'package:mouse_irl_website/screens/admin_edit.dart';
 import 'package:mouse_irl_website/screens/alert_dialog.dart';
 
 class TimesAdminPage extends StatefulWidget {
@@ -19,8 +19,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _times = [];
   static const double buttonWidth = 150;
-
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -44,73 +42,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
     });
   }
 
-  // Widget alertDialogYesNoMessage(
-  //     String title, String content, Function callback,
-  //     {String yesText = "Yes", String cancelText = "Cancel"}) {
-  //   return AlertDialog(title: Text(title), content: Text(content), actions: [
-  //     TextButton(
-  //       child: Text(yesText),
-  //       onPressed: () {
-  //         callback();
-  //         Navigator.of(context).pop();
-  //       },
-  //     ),
-  //     TextButton(
-  //       child: Text(cancelText),
-  //       onPressed: () {
-  //         Navigator.of(context).pop();
-  //       },
-  //     ),
-  //   ]);
-  // }
-
-  Widget timeListElement(String time) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Text(DateTime.parse(time).toLocal().toString().substring(0, 16)),
-          const Expanded(child: SizedBox()),
-          ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => alertDialogYesNoMessage(
-                  context,
-                  "Clear time?",
-                  "Are you sure you want to clear ${DateTime.parse(time).toLocal().toString().substring(0, 16)}?",
-                  () => currentTimesVotesRef.child(time).set(
-                    {
-                      'exists': 'true',
-                    },
-                  ),
-                ),
-              );
-            },
-            child: const Text('clear'),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => alertDialogYesNoMessage(
-                  context,
-                  "Delete time?",
-                  "Are you sure you want to delete ${DateTime.parse(time).toLocal().toString().substring(0, 16)}?",
-                  () => currentTimesVotesRef.child(time).remove(),
-                ),
-              );
-            },
-            child: const Text('delete'),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget removeAllTimes() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -132,26 +63,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
         ),
         child: const Text('Delete All Times'),
       ),
-    );
-  }
-
-  Widget listOfEvents() {
-    if (_times.isEmpty) {
-      return const Center(
-        child: Text(
-          'No times',
-        ),
-      );
-    }
-    return ListView.separated(
-      shrinkWrap: true,
-      controller: _scrollController,
-      padding: const EdgeInsets.only(bottom: 69 * 3),
-      itemCount: _times.length,
-      itemBuilder: (BuildContext context, int index) {
-        return timeListElement(_times[index]);
-      },
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 
@@ -237,18 +148,6 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-    double bodyWidth;
-    if (screenWidth < 1000) {
-      bodyWidth = screenWidth - 32;
-    } else if (screenWidth < 1300) {
-      bodyWidth = screenWidth * 0.8;
-    } else if (screenWidth < 1700) {
-      bodyWidth = screenWidth * 0.8 - 320;
-    } else {
-      bodyWidth = 1000;
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Times'),
@@ -256,31 +155,20 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           removeAllTimes(),
         ],
       ),
-      body: ScrollConfiguration(
-        behavior: MouseDragScrollBehavior(),
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Center(
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: bodyWidth,
-              ),
-              child: listOfEvents(),
-            ),
-          ),
-        ),
+      body: AdminEditList(
+        elements: _times,
+        databaseRef: currentTimesVotesRef,
+        name: 'time',
+        parseElement: (time) =>
+            DateTime.parse(time).toLocal().toString().substring(0, 16),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           advanceAllTimesButton(),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           clearAllTimesButton(),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           addTimeButton(),
         ],
       ),
