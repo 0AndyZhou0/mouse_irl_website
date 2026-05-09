@@ -20,7 +20,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
   List<String> _events = [];
   static const double buttonWidth = 150;
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
             width: 60,
             child: ElevatedButton(
               style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
+                padding: WidgetStateProperty.all(EdgeInsets.zero),
               ),
               onPressed: () {
                 // warning dialog
@@ -105,7 +105,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
             width: 60,
             child: ElevatedButton(
               style: ButtonStyle(
-                padding: MaterialStateProperty.all(EdgeInsets.zero),
+                padding: WidgetStateProperty.all(EdgeInsets.zero),
               ),
               onPressed: () {
                 showDialog(

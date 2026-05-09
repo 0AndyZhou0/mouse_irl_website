@@ -20,7 +20,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
   List<String> _times = [];
   static const double buttonWidth = 150;
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
