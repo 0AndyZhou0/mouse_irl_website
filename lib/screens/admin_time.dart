@@ -61,7 +61,7 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
   //   ]);
   // }
 
-  Widget removeTime(String time) {
+  Widget timeListElement(String time) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -140,12 +140,13 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
         ),
       );
     }
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.only(bottom: 69 * 3),
       itemCount: _times.length,
       itemBuilder: (BuildContext context, int index) {
-        return removeTime(_times[index]);
+        return timeListElement(_times[index]);
       },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 

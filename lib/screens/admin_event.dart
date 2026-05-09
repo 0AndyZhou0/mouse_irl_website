@@ -61,7 +61,7 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
   //   ]);
   // }
 
-  Widget removeEvent(String event) {
+  Widget eventListElement(String event) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -156,12 +156,13 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
         ),
       );
     }
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.only(bottom: 69 * 2),
       itemCount: _events.length,
       itemBuilder: (BuildContext context, int index) {
-        return removeEvent(_events[index]);
+        return eventListElement(_events[index]);
       },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 
