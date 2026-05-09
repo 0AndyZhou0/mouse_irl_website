@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
+import 'package:mouse_irl_website/configs/mouse.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -334,16 +335,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 600) {
-            colWidth = constraints.maxWidth - 16;
-            return singleColumn();
-          } else {
-            colWidth = constraints.maxWidth / 2 - 16;
-            return doubleColumn();
-          }
-        },
+      body: ScrollConfiguration(
+        behavior: MouseDragScrollBehavior(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth < 600) {
+              colWidth = constraints.maxWidth - 16;
+              return singleColumn();
+            } else {
+              colWidth = constraints.maxWidth / 2 - 16;
+              return doubleColumn();
+            }
+          },
+        ),
       ),
     );
   }
