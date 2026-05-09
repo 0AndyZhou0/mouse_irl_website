@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
+import 'package:mouse_irl_website/configs/mouse.dart';
 import 'package:mouse_irl_website/screens/add_event.dart';
 import 'package:mouse_irl_website/screens/alert_dialog.dart';
 
@@ -18,6 +19,8 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _events = [];
   static const double buttonWidth = 150;
+
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -157,6 +160,8 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
       );
     }
     return ListView.separated(
+      shrinkWrap: true,
+      controller: _scrollController,
       padding: const EdgeInsets.only(bottom: 69 * 2),
       itemCount: _events.length,
       itemBuilder: (BuildContext context, int index) {
@@ -231,12 +236,18 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
           removeAllEvents(),
         ],
       ),
-      body: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: bodyWidth,
+      body: ScrollConfiguration(
+        behavior: MouseDragScrollBehavior(),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Center(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: bodyWidth,
+              ),
+              child: listOfEvents(),
+            ),
           ),
-          child: listOfEvents(),
         ),
       ),
       floatingActionButton:

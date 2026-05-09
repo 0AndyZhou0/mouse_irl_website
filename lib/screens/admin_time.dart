@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mouse_irl_website/auth.dart';
+import 'package:mouse_irl_website/configs/mouse.dart';
 import 'package:mouse_irl_website/screens/add_time.dart';
 import 'package:mouse_irl_website/screens/alert_dialog.dart';
 
@@ -18,6 +19,8 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
   String uid = Auth().currentUser?.uid ?? '';
   List<String> _times = [];
   static const double buttonWidth = 150;
+
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -141,6 +144,8 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
       );
     }
     return ListView.separated(
+      shrinkWrap: true,
+      controller: _scrollController,
       padding: const EdgeInsets.only(bottom: 69 * 3),
       itemCount: _times.length,
       itemBuilder: (BuildContext context, int index) {
@@ -251,12 +256,18 @@ class _TimesAdminPageState extends State<TimesAdminPage> {
           removeAllTimes(),
         ],
       ),
-      body: Center(
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: bodyWidth,
+      body: ScrollConfiguration(
+        behavior: MouseDragScrollBehavior(),
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Center(
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: bodyWidth,
+              ),
+              child: listOfEvents(),
+            ),
           ),
-          child: listOfEvents(),
         ),
       ),
       floatingActionButton: Column(

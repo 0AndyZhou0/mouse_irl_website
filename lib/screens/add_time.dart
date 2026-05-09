@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mouse_irl_website/configs/mouse.dart';
 import 'package:mouse_irl_website/database.dart';
 
 class AddTime extends StatefulWidget {
@@ -206,14 +207,4 @@ class _AddTimeState extends State<AddTime> {
       ),
     );
   }
-}
-
-class MouseDragScrollBehavior extends CupertinoScrollBehavior {
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.invertedStylus
-      };
 }
