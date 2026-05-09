@@ -212,6 +212,18 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    double bodyWidth;
+    if (screenWidth < 1000) {
+      bodyWidth = screenWidth - 32;
+    } else if (screenWidth < 1300) {
+      bodyWidth = screenWidth * 0.8;
+    } else if (screenWidth < 1700) {
+      bodyWidth = screenWidth * 0.8 - 320;
+    } else {
+      bodyWidth = 1000;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Events'),
@@ -219,7 +231,14 @@ class _EventsAdminPageState extends State<EventsAdminPage> {
           removeAllEvents(),
         ],
       ),
-      body: listOfEvents(),
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: bodyWidth,
+          ),
+          child: listOfEvents(),
+        ),
+      ),
       floatingActionButton:
           Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         clearAllEventsButton(),
