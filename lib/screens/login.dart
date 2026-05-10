@@ -45,6 +45,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _entryField(String title, TextEditingController controller) {
     return TextField(
+      onSubmitted: (_) {
+        submit();
+      },
       obscureText: title == 'Password' ? true : false,
       controller: controller,
       decoration: InputDecoration(
@@ -61,6 +64,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void submit() {
+    isLogin ? signInWithEmailAndPassword() : createUserWithEmailAndPassword();
+  }
+
   Widget _submitButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -71,9 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       onPressed: () {
         // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-        isLogin
-            ? signInWithEmailAndPassword()
-            : createUserWithEmailAndPassword();
+        submit();
       },
       child: isLogin ? const Text('Login') : const Text('Create Account'),
     );
