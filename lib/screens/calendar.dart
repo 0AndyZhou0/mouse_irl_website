@@ -160,16 +160,14 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             calendarStyle: CalendarStyle(
               markerDecoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
                 shape: BoxShape.circle,
               ),
               weekendTextStyle: TextStyle(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withAlpha(200),
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(200),
               ),
               outsideTextStyle: TextStyle(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withAlpha(100),
+                color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
               ),
               holidayDecoration: BoxDecoration(
                 border: Border.fromBorderSide(

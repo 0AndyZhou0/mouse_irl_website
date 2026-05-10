@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginOrRegisterButton() {
     return TextButton(
       style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       onPressed: () {
         setState(() {
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _resetPasswordButton() {
     return TextButton(
       style: TextButton.styleFrom(
-        foregroundColor: Theme.of(context).colorScheme.onBackground,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
       onPressed: () {
         Navigator.push(
