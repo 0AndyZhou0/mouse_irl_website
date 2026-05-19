@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String? errorMessage = '';
+  String errorMessage = '';
   bool isLogin = true;
 
   final TextEditingController _emailController = TextEditingController();
@@ -25,7 +25,11 @@ class _LoginPageState extends State<LoginPage> {
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message;
+        if (e.message == null) {
+          errorMessage = '';
+        } else {
+          errorMessage = e.message!;
+        }
       });
     }
   }
@@ -38,7 +42,11 @@ class _LoginPageState extends State<LoginPage> {
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message;
+        if (e.message == null) {
+          errorMessage = '';
+        } else {
+          errorMessage = e.message!;
+        }
       });
     }
   }
@@ -59,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _errorMessage() {
     return Text(
-      errorMessage == '' ? '' : errorMessage!,
+      errorMessage,
       style: TextStyle(color: Theme.of(context).colorScheme.onError),
     );
   }
@@ -137,31 +145,32 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-      padding: const EdgeInsets.all(40.0),
-      children: [
-        SizedBox(
-          height: 200,
-          width: 200,
-          child: Image.asset('assets/images/catbot.png'),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        _entryField('Email', _emailController),
-        const SizedBox(
-          height: 10,
-        ),
-        _entryField('Password', _passwordController),
-        _errorMessage(),
-        const SizedBox(
-          height: 30,
-        ),
-        _submitButton(),
-        _loginOrRegisterButton(),
-        _resetPasswordButton(),
-        _signInWithGoogle(),
-      ],
-    ));
+      body: ListView(
+        padding: const EdgeInsets.all(40.0),
+        children: [
+          SizedBox(
+            height: 200,
+            width: 200,
+            child: Image.asset('assets/images/catbot.png'),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          _entryField('Email', _emailController),
+          const SizedBox(
+            height: 10,
+          ),
+          _entryField('Password', _passwordController),
+          _errorMessage(),
+          const SizedBox(
+            height: 30,
+          ),
+          _submitButton(),
+          _loginOrRegisterButton(),
+          _resetPasswordButton(),
+          _signInWithGoogle(),
+        ],
+      ),
+    );
   }
 }
